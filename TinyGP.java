@@ -18,8 +18,8 @@ public class TinyGP {
     private static final double PMUT_PER_NODE = 0.05;
     private static final double CROSSOVER_PROB = 0.9;
 
-    private static final double MIN_RANDOM = -10.0;
-    private static final double MAX_RANDOM = 10.0;
+    private static double MIN_RANDOM = -10.0;
+    private static double MAX_RANDOM = 10.0;
 
     private double[] fitness;
     private char[][] population;
@@ -38,7 +38,7 @@ public class TinyGP {
     private static double averageLength;
 
     public static void main(String[] args) {
-        String filename = "zad1 fun1 dzi1 -10 10.dat";
+        String filename = "xmxp2.dat"; //zad1 fun1 dzi1 -10 10
         long seed = -1;
 
         if (args.length == 2) {
