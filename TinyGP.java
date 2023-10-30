@@ -99,20 +99,20 @@ public class TinyGP {
         if (program[programCounter] < FSET_START)
             return variables[program[programCounter]];
         switch (program[programCounter]) {
-            case ADD:
-                return run(program) + run(program);
-            case SUB:
-                return run(program) - run(program);
-            case MUL:
-                return run(program) * run(program);
-            case DIV: {
-                double num = run(program);
-                double den = run(program);
-                if (Math.abs(den) <= 0.001)
-                    return num;
-                else
-                    return num / den;
-            }
+        case ADD:
+            return run(program) + run(program);
+        case SUB:
+            return run(program) - run(program);
+        case MUL:
+            return run(program) * run(program);
+        case DIV: {
+            double num = run(program);
+            double den = run(program);
+            if (Math.abs(den) <= 0.001)
+                return num;
+            else
+                return num / den;
+        }
         }
         return 0.0;
     }
@@ -122,11 +122,11 @@ public class TinyGP {
             return ++bufferCount;
 
         switch (buffer[bufferCount]) {
-            case ADD:
-            case SUB:
-            case MUL:
-            case DIV:
-                return traverse(buffer, traverse(buffer, ++bufferCount));
+        case ADD:
+        case SUB:
+        case MUL:
+        case DIV:
+            return traverse(buffer, traverse(buffer, ++bufferCount));
         }
         return 0;
     }
@@ -146,17 +146,17 @@ public class TinyGP {
             buffer[pos] = primitive;
             return pos + 1;
         } else {
-            primitive = (char) (random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
+            primitive = (char)(random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
             switch (primitive) {
-                case ADD:
-                case SUB:
-                case MUL:
-                case DIV:
-                    buffer[pos] = primitive;
-                    oneChild = grow(buffer, pos + 1, max, depth - 1);
-                    if (oneChild < 0)
-                        return -1;
-                    return grow(buffer, oneChild, max, depth - 1);
+            case ADD:
+            case SUB:
+            case MUL:
+            case DIV:
+                buffer[pos] = primitive;
+                oneChild = grow(buffer, pos + 1, max, depth - 1);
+                if (oneChild < 0)
+                    return -1;
+                return grow(buffer, oneChild, max, depth - 1);
             }
         }
         return 0;
@@ -269,11 +269,11 @@ public class TinyGP {
                     parentCopy[mutationSite] = (char) random.nextInt(variableCount + randomVariableCount);
                 else {
                     switch (parentCopy[mutationSite]) {
-                        case ADD:
-                        case SUB:
-                        case MUL:
-                        case DIV:
-                            parentCopy[mutationSite] = (char) (random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
+                    case ADD:
+                    case SUB:
+                    case MUL:
+                    case DIV:
+                        parentCopy[mutationSite] = (char)(random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
                     }
                 }
             }
@@ -319,8 +319,8 @@ public class TinyGP {
         printParameters();
         evaluatePopulationStats();
         System.out.println("Generation=0 Avg Fitness=" + (-averagePopulationFitness) +
-                " Best Fitness=" + (-bestPopulationFitness) +
-                " Avg Size=" + averageLength);
+            " Best Fitness=" + (-bestPopulationFitness) +
+            " Avg Size=" + averageLength);
 
         for (gen = 1; gen < GENERATIONS; gen++) {
             if (bestPopulationFitness > -1e-5) {
@@ -347,8 +347,8 @@ public class TinyGP {
 
             evaluatePopulationStats();
             System.out.println("Generation=" + gen + " Avg Fitness=" + (-averagePopulationFitness) +
-                    " Best Fitness=" + (-bestPopulationFitness) +
-                    " Avg Size=" + averageLength);
+                " Best Fitness=" + (-bestPopulationFitness) +
+                " Avg Size=" + averageLength);
         }
 
         System.out.println("PROBLEM *NOT* SOLVED");
