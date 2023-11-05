@@ -383,7 +383,7 @@ public class tiny_gp {
     }
 
     public static void main(String[] args) {
-        String fname = "xmxp2.dat"; //
+        String fname = "zad1 fun1 dzi1 -10 10.dat";
         long s = -1;
 
         if (args.length == 2) {
