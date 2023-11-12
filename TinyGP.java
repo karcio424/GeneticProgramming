@@ -38,7 +38,7 @@ public class TinyGP {
     private static double averageLength;
 
     public static void main(String[] args) {
-        String filename = "xmxp2.dat"; //zad1 fun1 dzi1 -10 10
+        String filename = "zad1 fun4 dzi1 0 1.dat"; //zad1 fun1 dzi1 -10 10
         long seed = -1;
 
         if (args.length == 2) {

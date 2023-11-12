@@ -6,7 +6,7 @@ import java.io.*;
 //     public String drugaWartosc;
 // }
 
-public class TinyGP {
+public class TinyGP2 {
     private static final int ADD = 110;
     private static final int SUB = 111;
     private static final int MUL = 112;
@@ -60,7 +60,7 @@ public class TinyGP {
 
     // funkcja uruchamiająca program
     public static void main(String[] args) {
-        String filename = "xmxp2.dat"; //zad1 fun1 dzi1 -10 10
+        String filename = "zad1 fun4 dzi3 0 100.dat"; //zad1 fun1 dzi1 -10 10
         // zapisDoPliku("ASASAS");
         long seed = -1;
 
@@ -74,12 +74,12 @@ public class TinyGP {
         PLIK = tekstPliku(filename);
         zapisDoPliku("");
         System.out.println(PLIK);
-        TinyGP tinyGP = new TinyGP(filename, seed);
-        tinyGP.evolve();
+        TinyGP2 TinyGP2 = new TinyGP2(filename, seed);
+        TinyGP2.evolve();
     }
 
     // ustawianie parametrów początkowych
-    public TinyGP(String filename, long randomSeed) {
+    public TinyGP2(String filename, long randomSeed) {
         fitness = new double[POPSIZE];
         seed = randomSeed;
         if (seed >= 0)
