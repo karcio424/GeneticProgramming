@@ -51,9 +51,10 @@ public class TinyGP2 {
 
     public static String tekstPliku(String filename) {
         String newString = "done " + filename;
-        int index = newString.indexOf(".\\");
+        // newString = newString.replace("")
+        int index = newString.indexOf(".\\files\\data\\");
         if (index > 0) {
-            return newString.replace(".\\", "");
+            return newString.replace(".\\files\\data\\", "");
         }
         return newString;
     }
