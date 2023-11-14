@@ -12,3 +12,11 @@ f(x,y) = x^2 + 3x*y - 7y + 1 dziedzina x,y: [-10, 10], [0,100], [-1, 1], [-1000,
 3. Zaimplementować (technika dowolna) konwerter z formatu rozwiązania wypisywanego przez TinyGP (nie należy go zmieniać) na format arkusz kalkulacyjnego (OO Calc lub MS Excel)
 4. Przygotować wykresy (Calc/Excel) porównujące otrzymane rezultaty w zadaniu 2 z oryginalnymi funkcjami
 5. Przygotować wykresy wartości przystosowania najlepszego osobnika i średniego przystosowania od numeru pokolenia dla 3 wybranych procesów ewolucji (regresji symbolicznej z zadania 2)
+
+Kroki:
+fun1: 0.1
+fun2: 0.1
+fun3: 0.1
+fun4: 0.1, 0.1, 1, 10
+fun5: 0.1, 0.1, 1, 1
+fun6: 0.1, 1, 0.1, 10
