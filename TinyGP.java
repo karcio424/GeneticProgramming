@@ -6,7 +6,7 @@ import java.io.*;
 //     public String drugaWartosc;
 // }
 
-public class TinyGP2 {
+public class TinyGP {
     private static final int ADD = 110;
     private static final int SUB = 111;
     private static final int MUL = 112;
@@ -18,7 +18,7 @@ public class TinyGP2 {
     private static final int POPSIZE = 100000;
     private static final int DEPTH = 5;
     // private static final int GENERATIONS = 100;
-    private static final int GENERATIONS = 25;
+    private static final int GENERATIONS = 100;
     private static final int TSIZE = 2;
 
     private static final double PMUT_PER_NODE = 0.05;
@@ -61,7 +61,7 @@ public class TinyGP2 {
 
     // funkcja uruchamiająca program
     public static void main(String[] args) {
-        String filename = "zad1 fun1 dzi4 -1000 1000.dat"; //zad1 fun1 dzi1 -10 10
+        String filename = "zad1 fun1 dzi3 -1 1.dat"; //zad1 fun1 dzi1 -10 10
         // zapisDoPliku("ASASAS");
         long seed = -1;
 
@@ -75,12 +75,12 @@ public class TinyGP2 {
         PLIK = tekstPliku(filename);
         zapisDoPliku("");
         System.out.println(PLIK);
-        TinyGP2 TinyGP2 = new TinyGP2(filename, seed);
-        TinyGP2.evolve();
+        TinyGP TinyGP = new TinyGP(filename, seed);
+        TinyGP.evolve();
     }
 
     // ustawianie parametrów początkowych
-    public TinyGP2(String filename, long randomSeed) {
+    public TinyGP(String filename, long randomSeed) {
         fitness = new double[POPSIZE];
         seed = randomSeed;
         if (seed >= 0)
