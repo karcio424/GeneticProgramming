@@ -1,0 +1,11 @@
+Przed raportem:
+* wiecej generacji -> 100 i przeliczyć jeszcze raz 
+* dla mniejszych przedziałów większe zagęszczenie - inne kroki
+* dostosowanie dla 0 z TinyGP -> 0.001
+
+Co w raporcie:
+* wykresy porównawcze
+* best fit i average fit
+
+Później będzie trzeba podzielić na klasy
+Konwerter na postać funkcji - upraszczanie (ewentualnie)
