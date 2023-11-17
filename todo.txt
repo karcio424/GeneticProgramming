@@ -9,3 +9,6 @@ Co w raporcie:
 
 Później będzie trzeba podzielić na klasy
 Konwerter na postać funkcji - upraszczanie (ewentualnie)
+
+TinyGPautomated
+conversionToExcelAutomated
