@@ -61,7 +61,7 @@ public class TinyGP {
 
     // funkcja uruchamiająca program
     public static void main(String[] args) {
-        String filename = "lab1fun4dzi1 0 1 0.01.dat"; //zad1 fun1 dzi1 -10 10
+        String filename = "x.dat"; //zad1 fun1 dzi1 -10 10
         // zapisDoPliku("ASASAS");
         long seed = -1;
 
