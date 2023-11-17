@@ -18,7 +18,7 @@ public class TinyGP {
     private static final int POPSIZE = 100000;
     private static final int DEPTH = 5;
     // private static final int GENERATIONS = 100;
-    private static final int GENERATIONS = 100;
+    private static final int GENERATIONS = 25;
     private static final int TSIZE = 2;
 
     private static final double PMUT_PER_NODE = 0.05;
@@ -61,7 +61,7 @@ public class TinyGP {
 
     // funkcja uruchamiająca program
     public static void main(String[] args) {
-        String filename = "zad1 fun1 dzi3 -1 1.dat"; //zad1 fun1 dzi1 -10 10
+        String filename = "lab1fun4dzi1 0 1 0.01.dat"; //zad1 fun1 dzi1 -10 10
         // zapisDoPliku("ASASAS");
         long seed = -1;
 
