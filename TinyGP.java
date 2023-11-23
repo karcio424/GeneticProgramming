@@ -1,24 +1,21 @@
 import java.util.*;
 import java.io.*;
 
-// public class Wynik {
-//     public int pierwszaWartosc;
-//     public String drugaWartosc;
-// }
-
 public class TinyGP {
     private static final int ADD = 110;
     private static final int SUB = 111;
     private static final int MUL = 112;
-    private static final int DIV = 113;
+    private static final int SIN = 113;
+    private static final int COS = 114;
+    private static final int DIV = 115;
     private static final int FSET_START = ADD;
     private static final int FSET_END = DIV;
 
     private static final int MAX_LEN = 10000;
     private static final int POPSIZE = 100000;
     private static final int DEPTH = 5;
-    // private static final int GENERATIONS = 100;
-    private static final int GENERATIONS = 25;
+    private static final int GENERATIONS = 60;
+    // private static final int GENERATIONS = 25;
     private static final int TSIZE = 2;
 
     private static final double PMUT_PER_NODE = 0.05;
@@ -50,13 +47,16 @@ public class TinyGP {
     private static String PLIK="";
 
     public static String tekstPliku(String filename) {
-        String newString = "done " + filename;
+        // String newString = filename;
+        System.out.println(filename);
         // newString = newString.replace("")
-        int index = newString.indexOf(".\\files\\data\\");
+        int index = filename.indexOf("\\data\\");
+        // System.out.println(index);
         if (index > 0) {
-            return newString.replace(".\\files\\data\\", "");
+            return filename.replace("\\data\\", "\\done\\done ");
         }
-        return newString;
+        System.out.println(filename);
+        return filename;
     }
 
     // funkcja uruchamiająca program
@@ -140,6 +140,10 @@ public class TinyGP {
                 return run() - run();
             case MUL:
                 return run() * run();
+            case SIN:
+                return Math.sin(run());                 
+            case COS:
+                return Math.cos(run());
             case DIV: {
                 double num = run();
                 double den = run();
@@ -161,6 +165,8 @@ public class TinyGP {
             case ADD:
             case SUB:
             case MUL:
+            case SIN:
+            case COS:
             case DIV:
                 return traverse(buffer, traverse(buffer, ++bufferCount));
         }
@@ -189,6 +195,8 @@ public class TinyGP {
                 case ADD:
                 case SUB:
                 case MUL:
+                case SIN:
+                case COS:
                 case DIV:
                     buffer[pos] = primitive;
                     oneChild = grow(buffer, pos + 1, max, depth - 1);
@@ -320,6 +328,8 @@ public class TinyGP {
                         case ADD:
                         case SUB:
                         case MUL:
+                        case SIN:
+                        case COS:
                         case DIV:
                             parentCopy[mutationSite] = (char)(random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
                     }
@@ -431,6 +441,8 @@ public class TinyGP {
     
     private int printGeneration(char[] buffer, int buffercounter, String output) {
         int a1=0;
+        int sin_bool=0;
+        int cos_bool=0;
         // Wynik wynik = new Wynik();
         if (buffer[buffercounter] < FSET_START) {
             if (buffer[buffercounter] < variableCount) {
@@ -478,6 +490,26 @@ public class TinyGP {
             output+=" * ";
             zapisDoPliku(" * ");
             break;
+        case SIN:
+            System.out.print("(");
+            output+="(";
+            zapisDoPliku("(");
+            a1 = printGeneration(buffer, ++buffercounter, output);
+            System.out.print(" * sin (");
+            output+=" * sin (";
+            zapisDoPliku(" * sin (");
+            sin_bool = 1;
+            break;
+        case COS:
+            System.out.print("(");
+            output+="(";
+            zapisDoPliku("(");
+            a1 = printGeneration(buffer, ++buffercounter, output);
+            System.out.print(" * cos (");
+            output+=" * cos (";
+            zapisDoPliku(" * cos (");
+            cos_bool = 1;
+            break;
         case DIV:
             System.out.print("(");
             output+="(";
@@ -490,6 +522,11 @@ public class TinyGP {
         }
         // Wynik wynik2 = printGeneration(buffer, a1, output);
         int a2 = printGeneration(buffer, a1, output);
+        if (cos_bool == 1 || sin_bool == 1){
+            System.out.print(")");
+            output+=")";
+            zapisDoPliku(")");
+        }
         System.out.print(")");
         output+=")";
         zapisDoPliku(")");
