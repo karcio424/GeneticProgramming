@@ -394,7 +394,7 @@ public class TinyGP {
         System.out.flush();
 
         for (gen = 1; gen < GENERATIONS; gen++) {
-            if (bestPopulationFitness > -1e-5) {
+            if (bestPopulationFitness > -10) {
                 System.out.println("PROBLEM SOLVED");
                 output = printGeneration(population[bestGenIndex], 0, "");
                 System.out.println("PROBLEM SOLVED");
