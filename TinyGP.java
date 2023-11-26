@@ -14,7 +14,7 @@ public class TinyGP {
     private static final int MAX_LEN = 10000;
     private static final int POPSIZE = 100000;
     private static final int DEPTH = 5;
-    private static final int GENERATIONS = 60;
+    private static final int GENERATIONS = 100;
     // private static final int GENERATIONS = 25;
     private static final int TSIZE = 2;
 
