@@ -11,11 +11,6 @@
 import java.util.*;
 import java.io.*;
 
-// public class Wynik {
-//     public int pierwszaWartosc;
-//     public String drugaWartosc;
-// }
-
 public class TinyGP {
     private static final int ADD = 110;
     private static final int SUB = 111;
@@ -56,7 +51,6 @@ public class TinyGP {
     private static long seed;
     private static double averageLength;
 
-    //dodane
     private static char[] program;
     private static int PC;
     private static char[] buffer = new char[MAX_LEN];
@@ -64,18 +58,16 @@ public class TinyGP {
 
     public static String tekstPliku(String filename) {
         String newString = "done " + filename;
-        // newString = newString.replace("")
-        int index = newString.indexOf(".\\files\\data\\");
+        int index = newString.indexOf(".\\files\\2 - function_calculated\\");
         if (index > 0) {
-            return newString.replace(".\\files\\data\\", "");
+            return newString.replace(".\\files\\2 - function_calculated\\", "");
         }
         return newString;
     }
 
     // funkcja uruchamiająca program
     public static void main(String[] args) {
-        String filename = "x.dat"; //zad1 fun1 dzi1 -10 10
-        // zapisDoPliku("ASASAS");
+        String filename = "lab1fun1dzi1 -10.0 10.0 0.1.dat";
         long seed = -1;
 
         if (args.length == 2) {
@@ -101,8 +93,7 @@ public class TinyGP {
         setupFitness(filename);
         for (int i = 0; i < FSET_START; i++)
             variables[i] = (MAX_RANDOM - MIN_RANDOM) * random.nextDouble() + MIN_RANDOM;
-        // pop = create_random_pop(POPSIZE, DEPTH, fitness);
-        // variables = new double[FSET_START];
+
         population = createRandomPopulation(POPSIZE, DEPTH, fitness);
     }
 
@@ -139,10 +130,7 @@ public class TinyGP {
         }
     }
 
-    // inny parametr wejsciowy!!
-    // private double run(char[] program) {
     private double run() {
-        // int programCounter = 0;
         char primitive = program[PC++];
         if (primitive < FSET_START)
             return variables[primitive];
