@@ -1,8 +1,11 @@
 /*
- * Program:   java
+ * Original Author:    Riccardo Poli (email: rpoli@essex.ac.uk)
  *
- * Author:    Riccardo Poli (email: rpoli@essex.ac.uk)
- *
+ * Refactored by Jakub Banach and Karol Błaszczak
+ * 
+ * For the Genetic Programming laboratory classes in the Computer Science and Intelligent Systems course at AGH University of Science and Technology.
+ * 
+ * Version 2.0 for laboratory no.2
  */
 
 import java.io.BufferedReader;
