@@ -14,7 +14,7 @@ public class TinyGP {
     private static final int MAX_LEN = 10000;
     private static final int POPSIZE = 100000;
     private static final int DEPTH = 5;
-    private static final int GENERATIONS = 100;
+    private static final int GENERATIONS = 2;
     // private static final int GENERATIONS = 25;
     private static final int TSIZE = 2;
 
@@ -43,7 +43,7 @@ public class TinyGP {
     //dodane
     private static char[] program;
     private static int PC;
-    private static char[] buffer = new char[MAX_LEN];
+    public static char[] buffer = new char[MAX_LEN];
     private static String PLIK="";
 
     public static String tekstPliku(String filename) {
@@ -61,7 +61,7 @@ public class TinyGP {
 
     // funkcja uruchamiająca program
     public static void main(String[] args) {
-        String filename = "lab2fun1dzi1 0.0 6.283184 0.03141592.dat";
+        String filename = "TESTY_TINYGP/test_data.dat";
         // zapisDoPliku("ASASAS");
         long seed = -1;
 
@@ -96,7 +96,8 @@ public class TinyGP {
     // ustawianie wartości początkowych
     private void setupFitness(String filename) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            FileReader fileReader = new FileReader(filename);
+            BufferedReader reader = new BufferedReader(fileReader);
             String firstLine = reader.readLine();
             StringTokenizer tokenizer = new StringTokenizer(firstLine);
             variableCount = Integer.parseInt(tokenizer.nextToken().trim());
@@ -122,6 +123,7 @@ public class TinyGP {
             System.exit(0);
         } catch (Exception e) {
             System.out.println("ERROR: Incorrect data format");
+            System.out.println(e);
             System.exit(0);
         }
     }
@@ -160,17 +162,20 @@ public class TinyGP {
     private int traverse(char[] buffer, int bufferCount) {
         if (buffer[bufferCount] < FSET_START)
             return ++bufferCount;
-
-        switch (buffer[bufferCount]) {
+        else {
+            switch (buffer[bufferCount]) {
             case ADD:
             case SUB:
             case MUL:
-            case SIN:
-            case COS:
             case DIV:
                 return traverse(buffer, traverse(buffer, ++bufferCount));
+            case SIN:
+            case COS:
+                return traverse(buffer, ++bufferCount);
+            default:
+            return 0;
+            }
         }
-        return 0;
     }
 
     //generacja losowego programu
@@ -191,18 +196,20 @@ public class TinyGP {
         } 
         else {
             primitive = (char)(random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
+            buffer[pos] = primitive;
+            oneChild = grow(buffer, pos + 1, max, depth - 1);
+            if (oneChild < 0) {
+                return -1;
+            }
             switch (primitive) {
                 case ADD:
                 case SUB:
                 case MUL:
+                case DIV:
+                    return grow(buffer, oneChild, max, depth - 1);
                 case SIN:
                 case COS:
-                case DIV:
-                    buffer[pos] = primitive;
-                    oneChild = grow(buffer, pos + 1, max, depth - 1);
-                    if (oneChild < 0)
-                        return -1;
-                    return grow(buffer, oneChild, max, depth - 1);
+                    return oneChild;
             }
         }
         return 0;
@@ -213,10 +220,13 @@ public class TinyGP {
         char[] individual;
         int len;
 
-        len = grow(buffer, 0, MAX_LEN, depth);
+        // len = grow(buffer, 0, MAX_LEN, depth);
 
-        while (len < 0)
+        // while (len < 0)
+        //     len = grow(buffer, 0, MAX_LEN, depth);
+        do {
             len = grow(buffer, 0, MAX_LEN, depth);
+        } while (len < 0);
 
         individual = new char[len];
         System.arraycopy(buffer, 0, individual, 0, len);
@@ -328,10 +338,15 @@ public class TinyGP {
                         case ADD:
                         case SUB:
                         case MUL:
-                        case SIN:
-                        case COS:
                         case DIV:
                             parentCopy[mutationSite] = (char)(random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
+
+                        case SIN:
+                            parentCopy[mutationSite] = (char) (SIN);
+
+                        case COS:
+                            parentCopy[mutationSite] = (char) (COS);
+
                     }
                 }
             }
@@ -491,23 +506,23 @@ public class TinyGP {
             zapisDoPliku(" * ");
             break;
         case SIN:
-            System.out.print("(");
-            output+="(";
-            zapisDoPliku("(");
+            System.out.print("sin(");
+            output+="sin(";
+            zapisDoPliku("sin(");
             a1 = printGeneration(buffer, ++buffercounter, output);
-            System.out.print(" * sin (");
-            output+=" * sin (";
-            zapisDoPliku(" * sin (");
+            System.out.print(")");
+            output+=")";
+            zapisDoPliku(")");
             sin_bool = 1;
             break;
         case COS:
-            System.out.print("(");
-            output+="(";
-            zapisDoPliku("(");
+            System.out.print("cos(");
+            output+="cos(";
+            zapisDoPliku("cos(");
             a1 = printGeneration(buffer, ++buffercounter, output);
-            System.out.print(" * cos (");
-            output+=" * cos (";
-            zapisDoPliku(" * cos (");
+            System.out.print(")");
+            output+=")";
+            zapisDoPliku(")");
             cos_bool = 1;
             break;
         case DIV:
