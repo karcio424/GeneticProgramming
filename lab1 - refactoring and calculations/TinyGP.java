@@ -24,7 +24,7 @@ public class TinyGP {
     private static final int DEPTH = 5;
     
     // ***AMOUNT OF GENERATIONS***
-    private static final int GENERATIONS = 25;
+    private static final int GENERATIONS = 50;
     // ***AMOUNT OF GENERATIONS***
     
     private static final int TSIZE = 2;
