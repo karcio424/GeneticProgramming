@@ -1,6 +1,5 @@
-from sympy import simplify, cos, sin, symbols, expand
+from sympy import simplify, symbols, expand
 import sys
-import os
 
 X1, X2= symbols('X1 X2')
 
