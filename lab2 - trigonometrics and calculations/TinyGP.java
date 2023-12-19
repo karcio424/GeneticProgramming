@@ -415,7 +415,7 @@ public class TinyGP {
         return a2;
     }
     public static void main(String[] args) {
-        String FileName = "lab1fun4dzi1 0.0 1.0 0.01";
+        String FileName = "";
         String inputFileName = "./files/2 - function_calculated/" + FileName + ".dat";
         String outputFileName = "./files/3 - tinyGP_calculated/done " + FileName + ".dat";
         long seed = 123456; // Replace with your desired seed
@@ -440,4 +440,3 @@ public class TinyGP {
         }
     }
 }
-
