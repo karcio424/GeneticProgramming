@@ -10,7 +10,7 @@ else:
     with open(plik, 'r') as f:
         text = f.read()
     print("INPUT TEXT:\n", text)
-    solution = str(expand(simplify(text, ratio=1.7)))
+    solution = str(simplify(text, ratio=1.7))
     print("SIMPLER SOLUTION:\n", solution)
 
     if "\\files" in plik:   #dla naszego przypadku w folderze lab2
