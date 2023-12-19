@@ -8,134 +8,59 @@
  * Final version for laboratory no.2
  */
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Random;
+import java.util.StringTokenizer;
 
 public class TinyGP {
-    private static final int ADD = 110;
-    private static final int SUB = 111;
-    private static final int MUL = 112;
-    private static final int DIV = 113;
-    private static final int SIN = 114;
-    private static final int COS = 115;
-    private static final int FSET_START = ADD;
-    private static final int FSET_END = COS;
+    double[] fitness;
+    char[][] pop;
+    static Random random = new Random();
+    static final int
+            ADD = 110,
+            SUB = 111,
+            MUL = 112,
+            DIV = 113,
+            SIN = 114,
+            COS = 115,
+            FSET_START = ADD,
+            FSET_END = COS;
+    static double[] x = new double[FSET_START];
+    static double minRandom, maxRandom;
+    static char[] program;
+    static int PC;
+    static int varNumber, fitnessCases, randomNumber;
+    static double fBestPop = 0.0, fAvgPop = 0.0;
+    static long seed;
+    static double avgLen;
+    static final int
+            MAX_LEN = 10000,
+            POPSIZE = 100000,
+            DEPTH = 5,
+            GENERATIONS = 100,
+            TSIZE = 2;
+    public static final double
+            PMUT_PER_NODE = 0.05,
+            CROSSOVER_PROB = 0.9;
+    static double[][] targets;
+    static char[] buffer = new char[MAX_LEN];
+    static String solution = "";
 
-    private static final int MAX_LEN = 10000;
-    private static final int POPSIZE = 100000;
-    private static final int DEPTH = 5;
-    
-    // ***AMOUNT OF GENERATIONS***
-    private static final int GENERATIONS = 5;
-    // ***AMOUNT OF GENERATIONS***
-    
-    private static final int TSIZE = 2;
+    public static boolean solved = false;
+    long longestProgram = 0L;
+    public static String finalSolution;
+    public static double finalBestFit = -Double.MAX_VALUE;
 
-    private static final double PMUT_PER_NODE = 0.05;
-    private static final double CROSSOVER_PROB = 0.9;
-
-    private static double MIN_RANDOM;
-    private static double MAX_RANDOM;
-
-    private double[] fitness;
-    private char[][] population;
-    private static final Random random = new Random();
-
-    private static double[] variables = new double[FSET_START]; //!!!!!!!!!
-    private static int variableCount;
-    private static int fitnessCases;
-    private static int randomVariableCount;
-    private static double[][] targets;
-
-    private double bestPopulationFitness = 0.0;
-    private double averagePopulationFitness = 0.0;
-
-    private static long seed;
-    private static double averageLength;
-
-    private static char[] program;
-    private static int PC;
-    private static char[] buffer = new char[MAX_LEN];
-    private static String PLIK="";
-
-    public static String tekstPliku(String filename) {
-        String newString = "done " + filename;
-        int index = newString.indexOf(".\\files\\2 - function_calculated\\");
-        if (index > 0) {
-            return newString.replace(".\\files\\2 - function_calculated\\", "");
-        }
-        return newString;
-    }
-
-    // funkcja uruchamiająca program
-    public static void main(String[] args) {
-        String filename = ".\\files\\2 - function_calculated\\lab1fun1dzi1 -10.0 10.0 0.1.dat";
-        long seed = -1;
-
-        if (args.length == 2) {
-            seed = Long.parseLong(args[0]);
-            filename = args[1];
-        } else if (args.length == 1) {
-            filename = args[0];
-        }
-        
-        PLIK = tekstPliku(filename);
-        zapisDoPliku("");
-        System.out.println(PLIK);
-        TinyGP TinyGP = new TinyGP(filename, seed);
-        TinyGP.evolve();
-    }
-
-    // ustawianie parametrów początkowych
-    public TinyGP(String filename, long randomSeed) {
-        fitness = new double[POPSIZE];
-        seed = randomSeed;
-        if (seed >= 0)
-            random.setSeed(seed);
-        setupFitness(filename);
-        for (int i = 0; i < FSET_START; i++)
-            variables[i] = (MAX_RANDOM - MIN_RANDOM) * random.nextDouble() + MIN_RANDOM;
-
-        population = createRandomPopulation(POPSIZE, DEPTH, fitness);
-    }
-
-    // ustawianie wartości początkowych
-    private void setupFitness(String filename) {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
-            String firstLine = reader.readLine();
-            StringTokenizer tokenizer = new StringTokenizer(firstLine);
-            variableCount = Integer.parseInt(tokenizer.nextToken().trim());
-            randomVariableCount = Integer.parseInt(tokenizer.nextToken().trim());
-            MIN_RANDOM = Double.parseDouble(tokenizer.nextToken().trim());
-            MAX_RANDOM = Double.parseDouble(tokenizer.nextToken().trim());
-            fitnessCases = Integer.parseInt(tokenizer.nextToken().trim());
-            targets = new double[fitnessCases][variableCount + 1];
-
-            if (variableCount + randomVariableCount >= FSET_START)
-                System.out.println("Too many variables and constants");
-
-            for (int i = 0; i < fitnessCases; i++) {
-                String line = reader.readLine();
-                tokenizer = new StringTokenizer(line);
-                for (int j = 0; j <= variableCount; j++) {
-                    targets[i][j] = Double.parseDouble(tokenizer.nextToken().trim());
-                }
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("ERROR: Please provide a data file");
-            System.exit(0);
-        } catch (Exception e) {
-            System.out.println("ERROR: Incorrect data format");
-            System.exit(0);
-        }
-    }
-
-    private double run() {
+    double run() {
         char primitive = program[PC++];
-        if (primitive < FSET_START)
-            return variables[primitive];
+        if (primitive < FSET_START) {
+            return x[primitive];
+        }
         switch (primitive) {
             case ADD:
                 return run() + run();
@@ -144,8 +69,7 @@ public class TinyGP {
             case MUL:
                 return run() * run();
             case DIV: {
-                double num = run();
-                double den = run();
+                double num = run(), den = run();
                 if (Math.abs(den) <= 0.001)
                     return num;
                 else
@@ -156,398 +80,364 @@ public class TinyGP {
             case COS:
                 return Math.cos(run());
         }
-        return 0.0;
+        return 0.0; // should never get here
     }
 
-    // 
-    private int traverse(char[] buffer, int bufferCount) {
-        if (buffer[bufferCount] < FSET_START)
-            return ++bufferCount;
-
-        switch (buffer[bufferCount]) {
-            case ADD:
-            case SUB:
-            case MUL:
-            case DIV:
-                return traverse(buffer, traverse(buffer, ++bufferCount));
-            case SIN:
-            case COS:
-                return traverse(buffer, ++bufferCount);
-        }
-        return 0;
+    int traverse(char[] buffer, int bufferCount) {
+        return buffer[bufferCount] < FSET_START
+                ? ++bufferCount
+                : switch (buffer[bufferCount]) {
+            case ADD, SUB, MUL, DIV -> traverse(buffer, traverse(buffer, ++bufferCount));
+            case SIN, COS -> traverse(buffer, ++bufferCount);
+            default -> 0; // should never get here
+        };
     }
 
-    //generacja losowego programu
-    private int grow(char[] buffer, int pos, int max, int depth) {
-        char primitive = (char) random.nextInt(2);
-        int oneChild;
-
-        if (pos >= max)
-            return -1;
-
-        if (pos == 0)
-            primitive = 1;
-
-        if (primitive == 0 || depth == 0) {
-            primitive = (char) random.nextInt(variableCount + randomVariableCount);
-            buffer[pos] = primitive;
-            return pos + 1;
-        } 
-        else {
-            primitive = (char)(random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
-            buffer[pos] = primitive;
-            oneChild = grow(buffer, pos + 1, max, depth - 1);
-            if (oneChild < 0)
-                return -1;
-            switch (primitive) {
-                case ADD:
-                case SUB:
-                case MUL:
-                case DIV:
-                    return grow(buffer, oneChild, max, depth - 1);
-                case SIN:
-                case COS:
-                    return oneChild;
+    void setupFitness(String fileName) {
+        try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
+            String line = in.readLine();
+            StringTokenizer tokens = new StringTokenizer(line);
+            varNumber = Integer.parseInt(tokens.nextToken().trim());
+            randomNumber = Integer.parseInt(tokens.nextToken().trim());
+            minRandom = Double.parseDouble(tokens.nextToken().trim());
+            maxRandom = Double.parseDouble(tokens.nextToken().trim());
+            fitnessCases = Integer.parseInt(tokens.nextToken().trim());
+            targets = new double[fitnessCases][varNumber + 1];
+            if (varNumber + randomNumber >= FSET_START) {
+                System.out.println("too many variables and constants");
             }
+
+            for (int i = 0; i < fitnessCases; i++) {
+                line = in.readLine();
+                tokens = new StringTokenizer(line);
+                for (int j = 0; j <= varNumber; j++) {
+                    targets[i][j] = Double.parseDouble(tokens.nextToken().trim());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("ERROR: Please provide a data file");
+            System.exit(0);
+        } catch (Exception e) {
+            System.out.println("ERROR: Incorrect data format: " + e.getMessage());
+            System.exit(0);
         }
-        return 0;
     }
 
-    // tworzenie pojedynczego ...
-    private char[] createRandomIndividual(int depth) {
-        char[] individual;
+    double fitnessFunction(char[] Prog) {
+        double result, fit = 0.0;
+
+        traverse(Prog, 0);
+        for (int i = 0; i < fitnessCases; i++) {
+            if (varNumber >= 0) {
+                System.arraycopy(targets[i], 0, x, 0, varNumber);
+            }
+            program = Prog;
+            PC = 0;
+            result = run();
+            fit += Math.abs(result - targets[i][varNumber]);
+        }
+        return (-1) * fit;
+    }
+
+    int grow(int pos, int max, int depth) {
+        if (pos >= max) {
+            return -1;
+        }
+        char prim = pos == 0 ? 1 : (char) random.nextInt(2);
+
+        if (prim == 0 || depth == 0) {
+            prim = (char) random.nextInt(varNumber + randomNumber);
+            buffer[pos] = prim;
+            return pos + 1;
+        } else {
+            prim = (char) (random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
+            buffer[pos] = prim;
+            int oneChild = grow(pos + 1, max, depth - 1);
+            if (oneChild < 0) {
+                return -1;
+            }
+            switch (prim) {
+                case ADD, SUB, MUL, DIV -> {
+                    return grow(oneChild, max, depth - 1);
+                }
+                case SIN, COS -> {
+                    return oneChild;
+                }
+            }
+            return 0; // should never get here
+        }
+    }
+
+
+    char[] createRandomIndiv() {
         int len;
-
-        len = grow(buffer, 0, MAX_LEN, depth);
-
-        while (len < 0)
-            len = grow(buffer, 0, MAX_LEN, depth);
-
-        individual = new char[len];
-        System.arraycopy(buffer, 0, individual, 0, len);
-
-        return individual;
+        do {
+            len = grow(0, MAX_LEN, DEPTH);
+        } while (len < 0);
+        char[] ind = new char[len];
+        System.arraycopy(buffer, 0, ind, 0, len);
+        return ind;
     }
 
-    // 
-    private char[][] createRandomPopulation(int n, int depth, double[] fitness) {
-        char[][] population = new char[n][];
-        for (int i = 0; i < n; i++) {
-            population[i] = createRandomIndividual(depth);
-            fitness[i] = evaluateFitness(population[i]);
+    char[][] createRandomPop() {
+        char[][] pop = new char[POPSIZE][];
+        for (int i = 0; i < POPSIZE; i++) {
+            pop[i] = createRandomIndiv();
+            fitness[i] = fitnessFunction(pop[i]);
         }
-        return population;
+        return pop;
     }
 
-    //!!!!!!!!!!!!!
-    private int evaluatePopulationStats(double[] fitness, char[][] population) { //double[] fitness, char[][] population
-        int bestIndex = random.nextInt(POPSIZE);
-        int nodeCount = 0;
 
-        bestPopulationFitness = fitness[bestIndex];
-        averagePopulationFitness = 0.0;
+    void stats(int gen) {
+        int best = random.nextInt(POPSIZE);
+        int nodeCount = 0;
+        solution = "";
+        fBestPop = fitness[best];
+        fAvgPop = 0.0;
 
         for (int i = 0; i < POPSIZE; i++) {
-            nodeCount += traverse(population[i], 0);
-            averagePopulationFitness += fitness[i];
-            if (fitness[i] > bestPopulationFitness) {
-                bestIndex = i;
-                bestPopulationFitness = fitness[i];
+            longestProgram = Long.MIN_VALUE;
+            nodeCount += traverse(pop[i], 0);
+            fAvgPop += fitness[i];
+            StringBuilder stringBuilder = new StringBuilder();
+            programOutput(stringBuilder, pop[i], 0);
+            String output = stringBuilder.toString();
+            long programLength = output.length();
+            if (fitness[i] > fBestPop) {
+                solution = output;
+                fBestPop = fitness[i];
+            }
+            if (programLength > longestProgram) {
+                longestProgram = programLength;
             }
         }
-        averageLength = (double) nodeCount / POPSIZE;
-        averagePopulationFitness /= POPSIZE;
-        return bestIndex;
-        // printGeneration(population[bestIndex], 0);
-        // 
+        avgLen = (double) nodeCount / POPSIZE;
+        fAvgPop /= POPSIZE;
+        System.out.print("Generation=" + gen + " Avg Fitness=" + (-fAvgPop) +
+                " Best Fitness=" + (-fBestPop) + " Avg Size=" + avgLen +
+                "\nBest Individual: ");
+        System.out.println(solution);
+        System.out.print("\n");
+        System.out.flush();
+        if (!solution.equals("") && (-fBestPop) < (-finalBestFit)) {
+            finalSolution = solution;
+            finalBestFit = fBestPop;
+        }
     }
 
-    //
-    private int tournamentSelection(double[] fitness, int tournamentSize) {
-        int best = random.nextInt(POPSIZE);
-        double bestFitness = -1.0e34;
+    int tournament() {
+        int best = random.nextInt(POPSIZE), competitor;
+        double fbest = -1.0e34;
 
-        for (int i = 0; i < tournamentSize; i++) {
-            int competitor = random.nextInt(POPSIZE);
-            if (fitness[competitor] > bestFitness) {
-                bestFitness = fitness[competitor];
+        for (int i = 0; i < TSIZE; i++) {
+            competitor = random.nextInt(POPSIZE);
+            StringBuilder stringBuilder = new StringBuilder();
+            programOutput(stringBuilder, pop[competitor], 0);
+            int competitorLength = stringBuilder.toString().length();
+            double value = fitness[competitor];
+            if (value > fbest && competitorLength < longestProgram) {
+                fbest = value;
                 best = competitor;
             }
         }
         return best;
     }
 
-    //
-    private int negativeTournamentSelection(double[] fitness, int tournamentSize) {
-        int worst = random.nextInt(POPSIZE);
-        double worstFitness = 1e34;
+    int negativeTournament() {
+        int worst = random.nextInt(POPSIZE), competitor;
+        double fworst = 1e34;
 
-        for (int i = 0; i < tournamentSize; i++) {
-            int competitor = random.nextInt(POPSIZE);
-            if (fitness[competitor] < worstFitness) {
-                worstFitness = fitness[competitor];
+        for (int i = 0; i < TSIZE; i++) {
+            competitor = random.nextInt(POPSIZE);
+            double value = fitness[competitor];
+            if (value < fworst) {
+                fworst = value;
                 worst = competitor;
             }
         }
         return worst;
     }
 
-    // 
-    private char[] crossover(char[] parent1, char[] parent2) {
-        int crossoverPoint1Start, crossoverPoint1End, crossoverPoint2Start, crossoverPoint2End;
-        char[] offspring;
-        int length1 = traverse(parent1, 0);
-        int length2 = traverse(parent2, 0);
-        int offspringLength;
+    char[] crossover(char[] parent1, char[] parent2) {
+        int len1 = traverse(parent1, 0);
+        int len2 = traverse(parent2, 0);
 
-        crossoverPoint1Start = random.nextInt(length1);
-        crossoverPoint1End = traverse(parent1, crossoverPoint1Start);
+        int xo1start = random.nextInt(len1);
+        int xo1end = traverse(parent1, xo1start);
 
-        crossoverPoint2Start = random.nextInt(length2);
-        crossoverPoint2End = traverse(parent2, crossoverPoint2Start);
+        int xo2start = random.nextInt(len2);
+        int xo2end = traverse(parent2, xo2start);
 
-        offspringLength = crossoverPoint1Start + (crossoverPoint2End - crossoverPoint2Start) + (length1 - crossoverPoint1End);
+        int lenOff = xo1start + (xo2end - xo2start) + (len1 - xo1end);
 
-        offspring = new char[offspringLength];
+        char[] offspring = new char[lenOff];
 
-        System.arraycopy(parent1, 0, offspring, 0, crossoverPoint1Start);
-        System.arraycopy(parent2, crossoverPoint2Start, offspring, crossoverPoint1Start, (crossoverPoint2End - crossoverPoint2Start));
-        System.arraycopy(parent1, crossoverPoint1End, offspring, crossoverPoint1Start + (crossoverPoint2End - crossoverPoint2Start), (length1 - crossoverPoint1End));
+        System.arraycopy(parent1, 0, offspring, 0, xo1start);
+        System.arraycopy(parent2, xo2start, offspring, xo1start, (xo2end - xo2start));
+        System.arraycopy(parent1, xo1end, offspring, xo1start + (xo2end - xo2start), (len1 - xo1end));
 
         return offspring;
     }
-    
 
-    private char[] mutation(char[] parent, double mutationProbability) {
-        int length = traverse(parent, 0);
-        char[] parentCopy = new char[length];
-        System.arraycopy(parent, 0, parentCopy, 0, length);
+    char[] mutation(char[] parent) {
+        int len = traverse(parent, 0);
+        char[] parentCopy = new char[len];
 
-        for (int i = 0; i < length; i++) {
-            if (random.nextDouble() < mutationProbability) {
-                int mutationSite = i;
-                if (parentCopy[mutationSite] < FSET_START)
-                    parentCopy[mutationSite] = (char) random.nextInt(variableCount + randomVariableCount);
-                else {
-                    switch (parentCopy[mutationSite]) {
-                        case ADD:
-                        case SUB:
-                        case MUL:
-                        case DIV:
-                            parentCopy[mutationSite] = (char)(random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
-                        case SIN:
-                        case COS:
-                            parentCopy[mutationSite] = (char) (random.nextInt(FSET_END - SIN + 1) + SIN);
+        System.arraycopy(parent, 0, parentCopy, 0, len);
+        for (int i = 0; i < len; i++) {
+            if (random.nextDouble() < PMUT_PER_NODE) {
+                if (parentCopy[i] < FSET_START) {
+                    parentCopy[i] = (char) random.nextInt(varNumber + randomNumber);
+                } else
+                    switch (parentCopy[i]) {
+                        case ADD, SUB, MUL, DIV -> parentCopy[i] =
+                                (char) (random.nextInt(DIV - FSET_START + 1) + FSET_START);
+                        case SIN, COS -> parentCopy[i] =
+                                (char) (random.nextInt(FSET_END - SIN + 1) + SIN);
                     }
-                }
             }
         }
         return parentCopy;
     }
 
-    //bez program = program i pc=0
-    private double evaluateFitness(char[] Prog) {
-        int i = 0;
-        double result;
-        double fitnessValue = 0.0;
-        int length = traverse(Prog, 0);
+    void printParams() {
+        System.out.print("-- TINY GP (Java version) --\n");
+        System.out.print("SEED=" + seed + "\nMAX_LEN=" + MAX_LEN +
+                "\nPOPSIZE=" + POPSIZE + "\nDEPTH=" + DEPTH +
+                "\nCROSSOVER_PROB=" + CROSSOVER_PROB +
+                "\nPMUT_PER_NODE=" + PMUT_PER_NODE +
+                "\nMIN_RANDOM=" + minRandom +
+                "\nMAX_RANDOM=" + maxRandom +
+                "\nGENERATIONS=" + GENERATIONS +
+                "\nTSIZE=" + TSIZE +
+                "\n----------------------------------\n");
+    }
 
-        for (i = 0; i < fitnessCases; i++) {
-            for (int j = 0; j < variableCount; j++)
-                variables[j] = targets[i][j];
-            program = Prog;
-            PC = 0;
-            // result = run(program);
-            result = run();
-            fitnessValue += Math.abs(result - targets[i][variableCount]);
+    public TinyGP(String fileName, long s) {
+        fitness = new double[POPSIZE];
+        seed = s;
+        if (seed >= 0) {
+            random.setSeed(seed);
         }
-        return -fitnessValue;
+        setupFitness(fileName);
+        for (int i = 0; i < FSET_START; i++) {
+            x[i] = (maxRandom - minRandom) * random.nextDouble() + minRandom;
+        }
+        pop = createRandomPop();
     }
 
-    //
-    private void printParameters() {
-        System.out.println("-- TINY GP (Java version) --");
-        System.out.println("SEED=" + seed);
-        System.out.println("MAX_LEN=" + MAX_LEN);
-        System.out.println("POPSIZE=" + POPSIZE);
-        System.out.println("DEPTH=" + DEPTH);
-        System.out.println("CROSSOVER_PROB=" + CROSSOVER_PROB);
-        System.out.println("PMUT_PER_NODE=" + PMUT_PER_NODE);
-        System.out.println("MIN_RANDOM=" + MIN_RANDOM);
-        System.out.println("MAX_RANDOM=" + MAX_RANDOM);
-        System.out.println("GENERATIONS=" + GENERATIONS);
-        System.out.println("TSIZE=" + TSIZE);
-        System.out.println("----------------------------------");
-    }
-
-    public void evolve() {
-        int gen;
-        int parent;
-        int parent1;
-        int parent2;
-        int offspring;
-        char[] newIndividual;
-        double newFitness;
-        int bestGenIndex;
-        int output;
-
-        printParameters();
-        bestGenIndex = evaluatePopulationStats(fitness,population); //fitness, population, 0
-        System.out.println("Generation=0 Avg Fitness=" + (-averagePopulationFitness) +
-            " Best Fitness=" + (-bestPopulationFitness) +
-            " Avg Size=" + averageLength);
-        System.out.print("\n");
-        System.out.flush();
-
-        for (gen = 1; gen < GENERATIONS; gen++) {
-            if (bestPopulationFitness > -1e-5) {
-                System.out.println("PROBLEM SOLVED");
-                output = printGeneration(population[bestGenIndex], 0, "");
-                System.out.println("PROBLEM SOLVED");
-                // System.out.println(output);
-                // zapisDoPliku("To jest tekst");
-                // zapisDoPliku(output);
-                System.exit(0);
+    void evolve() {
+        solved = false;
+        solution = "";
+        finalSolution = "";
+        finalBestFit = -Double.MAX_VALUE;
+        int offspring, parent1, parent2, parent;
+        double newFit;
+        char[] newInd;
+        printParams();
+        stats(0);
+        for (int gen = 1; gen < GENERATIONS; gen++) {
+            if (fBestPop > -1e-5) {
+                System.out.print("PROBLEM SOLVED\n");
+                solved = true;
+                break;
             }
-
             for (int indivs = 0; indivs < POPSIZE; indivs++) {
                 if (random.nextDouble() < CROSSOVER_PROB) {
-                    parent1 = tournamentSelection(fitness, TSIZE);
-                    parent2 = tournamentSelection(fitness, TSIZE);
-                    newIndividual = crossover(population[parent1], population[parent2]);
+                    parent1 = tournament();
+                    parent2 = tournament();
+                    newInd = crossover(pop[parent1], pop[parent2]);
                 } else {
-                    parent = tournamentSelection(fitness, TSIZE);
-                    newIndividual = mutation(population[parent], PMUT_PER_NODE);
+                    parent = tournament();
+                    newInd = mutation(pop[parent]);
                 }
-
-                newFitness = evaluateFitness(newIndividual);
-
-                offspring = negativeTournamentSelection(fitness, TSIZE);
-                population[offspring] = newIndividual;
-                fitness[offspring] = newFitness;
+                newFit = fitnessFunction(newInd);
+                offspring = negativeTournament();
+                pop[offspring] = newInd;
+                fitness[offspring] = newFit;
             }
-
-            bestGenIndex = evaluatePopulationStats(fitness, population); //fitness, pop, 0
-            System.out.println("Generation=" + gen + " Avg Fitness=" + (-averagePopulationFitness) +
-                " Best Fitness=" + (-bestPopulationFitness) +
-                " Avg Size=" + averageLength);
-            if (gen == GENERATIONS-1) {
-                output = printGeneration(population[bestGenIndex], 0, "");
-                System.out.print("\n");
-                System.out.flush();
-                // zapisDoPliku("To jest tekst");
-                // System.out.println(output);
-                // zapisDoPliku(output);
-            }
+            stats(gen);
         }
-
-        System.out.println("PROBLEM *NOT* SOLVED");
-        System.exit(1);
+        if (!solved) {
+            System.out.print("PROBLEM *NOT* SOLVED\n");
+        }
     }
-    
-    private int printGeneration(char[] buffer, int buffercounter, String output) {
-        if (buffercounter >= buffer.length) {
-            return buffercounter;  // Avoid accessing out-of-bounds index
-        }
-        int a1=0;
-        // Wynik wynik = new Wynik();
-        if (buffer[buffercounter] < FSET_START) {
-            if (buffer[buffercounter] < variableCount) {
-                int temp = buffer[buffercounter] + 1;
-                String zlaczony = "X" + temp + " ";
-                System.out.print(zlaczony);
-                // output = output + "X" + String.valueOf(temp) + " ";
-                zapisDoPliku(zlaczony);
+
+    int programOutput(StringBuilder stringBuilder, char[] buffer, int bufferCounter) {
+        int a1 = 0;
+        if (buffer[bufferCounter] < FSET_START) {
+            if (buffer[bufferCounter] < varNumber) {
+                stringBuilder.append("X").append(buffer[bufferCounter] + 1);
+            } else {
+                double value = x[buffer[bufferCounter]];
+                String output = value < 0 ? "(" + value + ")" : Double.toString(value);
+                stringBuilder.append(output);
             }
-            else {
-                double var = variables[buffer[buffercounter]];
-                System.out.print(var);
-                output += String.valueOf(var);
-                zapisDoPliku(String.valueOf(var));
+            return ++bufferCounter;
+        }
+        switch (buffer[bufferCounter]) {
+            case ADD -> {
+                stringBuilder.append("(");
+                a1 = programOutput(stringBuilder, buffer, ++bufferCounter);
+                stringBuilder.append(" + ");
             }
-            // wynik.pierwszaWartosc = a1; 
-            // wynik.drugaWartosc = output; 
-            return (++buffercounter);
+            case SUB -> {
+                stringBuilder.append("(");
+                a1 = programOutput(stringBuilder, buffer, ++bufferCounter);
+                stringBuilder.append(" - ");
+            }
+            case MUL -> {
+                stringBuilder.append("(");
+                a1 = programOutput(stringBuilder, buffer, ++bufferCounter);
+                stringBuilder.append(" * ");
+            }
+            case DIV -> {
+                stringBuilder.append("(");
+                a1 = programOutput(stringBuilder, buffer, ++bufferCounter);
+                stringBuilder.append(" / ");
+            }
+            case SIN -> {
+                stringBuilder.append("sin(");
+                a1 = programOutput(stringBuilder, buffer, ++bufferCounter);
+                stringBuilder.append(")");
+                return a1;
+            }
+            case COS -> {
+                stringBuilder.append("cos(");
+                a1 = programOutput(stringBuilder, buffer, ++bufferCounter);
+                stringBuilder.append(")");
+                return a1;
+            }
         }
-        switch (buffer[buffercounter]) {
-        case ADD:
-            System.out.print("(");
-            output+="(";
-            zapisDoPliku("(");
-            a1 = printGeneration(buffer, ++buffercounter,output);
-            System.out.print(" + ");
-            output+=" + ";
-            zapisDoPliku(" + ");
-            break;
-        case SUB:
-            System.out.print("(");
-            output+="(";
-            zapisDoPliku("(");
-            a1 = printGeneration(buffer, ++buffercounter,output);
-            System.out.print(" - ");
-            output+=" - ";
-            zapisDoPliku(" - ");
-            break;
-        case MUL:
-            System.out.print("(");
-            output+="(";
-            zapisDoPliku("(");
-            a1 = printGeneration(buffer, ++buffercounter,output);
-            System.out.print(" * ");
-            output+=" * ";
-            zapisDoPliku(" * ");
-            break;
-        case DIV:
-            System.out.print("(");
-            output+="(";
-            zapisDoPliku("(");
-            a1 = printGeneration(buffer, ++buffercounter,output);
-            System.out.print(" / ");
-            output+=" / ";
-            zapisDoPliku(" / ");
-            break;
-        case SIN:
-            System.out.print("SIN(");
-            output+="SIN(";
-            zapisDoPliku("SIN(");
-            a1 = printGeneration(buffer, ++buffercounter,output);
-            System.out.print(")");
-            output+=")";
-            zapisDoPliku(")");
-            break;
-        case COS:
-            System.out.print("COS(");
-            output+="COS(";
-            zapisDoPliku("COS(");
-            a1 = printGeneration(buffer, ++buffercounter,output);
-            System.out.print(")");
-            output+=")";
-            zapisDoPliku(")");
-            break;
-        }
-        // Wynik wynik2 = printGeneration(buffer, a1, output);
-        int a2 = printGeneration(buffer, a1, output);
-        System.out.print(")");
-        output+=")";
-        zapisDoPliku(")");
+        int a2 = programOutput(stringBuilder, buffer, a1);
+        stringBuilder.append(")");
         return a2;
-        // return wynik;
     }
+    public static void main(String[] args) {
+        String FileName = "lab1fun1dzi4 -1000.0 1000.0 10.0";
+        String inputFileName = "./files/2 - function_calculated/" + FileName + ".dat";
+        String outputFileName = "./files/3 - tinyGP_calculated/done " + FileName + ".dat";
+        long seed = 123456; // Replace with your desired seed
 
-    private static void zapisDoPliku(String tekstDoZapisu){
-        // String tekstDoZapisu = "To jest tekst, który zostanie zapisany do pliku.";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(PLIK,true))) {
-            writer.write(tekstDoZapisu);
-            // System.out.println("Tekst został pomyślnie zapisany do pliku.");
-        } catch (IOException e) {
-            e.printStackTrace();
+        TinyGP tinyGP = new TinyGP(inputFileName, seed);
+        tinyGP.evolve();
+
+        if (TinyGP.solved) {
+            System.out.println("Writing solution to output file: " + outputFileName);
+            writeSolutionToFile(outputFileName, TinyGP.finalSolution);
+        } else {
+            System.out.println("Writing solution to output file: " + outputFileName);
+            writeSolutionToFile(outputFileName, TinyGP.finalSolution);
         }
     }
 
-    // private Wynik funkcjaZwrocWieleWartosci() {
-    //     Wynik wynik = new Wynik();
-    //     wynik.pierwszaWartosc = 42;
-    //     wynik.drugaWartosc = 3.14;
-    //     return wynik;
-    // }
+    private static void writeSolutionToFile(String fileName, String solution) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write(solution);
+        } catch (IOException e) {
+            System.err.println("Error writing to the output file: " + e.getMessage());
+        }
+    }
 }
+
