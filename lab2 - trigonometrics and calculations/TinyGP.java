@@ -19,7 +19,7 @@ public class TinyGP {
     private static final int SIN = 114;
     private static final int COS = 115;
     private static final int FSET_START = ADD;
-    private static final int FSET_END = DIV;
+    private static final int FSET_END = COS;
 
     private static final int MAX_LEN = 10000;
     private static final int POPSIZE = 100000;
