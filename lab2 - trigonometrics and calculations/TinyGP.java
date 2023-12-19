@@ -26,7 +26,7 @@ public class TinyGP {
     private static final int DEPTH = 5;
     
     // ***AMOUNT OF GENERATIONS***
-    private static final int GENERATIONS = 25;
+    private static final int GENERATIONS = 5;
     // ***AMOUNT OF GENERATIONS***
     
     private static final int TSIZE = 2;
@@ -446,6 +446,9 @@ public class TinyGP {
     }
     
     private int printGeneration(char[] buffer, int buffercounter, String output) {
+        if (buffercounter >= buffer.length) {
+            return buffercounter;  // Avoid accessing out-of-bounds index
+        }
         int a1=0;
         // Wynik wynik = new Wynik();
         if (buffer[buffercounter] < FSET_START) {
