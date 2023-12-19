@@ -5,7 +5,7 @@
  * 
  * For the Genetic Programming laboratory classes in the Computer Science and Intelligent Systems course at AGH University of Science and Technology.
  * 
- * Final version for laboratory no.1
+ * Final version for laboratory no.2
  */
 
 import java.util.*;
@@ -16,15 +16,17 @@ public class TinyGP {
     private static final int SUB = 111;
     private static final int MUL = 112;
     private static final int DIV = 113;
+    private static final int SIN = 114;
+    private static final int COS = 115;
     private static final int FSET_START = ADD;
-    private static final int FSET_END = DIV;
+    private static final int FSET_END = COS;
 
     private static final int MAX_LEN = 10000;
     private static final int POPSIZE = 100000;
     private static final int DEPTH = 5;
     
     // ***AMOUNT OF GENERATIONS***
-    private static final int GENERATIONS = 50;
+    private static final int GENERATIONS = 5;
     // ***AMOUNT OF GENERATIONS***
     
     private static final int TSIZE = 2;
@@ -64,9 +66,10 @@ public class TinyGP {
         }
         return newString;
     }
+
     // funkcja uruchamiająca program
     public static void main(String[] args) {
-        String filename = ".\\files\\2 - function_calculated\\lab1fun6dzi4 -1000.0 1000.0 20.0.dat";
+        String filename = ".\\files\\2 - function_calculated\\lab1fun1dzi1 -10.0 10.0 0.1.dat";
         long seed = -1;
 
         if (args.length == 2) {
@@ -148,6 +151,10 @@ public class TinyGP {
                 else
                     return num / den;
             }
+            case SIN:
+                return Math.sin(run());
+            case COS:
+                return Math.cos(run());
         }
         return 0.0;
     }
@@ -163,6 +170,9 @@ public class TinyGP {
             case MUL:
             case DIV:
                 return traverse(buffer, traverse(buffer, ++bufferCount));
+            case SIN:
+            case COS:
+                return traverse(buffer, ++bufferCount);
         }
         return 0;
     }
@@ -185,16 +195,19 @@ public class TinyGP {
         } 
         else {
             primitive = (char)(random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
+            buffer[pos] = primitive;
+            oneChild = grow(buffer, pos + 1, max, depth - 1);
+            if (oneChild < 0)
+                return -1;
             switch (primitive) {
                 case ADD:
                 case SUB:
                 case MUL:
                 case DIV:
-                    buffer[pos] = primitive;
-                    oneChild = grow(buffer, pos + 1, max, depth - 1);
-                    if (oneChild < 0)
-                        return -1;
                     return grow(buffer, oneChild, max, depth - 1);
+                case SIN:
+                case COS:
+                    return oneChild;
             }
         }
         return 0;
@@ -322,6 +335,9 @@ public class TinyGP {
                         case MUL:
                         case DIV:
                             parentCopy[mutationSite] = (char)(random.nextInt(FSET_END - FSET_START + 1) + FSET_START);
+                        case SIN:
+                        case COS:
+                            parentCopy[mutationSite] = (char) (random.nextInt(FSET_END - SIN + 1) + SIN);
                     }
                 }
             }
@@ -430,6 +446,9 @@ public class TinyGP {
     }
     
     private int printGeneration(char[] buffer, int buffercounter, String output) {
+        if (buffercounter >= buffer.length) {
+            return buffercounter;  // Avoid accessing out-of-bounds index
+        }
         int a1=0;
         // Wynik wynik = new Wynik();
         if (buffer[buffercounter] < FSET_START) {
@@ -486,6 +505,24 @@ public class TinyGP {
             System.out.print(" / ");
             output+=" / ";
             zapisDoPliku(" / ");
+            break;
+        case SIN:
+            System.out.print("SIN(");
+            output+="SIN(";
+            zapisDoPliku("SIN(");
+            a1 = printGeneration(buffer, ++buffercounter,output);
+            System.out.print(")");
+            output+=")";
+            zapisDoPliku(")");
+            break;
+        case COS:
+            System.out.print("COS(");
+            output+="COS(";
+            zapisDoPliku("COS(");
+            a1 = printGeneration(buffer, ++buffercounter,output);
+            System.out.print(")");
+            output+=")";
+            zapisDoPliku(")");
             break;
         }
         // Wynik wynik2 = printGeneration(buffer, a1, output);
