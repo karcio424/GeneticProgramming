@@ -42,7 +42,7 @@ public class TinyGP {
             MAX_LEN = 10000,
             POPSIZE = 100000,
             DEPTH = 5,
-            GENERATIONS = 100,
+            GENERATIONS = 500,
             TSIZE = 2;
     public static final double
             PMUT_PER_NODE = 0.05,
@@ -415,7 +415,7 @@ public class TinyGP {
         return a2;
     }
     public static void main(String[] args) {
-        String FileName = "";
+        String FileName = "lab2fun3dzi1 45079 45279 1";
         String inputFileName = "./files/2 - function_calculated/" + FileName + ".dat";
         String outputFileName = "./files/3 - tinyGP_calculated/done " + FileName + ".dat";
         long seed = 123456;
