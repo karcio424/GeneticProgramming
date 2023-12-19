@@ -418,7 +418,7 @@ public class TinyGP {
         String FileName = "";
         String inputFileName = "./files/2 - function_calculated/" + FileName + ".dat";
         String outputFileName = "./files/3 - tinyGP_calculated/done " + FileName + ".dat";
-        long seed = 123456; // Replace with your desired seed
+        long seed = 123456;
 
         TinyGP tinyGP = new TinyGP(inputFileName, seed);
         tinyGP.evolve();
