@@ -64,10 +64,9 @@ public class TinyGP {
         }
         return newString;
     }
-
     // funkcja uruchamiająca program
     public static void main(String[] args) {
-        String filename = "lab1fun1dzi1 -10.0 10.0 0.1.dat";
+        String filename = ".\\files\\2 - function_calculated\\lab1fun6dzi4 -1000.0 1000.0 20.0.dat";
         long seed = -1;
 
         if (args.length == 2) {
