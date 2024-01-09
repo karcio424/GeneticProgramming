@@ -30,6 +30,9 @@ public class GPUtils {
     }
 
     public static void testProgram(ParseTree program, int[] input, int[] output) {
+        System.out.println("Testing program: " + program.toStringTree());
+        System.out.println("Input program: " + input.toString());
+        System.out.println("Output program: " + output.toString());
         // Implementacja testowania programu na podstawie danych wejściowych i wyjściowych
     }
 
