@@ -1,6 +1,5 @@
-package Interpreter;
 
-import Interpreter.Extensions.AntlrProgram;
+import Extensions.AntlrProgram;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStream;
