@@ -10,6 +10,8 @@ statement:
 	| assignmentStatement
 	| ioStatement;
 
+//TUTAJ ZASTANOWIC SIE NAD expression? => blockStatement
+
 loopStatement: 'loop' '(' expression ')' blockStatement;
 
 conditionalStatement:	'if' '(' expression ')' blockStatement ('else' blockStatement)?;

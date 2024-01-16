@@ -25,27 +25,28 @@ public class GPUtils {
 
         Statements randomCommand = commandsValues[0];
 
-
         switch (randomCommand) {
             case loopStatement -> {
-                return generateLoopStatement(size);
+
+//                return generateLoopStatement(size);
             }
             case conditionalStatement -> {
-                return generateConditionalStatement(size);
+//                return generateConditionalStatement(size);
             }
             case blockStatement -> {
-                return generateBlockStatement(size);
+//                return generateBlockStatement(size);
             }
             case assignmentStatement -> {
-                return generateAssignmentStatement(size);
+//                return generateAssignmentStatement(size);
             }
             case ioStatement -> {
-                return generateIOStatement(size);
+//                return generateIOStatement(size);
             }
             default -> {
                 return null;
             }
         }
+        return null;
     }
 
     public static ParseTree crossover(ParseTree program1, ParseTree program2) {
