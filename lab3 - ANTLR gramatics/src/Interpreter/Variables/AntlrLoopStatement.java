@@ -10,8 +10,9 @@ public class AntlrLoopStatement extends GPprojectBaseVisitor<Statement> {
         AntlrBlockStatement blockStatementVisitor = new AntlrBlockStatement();
 
         int range = ((Factor) expressionVisitor.visit(ctx.expression())).value;
+        System.out.println("LOOP-INSIDE range"+range);
 
-        for (int i = 0; i < range; i++)
+        for (int i = 0; i < range+1; i++)
             blockStatementVisitor.visit(ctx.blockStatement());
 
         return null;

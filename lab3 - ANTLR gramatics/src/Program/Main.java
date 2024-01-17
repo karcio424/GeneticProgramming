@@ -24,8 +24,8 @@ import Interpreter.GPprojectLexer;
 public class Main {
     public static void main(String[] args){
 
-        int minLength = 2;
-        int maxLength = 4;
+        int minLength = 4;
+        int maxLength = 6;
         int programLength = generateRandomNumber(minLength, maxLength);
 
 //        Set<String> variableSet = generateRandomVariableArray(minLength, maxLength);
@@ -63,9 +63,9 @@ public class Main {
         GPprojectParser parser = new GPprojectParser(tokens);
 
         try {
-            System.out.println("TU");
+//            System.out.println("TU");
             ParseTree tree = parser.program();
-            System.out.println("TAM");
+//            System.out.println("TAM");
             return true;
         } catch (RuntimeException e) {
             return false; // Program zawiera błąd składniowy
@@ -78,9 +78,9 @@ public class Main {
         GPprojectParser parser = new GPprojectParser(tokens);
 
         try {
-            System.out.println("TU");
+//            System.out.println("TU");
             ParseTree tree = parser.program();
-            System.out.println("TAM");
+//            System.out.println("TAM");
             try (FileWriter fileWriter = new FileWriter("target/input.txt")) {
                 fileWriter.write(program);
             } catch (IOException e) {
@@ -88,10 +88,10 @@ public class Main {
                 System.err.println("Failed to save program to file.");
             }
 //            GPprojectParser parser = getParser(program);
-            System.out.println("PRZED");
+//            System.out.println("PRZED");
             AntlrProgram programVisitor = new AntlrProgram("input.txt", 10);
             programVisitor.visit(tree);
-            System.out.println("PO");
+//            System.out.println("PO");
             System.out.println(AntlrProgram.didProgramFail);
 
             return AntlrProgram.programOutput;
@@ -128,15 +128,15 @@ public class Main {
     }
 
     private static String generateRandomLoopStatement(GPprojectParser parser, int length, String var) {
-        return "loop(" + var + ") {" + var + "}\n";
+        return "loop(" + var + ") {" + var + "=0;}\n";
     }
 
     private static String generateRandomConditionalStatement(GPprojectParser parser, int length, String var) {
-        return "if ("+ var + ") {" + var + "} else {" + var +"}\n";
+        return "if ("+ var + ") {" + var + "=1;} else {" + var +"=0;}\n";
     }
 
     private static String generateRandomBlockStatement(GPprojectParser parser, int length, String var) {
-        return "{" + var + "}\n";
+        return "{" + var + "=1;}\n";
     }
 
     private static String generateRandomAssignmentStatement(GPprojectParser parser, String var) {

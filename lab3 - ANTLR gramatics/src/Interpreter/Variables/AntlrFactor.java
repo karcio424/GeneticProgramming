@@ -9,6 +9,7 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitFactor(GPprojectParser.FactorContext ctx) {
         String varName = ctx.getChild(0).getText();
+//        System.out.println(varName);
 //        int left = ((Factor) factorVisitor.visit(ctx.factor(0))).value;
 //
 //        int right = ((Factor) factorVisitor.visit(ctx.factor(1))).value;
@@ -16,12 +17,17 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
 //        //TODO: add cases: ID, INT, FLOAT, ( expression )
         if (Objects.equals(varName, "true")) {
             //return TRUE;
+            System.out.println("TRUE-CASE");
+
             return new Factor(0);
         } else if (Objects.equals(varName, "false")) {
             //return FALSE;
+            System.out.println("FALSE-CASE");
+
             return new Factor(0);
         } else if (varName.matches("-?[0-9]+")) {
             // INT case
+            System.out.println("INT-CASE");
             return new Factor(Integer.parseInt(varName));
             //TODO: FIX this code
 //        } else if (varName.matches("-?[0-9]+\\.[0-9]+")) {
@@ -35,6 +41,7 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
         } else if (varName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
             // ID case
             // Handle ID logic here, maybe look up the value in a symbol table
+            System.out.println("ID-CASE");
             return new Factor(0); // Placeholder value for ID, modify as needed
             //TODO: FIX this code
 //        } else if (varName.startsWith("(") && varName.endsWith(")")) {

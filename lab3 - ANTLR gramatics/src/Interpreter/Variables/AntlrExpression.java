@@ -9,24 +9,32 @@ public class AntlrExpression extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitExpression(GPprojectParser.ExpressionContext ctx) {
         AntlrLogicTerm logicTermVisitor = new AntlrLogicTerm();
-        int left = ((Factor) logicTermVisitor.visit(ctx.logicTerm(0))).value;
-        int right = ((Factor) logicTermVisitor.visit(ctx.logicTerm(1))).value;
-        //TODO: fix when right doesn't exist
+//        System.out.println("EXPRESSION: "+ctx.logicTerm(0).getText() + " " + ctx.logicTerm(1));
+        Statement x = logicTermVisitor.visit(ctx.logicTerm(0));
+//        System.out.println("EXPRESSION:"+x);
+//        int left = ((Factor) logicTermVisitor.visit(ctx.logicTerm(0))).value;
 
-        //TODO: whats wrong with && and ||
-        String character = ctx.getChild(1).getText();
-        if (Objects.equals(character, "&&")){
+        if(ctx.logicTerm(1)!=null) {
+            System.out.println("TUUUUU");
+            int right = ((Factor) logicTermVisitor.visit(ctx.logicTerm(1))).value;
+            //TODO: whats wrong with && and ||
+            String character = ctx.getChild(1).getText();
+            if (Objects.equals(character, "&&")){
 //            return new Factor(left && right);
 //            boolean x = left || right;
-            //TEMPORARY VAL
-            return new Factor(left);
-        }
-        else if (Objects.equals(character, "||")){
+                //TEMPORARY VAL
+//                return new Factor(left);
+                return null;
+            }
+            else if (Objects.equals(character, "||")){
 //            return new Factor(left==0 || right==0);
-            //TEMPORARY VAL
-            return new Factor(right);
+                //TEMPORARY VAL
+                return new Factor(right);
+            }
+            else return null;
         }
-        else return null;
+        System.out.println("VALUE of currVAR: "+((Factor) x).value);
+        return x;
     }
 
 //    @Override

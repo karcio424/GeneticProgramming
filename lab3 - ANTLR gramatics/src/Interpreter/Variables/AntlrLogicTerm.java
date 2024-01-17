@@ -9,24 +9,31 @@ public class AntlrLogicTerm extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitLogicTerm(GPprojectParser.LogicTermContext ctx) {
         AntlrArithmeticExpression arithmeticExpressionVisitor = new AntlrArithmeticExpression();
-        int left = ((Factor) arithmeticExpressionVisitor.visit(ctx.arithmeticExpression(0))).value;
-        int right = ((Factor) arithmeticExpressionVisitor.visit(ctx.arithmeticExpression(1))).value;
+//        System.out.println("LOGIC: "+ctx.arithmeticExpression(0).getText() + " " +
+//                ctx.arithmeticExpression(1));
+        Statement x = arithmeticExpressionVisitor.visit(ctx.arithmeticExpression(0));
+//        System.out.println("LOGIC: "+x);
 
-        //TODO: fix when right doesn't exist
+        if(ctx.arithmeticExpression(1)!=null) {
+            int left = ((Factor) arithmeticExpressionVisitor.visit(ctx.arithmeticExpression(0))).value;
+            int right = ((Factor) arithmeticExpressionVisitor.visit(ctx.arithmeticExpression(1))).value;
 
-        //TODO: boolean val for x<y etc... (like Factor)
-        boolean value;
-        String character = ctx.getChild(1).getText();
-        switch (character) {
-            case "<" -> value = left < right;
-            case ">" -> value = left > right;
-            case "==" -> value = left == right;
-            case "!=" -> value = left != right;
-            case "<=" -> value = left <= right;
-            case ">=" -> value = left >= right;
+            //TODO: fix when right doesn't exist
+
+            //TODO: boolean val for x<y etc... (like Factor)
+            boolean value;
+            String character = ctx.getChild(1).getText();
+            switch (character) {
+                case "<" -> value = left < right;
+                case ">" -> value = left > right;
+                case "==" -> value = left == right;
+                case "!=" -> value = left != right;
+                case "<=" -> value = left <= right;
+                case ">=" -> value = left >= right;
+            }
         }
         //TODO: change to value
-        return new Factor(0);
+        return x;
     }
 }
 //        if (Objects.equals(character, "<")){

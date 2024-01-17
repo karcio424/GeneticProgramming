@@ -1,2 +1,4 @@
-{var14}
-var14=0;
+if (var75) {var75=1;} else {var75=0;}
+loop(var75) {var75=0;}
+if (var75) {var75=1;} else {var75=0;}
+var75=0;
