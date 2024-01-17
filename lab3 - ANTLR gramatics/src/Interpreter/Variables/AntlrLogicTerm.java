@@ -9,13 +9,12 @@ public class AntlrLogicTerm extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitLogicTerm(GPprojectParser.LogicTermContext ctx) {
         AntlrArithmeticExpression arithmeticExpressionVisitor = new AntlrArithmeticExpression();
-//        System.out.println("LOGIC: "+ctx.arithmeticExpression(0).getText() + " " +
-//                ctx.arithmeticExpression(1));
+        System.out.println("LOGIC: "+ctx.arithmeticExpression(0).getText());
         Statement x = arithmeticExpressionVisitor.visit(ctx.arithmeticExpression(0));
-//        System.out.println("LOGIC: "+x);
+//        System.out.println("LOGIC - OUT: "+((Factor) x).value);
 
         if(ctx.arithmeticExpression(1)!=null) {
-            int left = ((Factor) arithmeticExpressionVisitor.visit(ctx.arithmeticExpression(0))).value;
+            int left = ((Factor) x).value;
             int right = ((Factor) arithmeticExpressionVisitor.visit(ctx.arithmeticExpression(1))).value;
 
             //TODO: fix when right doesn't exist
@@ -23,6 +22,7 @@ public class AntlrLogicTerm extends GPprojectBaseVisitor<Statement> {
             //TODO: boolean val for x<y etc... (like Factor)
             boolean value;
             String character = ctx.getChild(1).getText();
+//            System.out.println("WAW "+left + " " + right + " " + character);
             switch (character) {
                 case "<" -> value = left < right;
                 case ">" -> value = left > right;
@@ -30,7 +30,10 @@ public class AntlrLogicTerm extends GPprojectBaseVisitor<Statement> {
                 case "!=" -> value = left != right;
                 case "<=" -> value = left <= right;
                 case ">=" -> value = left >= right;
+                default -> throw new WrongProgramException("RuntimeException: Not known property\n");
             }
+            System.out.println(left + " " + right + " " + value);
+            return new BoolFactor(value);
         }
         //TODO: change to value
         return x;

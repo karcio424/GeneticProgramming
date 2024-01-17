@@ -1,0 +1,45 @@
+package Program;
+
+import Interpreter.GPprojectLexer;
+import Interpreter.GPprojectParser;
+import Interpreter.Variables.AntlrProgram;
+import Interpreter.Variables.ContextTable;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class FileRun {
+    public static void main(String[] args) {
+        String program = null;
+        try {
+            program = Files.readString(Paths.get("target/input.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to read program from file.");
+            System.exit(1);
+        }
+        System.out.println(program);
+
+        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        GPprojectParser parser = new GPprojectParser(tokens);
+
+        try {
+            ParseTree tree = parser.program();
+
+            AntlrProgram programVisitor = new AntlrProgram("input.txt", 100);
+            programVisitor.visit(tree);
+            System.out.println("PROGRAM FAILED?:"+AntlrProgram.didProgramFail);
+            System.out.println(ContextTable.variables);
+            System.out.println(AntlrProgram.programOutput);
+        } catch (RuntimeException e) {
+            System.out.println("BŁAD"); // Program zawiera błąd składniowy
+        }
+
+    }
+}

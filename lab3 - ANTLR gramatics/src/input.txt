@@ -1,0 +1,5 @@
+loop(var61) {var61=28;}
+loop(var93) {var93=93;}
+var61=31;
+loop(var61) {var61=24;}
+if (var93) {var93=61;} else {var93=89;}

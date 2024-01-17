@@ -24,6 +24,7 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
         didProgramFail = false;
 
         File inFile = new File("target/" + inputFileName);
+//        File inFile = new File(inputFileName);
         try {
             inputFile = new Scanner(inFile);
         } catch (FileNotFoundException e) {
@@ -46,7 +47,7 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
                 break;
             }
         }
-
+//        System.out.println(ContextTable.variables);
         inputFile.close();
         return null;
     }

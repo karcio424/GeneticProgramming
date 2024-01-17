@@ -1,4 +1,4 @@
-if (var75) {var75=1;} else {var75=0;}
-loop(var75) {var75=0;}
-if (var75) {var75=1;} else {var75=0;}
-var75=0;
+var50=2 + (4 * 5) < 21;
+if(var50){var20=5;}else{var20=10;}
+var3=0;
+loop(var20){var3=var3+100;}

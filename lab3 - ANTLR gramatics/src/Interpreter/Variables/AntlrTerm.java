@@ -9,17 +9,18 @@ public class AntlrTerm extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitTerm(GPprojectParser.TermContext ctx) {
         AntlrFactor factorVisitor = new AntlrFactor();
-//        System.out.println("Factor:"+ctx.factor(0) + " " + ctx.factor(1));
+        System.out.println("Factor:"+ctx.factor(0).getText());
         Statement x = factorVisitor.visit(ctx.factor(0));
-//        System.out.println("Factor:"+x);
+//        System.out.println("Factor OUT:"+ ((Factor) x).value + " " +ctx.factor(1));
 
         if(ctx.factor(1)!=null) {
 //            System.out.println("Factor:"+x);
-            int left = ((Factor) factorVisitor.visit(ctx.factor(0))).value;
+            int left = ((Factor) x).value;
             //TODO: WARUNEK JESLI NIE MA righta!
             int right = ((Factor) factorVisitor.visit(ctx.factor(1))).value;
-
+//            System.out.println("WAW "+left + " " + right);
             String character = ctx.getChild(1).getText();
+//            System.out.println("WAW "+left + " " + right + " " + character);
             return switch (character) {
                 case "*" -> new Factor(left * right);
                 case "/" -> {
@@ -34,18 +35,5 @@ public class AntlrTerm extends GPprojectBaseVisitor<Statement> {
             };
         }
         return x;
-//        if (Objects.equals(character, "*")){
-//            return new Factor(left*right);
-//        }
-//        else if (Objects.equals(character, "/")) {
-//            if (right == 0)
-//                throw new WrongProgramException("RuntimeException: Division by Zero\n" +
-//                        "The program encountered an attempt to divide by zero.");
-//            return new Factor(left/right);
-//        }
-//        else if (Objects.equals(character, "%")) {
-//            return new Factor(left%right);
-//        }
-//        else return null;
     }
 }
