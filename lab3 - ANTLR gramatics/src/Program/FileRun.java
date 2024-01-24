@@ -6,6 +6,7 @@ import Interpreter.Variables.AntlrProgram;
 import Interpreter.Variables.ContextTable;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.FileWriter;
@@ -28,14 +29,16 @@ public class FileRun {
         GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(program));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         GPprojectParser parser = new GPprojectParser(tokens);
+        for (Token token : tokens.getTokens()) {
+            System.out.println(token.getText() + " -> " + GPprojectLexer.VOCABULARY.getSymbolicName(token.getType()));
+        }
 
         try {
             ParseTree tree = parser.program();
-
-            AntlrProgram programVisitor = new AntlrProgram("input.txt", 100);
+            AntlrProgram programVisitor = new AntlrProgram("input.txt", 12);
             programVisitor.visit(tree);
             System.out.println("PROGRAM FAILED?:"+AntlrProgram.didProgramFail);
-            System.out.println(ContextTable.variables);
+//            System.out.println(ContextTable.variables);
             System.out.println(AntlrProgram.programOutput);
         } catch (RuntimeException e) {
             System.out.println("BŁAD"); // Program zawiera błąd składniowy

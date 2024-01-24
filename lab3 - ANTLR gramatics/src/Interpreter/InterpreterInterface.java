@@ -24,7 +24,7 @@ public class InterpreterInterface {
         this.didProgramFail = false;
     }
 
-    public ArrayList<Integer> evaluateProgram(String program, String inputFileName){
+    public ArrayList<Object> evaluateProgram(String program, String inputFileName){
 //        ANTLRErrorListener errorListener = new BaseErrorListener();
         GPprojectParser parser = getParser(program);
 //        parser.addErrorListener(errorListener);

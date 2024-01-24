@@ -1,4 +1,3 @@
-var50=2 + (4 * 5) < 21;
-if(var50){var20=5;}else{var20=10;}
-var3=0;
-loop(var20){var3=var3+100;}
+var11=-4;
+var15=!(var11<10 && var11>3);
+output(var11,var15);

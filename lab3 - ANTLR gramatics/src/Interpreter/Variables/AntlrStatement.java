@@ -2,6 +2,9 @@ package Interpreter.Variables;
 
 import Interpreter.GPprojectBaseVisitor;
 import Interpreter.GPprojectParser;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
+import java.util.List;
 
 public class AntlrStatement extends GPprojectBaseVisitor<Statement> {
     @Override
@@ -48,15 +51,45 @@ public class AntlrStatement extends GPprojectBaseVisitor<Statement> {
         return assignStatementVisitor.visit(ctx);
     }
 
-//    TODO: think about this statements
-//    @Override
-//    public Statement visitIoStatement(GPprojectParser.IoStatementContext ctx) {
-//        AntlrInput inputVisitor = new AntlrInput();
-//        AntlrOutput outputVisitor = new AntlrOutput();
-//        if (AntlrProgram.maxOperationCount-- <= 0)
-//            throw new WrongProgramException("RuntimeException: Maximum Operations Exceeded\n" +
-//                "The program has exceeded the allowable limit for operations.");
-//
+//    TODO: think about input statements
+    @Override
+    public Statement visitInputStatement(GPprojectParser.InputStatementContext ctx){
+        System.out.println("INPUT HANDLER");
+        return null;
+    }
+
+    @Override
+    public Statement visitOutputStatement(GPprojectParser.OutputStatementContext ctx) {
+          List<TerminalNode> idNodes = ctx.ID();
+
+            if (idNodes.isEmpty()) {
+                throw new WrongProgramException("RuntimeException: At least one ID is required\n" +
+                        "in the output statement!");
+            } else {
+//                System.out.print("Outputs: ");
+                for (TerminalNode idNode : idNodes) {
+//                    if (i > 0) {
+//                        System.out.print(", ");
+//                    }
+                    Object variableValue = ContextTable.getVariableValue(idNode.getText());
+                    if (variableValue instanceof Boolean) {
+                        // If the value is a boolean, add it directly to the programOutput list
+                        AntlrProgram.programOutput.add((Boolean) variableValue);
+                    } else if (variableValue instanceof Integer) {
+                        // If the value is an integer, add it as an integer to the programOutput list
+                        AntlrProgram.programOutput.add((Integer) variableValue);
+                    } else {
+                        // Handle other types as needed
+                        System.out.println("Unsupported variable type for ID: " + idNode.getText());
+                        //                    System.out.print(ContextTable.getVariableValue(idNodes.get(i).getText()));
+                    }
+                    System.out.println();
+                }
+            }
+        if (AntlrProgram.maxOperationCount-- <= 0)
+            throw new WrongProgramException("RuntimeException: Maximum Operations Exceeded\n" +
+                "The program has exceeded the allowable limit for operations.");
+        return null;
 //        return outputVisitor.visit(ctx.getChild(0));
-//    }
+    }
 }

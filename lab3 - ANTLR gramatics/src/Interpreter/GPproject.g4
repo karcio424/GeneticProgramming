@@ -8,7 +8,8 @@ statement:
 	| conditionalStatement
 	| blockStatement
 	| assignmentStatement
-	| ioStatement;
+	| inputStatement
+	| outputStatement;
 
 //TUTAJ ZASTANOWIC SIE NAD expression? => blockStatement
 
@@ -18,15 +19,13 @@ conditionalStatement:	'if' '(' expression ')' blockStatement ('else' blockStatem
 
 blockStatement: '{' statement+ '}';
 
-assignmentStatement: ID '=' expression ';';
+assignmentStatement: ID '=' expression';';
 
-ioStatement: inputStatement | outputStatement;
+inputStatement: 'input' '(' program ')' ';';
+//zmiana outputu na program i przypisanie do zmiennej
+//inputTerm: INT | FLOAT | BOOL | STRING;
 
-inputStatement: 'input' '(' inputTerm ')' ';';
-
-inputTerm: INT | FLOAT | BOOL | STRING;
-
-outputStatement: 'output' '(' expression ')' ';';
+outputStatement: 'output' '(' ID (',' ID)* ')' ';';
 
 expression: logicTerm (('&&' | '||') logicTerm)*;
 

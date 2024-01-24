@@ -1,6 +1,5 @@
 // Generated from ./GPproject.g4 by ANTLR 4.13.1
 package Interpreter;
-
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -48,23 +47,11 @@ public interface GPprojectVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignmentStatement(GPprojectParser.AssignmentStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GPprojectParser#ioStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIoStatement(GPprojectParser.IoStatementContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link GPprojectParser#inputStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitInputStatement(GPprojectParser.InputStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link GPprojectParser#inputTerm}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitInputTerm(GPprojectParser.InputTermContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link GPprojectParser#outputStatement}.
 	 * @param ctx the parse tree

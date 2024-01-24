@@ -1,6 +1,5 @@
 // Generated from ./GPproject.g4 by ANTLR 4.13.1
 package Interpreter;
-
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -89,18 +88,6 @@ public class GPprojectBaseListener implements GPprojectListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIoStatement(GPprojectParser.IoStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIoStatement(GPprojectParser.IoStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterInputStatement(GPprojectParser.InputStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -108,18 +95,6 @@ public class GPprojectBaseListener implements GPprojectListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitInputStatement(GPprojectParser.InputStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterInputTerm(GPprojectParser.InputTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInputTerm(GPprojectParser.InputTermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -16,24 +16,21 @@ public class AntlrExpression extends GPprojectBaseVisitor<Statement> {
 
         if(ctx.logicTerm(1)!=null) {
 //            System.out.println("TUUUUU");
-            int right = ((Factor) logicTermVisitor.visit(ctx.logicTerm(1))).value;
-            //TODO: whats wrong with && and ||
+            boolean left = ((BoolFactor) x).value;
+            boolean right = ((BoolFactor) logicTermVisitor.visit(ctx.logicTerm(1))).value;
+
+            boolean value;
             String character = ctx.getChild(1).getText();
-            if (Objects.equals(character, "&&")){
-//            return new Factor(left && right);
-//            boolean x = left || right;
-                //TEMPORARY VAL
-//                return new Factor(left);
-                return null;
+            //TODO: whats wrong with && and ||
+            switch (character) {
+                case "&&" -> value = left && right;
+                case "||" -> value = left || right;
+                default -> throw new WrongProgramException("RuntimeException: Not known property\n");
             }
-            else if (Objects.equals(character, "||")){
-//            return new Factor(left==0 || right==0);
-                //TEMPORARY VAL
-                return new Factor(right);
-            }
-            else return null;
+            System.out.println(left + " " + right + " " + value);
+            return new BoolFactor(value);
         }
-        System.out.println(ContextTable.variables);
+//        System.out.println(ContextTable.variables);
 //        System.out.println(x);
         return x;
     }

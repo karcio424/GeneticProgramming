@@ -12,7 +12,7 @@ import java.io.File;
 
 public class AntlrProgram extends GPprojectBaseVisitor<Main> {
 
-    public static ArrayList<Integer> programOutput = new ArrayList<>();
+    public static ArrayList<Object> programOutput = new ArrayList<>();
     public static boolean didProgramFail = false;
     public static Scanner inputFile;
     static int maxOperationCount;

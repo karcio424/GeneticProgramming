@@ -1,6 +1,5 @@
 // Generated from ./GPproject.g4 by ANTLR 4.13.1
 package Interpreter;
-
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -69,16 +68,6 @@ public interface GPprojectListener extends ParseTreeListener {
 	 */
 	void exitAssignmentStatement(GPprojectParser.AssignmentStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GPprojectParser#ioStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterIoStatement(GPprojectParser.IoStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link GPprojectParser#ioStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitIoStatement(GPprojectParser.IoStatementContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link GPprojectParser#inputStatement}.
 	 * @param ctx the parse tree
 	 */
@@ -88,16 +77,6 @@ public interface GPprojectListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitInputStatement(GPprojectParser.InputStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link GPprojectParser#inputTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterInputTerm(GPprojectParser.InputTermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link GPprojectParser#inputTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitInputTerm(GPprojectParser.InputTermContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link GPprojectParser#outputStatement}.
 	 * @param ctx the parse tree

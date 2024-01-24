@@ -9,45 +9,31 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitFactor(GPprojectParser.FactorContext ctx) {
         String varName = ctx.getChild(0).getText();
-//        System.out.println("VAR_NAME "+varName);
-//        int left = ((Factor) factorVisitor.visit(ctx.factor(0))).value;
-//
-//        int right = ((Factor) factorVisitor.visit(ctx.factor(1))).value;
+        System.out.println(varName);
 
-//        //TODO: add cases: ID, INT, FLOAT, ( expression )
         if (Objects.equals(varName, "true")) {
-            //return TRUE;
-            System.out.println("TRUE-CASE");
-
+//            System.out.println("TRUE-CASE");
             return new BoolFactor(true);
         } else if (Objects.equals(varName, "false")) {
-            //return FALSE;
-            System.out.println("FALSE-CASE");
-
+//            System.out.println("FALSE-CASE");
             return new BoolFactor(false);
-        } else if (varName.matches("-?[0-9]+")) {
-            // INT case
+        } else if (varName.matches("[0-9]+")) {
             System.out.println("INT-CASE " + varName);
             return new Factor(Integer.parseInt(varName));
-            //TODO: FIX this code
-//        } else if (varName.matches("-?[0-9]+\\.[0-9]+")) {
-//            // FLOAT case
-//            return new Factor(Double.parseDouble(varName));
-//        } else if (varName.matches("\".*\"")) {
-//            // STRING case
-//            // Extract the string content without quotes
-//            String stringValue = varName.substring(1, varName.length() - 1);
-//            return new Factor(stringValue);
         } else if (varName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
             // ID case
-            // Handle ID logic here, maybe look up the value in a symbol table
             System.out.println("ID-CASE");
             Object value = ContextTable.getVariableValue(varName);
-            if(value instanceof  Boolean) {
+            if (value instanceof Boolean) {
                 return new BoolFactor((Boolean) value);
             }
             return new Factor((Integer) value);
-            //TODO: FIX this code
+        } else if (varName.startsWith("-")) {
+            String varValue = ctx.getChild(1).getText();
+            return new Factor(-Integer.parseInt(varValue));
+        } else if (varName.startsWith("!")) {
+            String varValue = ctx.getChild(1).getText();
+            return new BoolFactor(!Boolean.parseBoolean(varValue));
         } else if (varName.startsWith("(")) {
             AntlrExpression expressionVisitor = new AntlrExpression();
             System.out.println("( ) CASE" + ctx.expression().getText());

@@ -8,7 +8,6 @@ import java.util.Objects;
 public class AntlrConditionalStatement extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitConditionalStatement(GPprojectParser.ConditionalStatementContext ctx) {
-//        AntlrBoolStatement boolStatementVisitor = new AntlrBoolStatement();
         //TODO: przemyśleć co w IF-ie (czy może być expression na pewno)
         AntlrExpression expressionVisitor = new AntlrExpression();
         AntlrBlockStatement blockStatementVisitor = new AntlrBlockStatement();
@@ -16,8 +15,6 @@ public class AntlrConditionalStatement extends GPprojectBaseVisitor<Statement> {
                 ctx.blockStatement(0).getText()+" "+
                 ctx.blockStatement(1).getText());
         Statement ifValue = (expressionVisitor.visit(ctx.expression()));
-//        if (boolStatementVisitor.visit(ctx.boolStatement()).satisfied) blockStatementVisitor.visit(ctx.blockStatement(0));
-        //TODO: Zmienić
 
         if (ifValue instanceof BoolFactor){
             if (((BoolFactor) ifValue).value)
@@ -25,7 +22,9 @@ public class AntlrConditionalStatement extends GPprojectBaseVisitor<Statement> {
             else if (ctx.blockStatement(1) != null)
                     blockStatementVisitor.visit(ctx.blockStatement(1));
         }
-
+        else {
+            System.out.println("IF SIĘ NIE WYKONAŁ!!!");
+        }
         return null;
     }
 }
