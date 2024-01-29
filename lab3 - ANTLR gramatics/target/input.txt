@@ -1,3 +1,4 @@
-var11=-4;
-var15=!(var11<10 && var11>3);
-output(var11,var15);
+loop(var86) {var86=53;}
+loop(var67) {var67=62;}
+{var67=92;}
+var67=93;

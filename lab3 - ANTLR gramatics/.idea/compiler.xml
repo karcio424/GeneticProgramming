@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="GPproject" />
+        <module name="lab3 - ANTLR gramatics" />
       </profile>
     </annotationProcessing>
   </component>
