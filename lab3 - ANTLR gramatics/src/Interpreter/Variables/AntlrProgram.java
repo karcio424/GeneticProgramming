@@ -38,11 +38,12 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
         for (int i = 0; i < ctx.getChildCount(); i++) {
             try {
                 //odwiedzamy kazdy statement po kolei
-                System.out.println("ITERACJA:"+i);
+//                System.out.println("ITERACJA:"+i);
                 statementVisitor.visit(ctx.getChild(i));
-                System.out.println();
+                System.out.println("NEW-CONTEXT:"+ContextTable.variables);
+//                System.out.println();
             } catch (RuntimeException exception) {
-//                System.out.println("Program couldn't evaluate");
+                System.out.println("Program couldn't evaluate");
                 didProgramFail = true;
                 break;
             }

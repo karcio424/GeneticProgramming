@@ -9,7 +9,7 @@ public class AntlrTerm extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitTerm(GPprojectParser.TermContext ctx) {
         AntlrFactor factorVisitor = new AntlrFactor();
-        System.out.println("Factor:"+ctx.factor(0).getText());
+//        System.out.println("Factor:"+ctx.factor(0).getText());
         Statement x = factorVisitor.visit(ctx.factor(0));
 
         if(ctx.factor(1)!=null) {

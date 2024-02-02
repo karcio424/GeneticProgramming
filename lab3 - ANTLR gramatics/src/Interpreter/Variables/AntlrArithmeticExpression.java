@@ -10,7 +10,7 @@ public class AntlrArithmeticExpression extends GPprojectBaseVisitor<Statement> {
     public Statement visitArithmeticExpression(GPprojectParser.ArithmeticExpressionContext ctx) {
         AntlrTerm termVisitor = new AntlrTerm();
 
-        System.out.println("TERM:"+ctx.term(0).getText());
+//        System.out.println("TERM:"+ctx.term(0).getText());
         Statement x = termVisitor.visit(ctx.term(0));
 //        System.out.println("TERM:"+((Factor) x).value);
 //        System.out.println("TERM OUT:"+x + " " +ctx.term(1));

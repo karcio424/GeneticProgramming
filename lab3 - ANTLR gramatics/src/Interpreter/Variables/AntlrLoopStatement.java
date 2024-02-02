@@ -22,7 +22,7 @@ public class AntlrLoopStatement extends GPprojectBaseVisitor<Statement> {
         } else {
             range = MAX_RANGE;
         }
-        System.out.println("ILOŚĆ WYKONANIA PĘTLI: " + range);
+//        System.out.println("ILOŚĆ WYKONANIA PĘTLI: " + range);
         for(int i = 0; i < range; i++){
             blockStatementVisitor.visit(ctx.blockStatement());
         }

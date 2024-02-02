@@ -27,43 +27,11 @@ public class AntlrExpression extends GPprojectBaseVisitor<Statement> {
                 case "||" -> value = left || right;
                 default -> throw new WrongProgramException("RuntimeException: Not known property\n");
             }
-            System.out.println(left + " " + right + " " + value);
+//            System.out.println(left + " " + right + " " + value);
             return new BoolFactor(value);
         }
 //        System.out.println(ContextTable.variables);
 //        System.out.println(x);
         return x;
     }
-
-//    @Override
-//    public Statement visitVariableExpression(MiniGPLangParser.VariableExpressionContext ctx) {
-//        AntlrVariable variableVisitor = new AntlrVariable();
-//        return variableVisitor.visit(ctx.getChild(0));
-//    }
-//
-//    @Override
-//    public Statement visitInputExpression(MiniGPLangParser.InputExpressionContext ctx) {
-//        AntlrInput inputVisitor = new AntlrInput();
-//        return inputVisitor.visit(ctx.getChild(0));
-//    }
-//
-//    @Override
-//    public Statement visitMultiplicationDivision(MiniGPLangParser.MultiplicationDivisionContext ctx) {
-//        AntlrExpression x = new AntlrExpression();
-//
-//        Variable l = (Variable) x.visit(ctx.getChild(0));
-//        Variable r = (Variable) x.visit(ctx.getChild(2));
-//
-//        String character = ctx.getChild(1).getText();
-//        if (Objects.equals(character, "*")){
-//            return new Variable(l.value * r.value);
-//        }
-//        else if (Objects.equals(character, "/")){
-//            if (r.value == 0)
-//                throw new BadProgramException("RuntimeException: Division by Zero\n" +
-//                        "The program encountered an attempt to divide by zero.");
-//            return new Variable(l.value / r.value);
-//        }
-//        else return null;
-//    }
 }

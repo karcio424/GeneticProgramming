@@ -10,7 +10,7 @@ public class AntlrStatement extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitLoopStatement(GPprojectParser.LoopStatementContext ctx) {
         AntlrLoopStatement loopStatementVisitor = new AntlrLoopStatement();
-        System.out.println("LOOP:"+ ctx.getText());
+//        System.out.println("LOOP:"+ ctx.getText());
 //        System.out.println("ILE:"+AntlrProgram.maxOperationCount);
         if (AntlrProgram.maxOperationCount-- <= 0)
             throw new WrongProgramException("RuntimeException: Maximum Operations Exceeded\n" +
@@ -21,7 +21,7 @@ public class AntlrStatement extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitConditionalStatement(GPprojectParser.ConditionalStatementContext ctx) {
         AntlrConditionalStatement conditionalVisitor = new AntlrConditionalStatement();
-        System.out.println("CONDITIONAL:"+ctx.getText());
+//        System.out.println("CONDITIONAL:"+ctx.getText());
 //        System.out.println("ILE:"+AntlrProgram.maxOperationCount);
         if (AntlrProgram.maxOperationCount-- <= 0)
             throw new WrongProgramException("RuntimeException: Maximum Operations Exceeded\n" +
@@ -32,7 +32,7 @@ public class AntlrStatement extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitBlockStatement(GPprojectParser.BlockStatementContext ctx) {
         AntlrBlockStatement blockStatementVisitor = new AntlrBlockStatement();
-        System.out.println("BLOCK:"+ctx.getText());
+//        System.out.println("BLOCK:"+ctx.getText());
 //        System.out.println("ILE:"+AntlrProgram.maxOperationCount);
         if (AntlrProgram.maxOperationCount-- <= 0)
             throw new WrongProgramException("RuntimeException: Maximum Operations Exceeded\n" +
@@ -43,7 +43,7 @@ public class AntlrStatement extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitAssignmentStatement(GPprojectParser.AssignmentStatementContext ctx) {
         AntlrAssignmentStatement assignStatementVisitor = new AntlrAssignmentStatement();
-        System.out.println("ASSIGN:"+ctx.getText());
+//        System.out.println("ASSIGN:"+ctx.getText());
 //        System.out.println("ILE:"+AntlrProgram.maxOperationCount);
         if (AntlrProgram.maxOperationCount-- <= 0)
             throw new WrongProgramException("RuntimeException: Maximum Operations Exceeded\n" +
@@ -83,7 +83,7 @@ public class AntlrStatement extends GPprojectBaseVisitor<Statement> {
                         System.out.println("Unsupported variable type for ID: " + idNode.getText());
                         //                    System.out.print(ContextTable.getVariableValue(idNodes.get(i).getText()));
                     }
-                    System.out.println();
+//                    System.out.println();
                 }
             }
         if (AntlrProgram.maxOperationCount-- <= 0)

@@ -9,7 +9,7 @@ public class AntlrLogicTerm extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitLogicTerm(GPprojectParser.LogicTermContext ctx) {
         AntlrArithmeticExpression arithmeticExpressionVisitor = new AntlrArithmeticExpression();
-        System.out.println("LOGIC: "+ctx.arithmeticExpression(0).getText());
+//        System.out.println("LOGIC: "+ctx.arithmeticExpression(0).getText());
         Statement x = arithmeticExpressionVisitor.visit(ctx.arithmeticExpression(0));
 //        System.out.println("LOGIC - OUT: "+((Factor) x).value);
 
@@ -29,7 +29,7 @@ public class AntlrLogicTerm extends GPprojectBaseVisitor<Statement> {
                 case ">=" -> value = left >= right;
                 default -> throw new WrongProgramException("RuntimeException: Not known property\n");
             }
-            System.out.println(left + " " + right + " " + value);
+//            System.out.println(left + " " + right + " " + value);
             return new BoolFactor(value);
         }
         //TODO: change to value
