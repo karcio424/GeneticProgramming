@@ -18,16 +18,12 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
 //            System.out.println("FALSE-CASE");
             return new BoolFactor(false);
         } else if (Objects.equals(varName, "input")) {
-            System.out.println("INPUT HANDLER");
-            if (AntlrProgram.currentIndex >= AntlrProgram.inputData.length) {
-                AntlrProgram.currentIndex = 0; // Resetujemy indeks po osiągnięciu końca tablicy
+//            System.out.println("INPUT HANDLER");
+            if (AntlrProgram.currentIndex >= AntlrProgram.inputList.size()) {
+                AntlrProgram.currentIndex = 0;
             }
-            int value = AntlrProgram.inputData[AntlrProgram.currentIndex++];
+            int value = AntlrProgram.inputList.get(AntlrProgram.currentIndex++);
             return new Factor(value);
-            // Handle input statement
-            // Here you need to implement logic for handling input
-            // You may need to prompt the user for input and parse it accordingly
-            // For now, let's return null
         }else if (varName.matches("[0-9]+")) {
 //            System.out.println("INT-CASE " + varName);
             return new Factor(Integer.parseInt(varName));
