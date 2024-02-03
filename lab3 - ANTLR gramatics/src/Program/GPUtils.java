@@ -13,65 +13,50 @@ import java.util.Arrays;
 
 public class GPUtils {
 
-    public static ParseTree generateRandomProgram(int size) {
-        if (size <= 0) return null;
-
-        GPprojectParser parser = new GPprojectParser(null);
-
-        return generateRandomStatement(parser, size);
+    private static ParseTree generateRandomProgram(int length, List<String> list) {
+        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(generateRandomStatement(null, length, list)));
+        GPprojectParser parser = new GPprojectParser(new CommonTokenStream(lexer));
+        return parseText(parser, generateRandomStatement(parser, length, list));
     }
 
-    private static ParseTree generateRandomStatement(GPprojectParser parser, int size) {
-        if (size <= 0) {
-            return null;
+    private static String generateRandomStatement(GPprojectParser parser, int length, List<String> variableList) {
+        if (length <= 0) {
+            return "";
         }
 
+        String statement = "";
         int randomRule = generateRandomNumber(1, 4);
+        int randomVar = generateRandomNumber(0, variableList.size() - 1);
 
         switch (randomRule) {
-            case 1:
-                return generateRandomLoopStatement(parser, size);
-            case 2:
-                return generateRandomConditionalStatement(parser, size);
-            case 3:
-                return generateRandomBlockStatement(parser, size);
-            case 4:
-                return generateRandomAssignmentStatement(parser, size);
+            case 1 -> statement = generateRandomLoopStatement(parser, length - 1, variableList.get(randomVar));
+            case 2 -> statement = generateRandomConditionalStatement(parser, length - 1, variableList.get(randomVar));
+            case 3 -> statement = generateRandomBlockStatement(parser, length - 1, variableList.get(randomVar));
+            case 4 -> statement = generateRandomAssignmentStatement(parser, variableList.get(randomVar));
         }
 
-        return null;
+        return statement + generateRandomStatement(parser, length - 1, variableList);
     }
 
-    private static ParseTree generateRandomLoopStatement(GPprojectParser parser, int size) {
-        if (size <= 0) {
-            return null;
-        }
-
-        String var = generateRandomVariableName();
-        String loopStatementText = "loop(" + var + ") {" + var + "=" + generateRandomNumber(1, 100) + ";}";
-
-        // Adjust the size for the recursive call
-        int newSize = size - loopStatementText.length();
-
-        return parseText(parser, loopStatementText + generateRandomStatement(parser, newSize));
+    private static String generateRandomLoopStatement(GPprojectParser parser, int length, String var) {
+        return "loop(" + var + ") {" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
     }
 
-    private static ParseTree generateRandomConditionalStatement(GPprojectParser parser, int size) {
-        String var = generateRandomVariableName();
-        String conditionalStatementText = "if (" + var + ") {" + var + "=" + generateRandomNumber(1, 100) + ";} else {" + var + "=" + generateRandomNumber(1, 100) + ";}";
-        return parseText(parser, conditionalStatementText);
+    private static String generateRandomConditionalStatement(GPprojectParser parser, int length, String var) {
+        String condition = var;
+        String ifStatement = "if (" + condition + ") ";
+        String thenStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
+        String elseStatement = "else {" + var + "=" + generateRandomNumber(1, 100) + ";}";
+
+        return ifStatement + thenStatement + elseStatement + "\n";
     }
 
-    private static ParseTree generateRandomBlockStatement(GPprojectParser parser, int size) {
-        String var = generateRandomVariableName();
-        String blockStatementText = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
-        return parseText(parser, blockStatementText);
+    private static String generateRandomBlockStatement(GPprojectParser parser, int length, String var) {
+        return "{" + var + "="+ generateRandomNumber(1,100) + ";}\n";
     }
 
-    private static ParseTree generateRandomAssignmentStatement(GPprojectParser parser, int size) {
-        String var = generateRandomVariableName();
-        String assignmentStatementText = var + "=" + generateRandomNumber(1, 100) + ";";
-        return parseText(parser, assignmentStatementText);
+    private static String generateRandomAssignmentStatement(GPprojectParser parser, String var) {
+        return var + "="+ generateRandomNumber(1,100) + ";\n";
     }
 
     private static ParseTree parseText(GPprojectParser parser, String text) {
@@ -96,18 +81,32 @@ public class GPUtils {
         int splitIndex1 = generateRandomNumber(1, programText1.length() - 1);
         int splitIndex2 = generateRandomNumber(1, programText2.length() - 1);
 
+        // Ensure split indices are not equal
+        while (splitIndex1 == splitIndex2) {
+            splitIndex2 = generateRandomNumber(1, programText2.length() - 1);
+        }
+
+        // Adjusting the substring boundaries
         String newProgramText = programText1.substring(0, splitIndex1) + programText2.substring(splitIndex2);
 
-        return parseText(new GPprojectParser(null), newProgramText);
+        // Using the parser from program1, assuming they share the same grammar
+        return parseText(new GPprojectParser(new CommonTokenStream(new GPprojectLexer(CharStreams.fromString(programText1)))), newProgramText);
     }
 
     public static ParseTree mutate(ParseTree program) {
         String programText = program.getText();
         int mutationIndex = generateRandomNumber(0, programText.length() - 1);
-        char mutationChar = (char) generateRandomNumber(32, 126);
-        String mutatedProgramText = programText.substring(0, mutationIndex) + mutationChar + programText.substring(mutationIndex + 1);
 
-        return parseText(new GPprojectParser(null), mutatedProgramText);
+        // Remove the entire statement at the mutation index
+        String mutatedProgramText = programText.substring(0, mutationIndex);
+        int statementLength = generateRandomNumber(1, 10); // Set a reasonable length for the new statement
+        mutatedProgramText += generateRandomStatement(null, statementLength, Arrays.asList("var1", "var2", "var3"));
+        mutatedProgramText += programText.substring(mutationIndex + 1);
+
+        // Use a valid parser with CommonTokenStream
+        GPprojectParser parser = new GPprojectParser(new CommonTokenStream(new GPprojectLexer(CharStreams.fromString(mutatedProgramText))));
+
+        return parseText(parser, mutatedProgramText);
     }
 
     public static void testProgram(ParseTree program, List<Integer> input, List<Integer> output) {
@@ -159,7 +158,7 @@ public class GPUtils {
         List<Integer> inputList = Arrays.asList(inputData);
         List<Integer> outputList = Arrays.asList(outputData);
 
-        ParseTree randomProgram = generateRandomProgram(10);
+        ParseTree randomProgram = generateRandomProgram(10, Arrays.asList("var1", "var2", "var3"));
 
         if (randomProgram != null) {
             System.out.println("Random Program: " + randomProgram.getText());
@@ -168,7 +167,7 @@ public class GPUtils {
             System.out.println("Failed to generate a random program.");
         }
 
-        ParseTree anotherRandomProgram = generateRandomProgram(10);
+        ParseTree anotherRandomProgram = generateRandomProgram(10, Arrays.asList("var4", "var5", "var6"));
 
         if (anotherRandomProgram != null) {
             System.out.println("Random Program: " + anotherRandomProgram.getText());
