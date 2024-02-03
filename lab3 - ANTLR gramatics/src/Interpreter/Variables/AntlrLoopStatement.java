@@ -7,7 +7,7 @@ public class AntlrLoopStatement extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitLoopStatement(GPprojectParser.LoopStatementContext ctx) {
         //TODO: ILE RÓWNY MAX RANGE?
-        int MAX_RANGE = 10;
+        int MAX_RANGE = 100;
         int range = 0;
         AntlrExpression expressionVisitor = new AntlrExpression();
         AntlrBlockStatement blockStatementVisitor = new AntlrBlockStatement();

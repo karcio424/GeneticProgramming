@@ -1,4 +1,7 @@
-var64=51;
-if (var64) {var64=46;} else {var64=11;}
-var64=2;
-loop(var64) {var64=5;}
+var64=1;
+var6=12;
+loop(var6) {
+var2=input;
+output(var2);
+}
+output(var6);

@@ -21,7 +21,7 @@ blockStatement: '{' statement+ '}';
 
 assignmentStatement: ID '=' expression';';
 
-inputStatement: 'input' '(' program ')' ';';
+inputStatement: 'input';
 //zmiana outputu na program i przypisanie do zmiennej
 //inputTerm: INT | FLOAT | BOOL | STRING;
 
@@ -42,6 +42,7 @@ factor:
 	| INT
 	| FLOAT
 	| BOOL
+	| inputStatement
 	| '(' expression ')'
 	| '-' factor
 	| '!' factor;

@@ -7,6 +7,8 @@ import Interpreter.GPprojectParser;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 
@@ -16,10 +18,13 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
     public static boolean didProgramFail = false;
     public static Scanner inputFile;
     static int maxOperationCount;
+    static int currentIndex;
+    static int[] inputData;
 
     public AntlrProgram(String inputFileName, int maxCount){
         maxOperationCount = maxCount;
         programOutput = new ArrayList<>();
+        currentIndex = 0;
 //        VariablesTable.reset();
         didProgramFail = false;
 
@@ -27,6 +32,18 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
 //        File inFile = new File(inputFileName);
         try {
             inputFile = new Scanner(inFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            File dataFile = new File("target/test_values.txt"); //+ dataFileName); // Ścieżka do pliku z danymi
+            Scanner scanner = new Scanner(dataFile);
+            List<Integer> inputList = new ArrayList<>();
+            while (scanner.hasNextInt()) {
+                inputList.add(scanner.nextInt());
+            }
+            inputData = inputList.stream().mapToInt(Integer::intValue).toArray();
+            System.out.println(Arrays.toString(inputData));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

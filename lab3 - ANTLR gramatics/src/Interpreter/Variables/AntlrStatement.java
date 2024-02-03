@@ -73,10 +73,8 @@ public class AntlrStatement extends GPprojectBaseVisitor<Statement> {
 //                    }
                     Object variableValue = ContextTable.getVariableValue(idNode.getText());
                     if (variableValue instanceof Boolean) {
-                        // If the value is a boolean, add it directly to the programOutput list
                         AntlrProgram.programOutput.add((Boolean) variableValue);
                     } else if (variableValue instanceof Integer) {
-                        // If the value is an integer, add it as an integer to the programOutput list
                         AntlrProgram.programOutput.add((Integer) variableValue);
                     } else {
                         // Handle other types as needed

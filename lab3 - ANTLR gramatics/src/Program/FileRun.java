@@ -35,7 +35,7 @@ public class FileRun {
 
         try {
             ParseTree tree = parser.program();
-            AntlrProgram programVisitor = new AntlrProgram("input.txt", 12);
+            AntlrProgram programVisitor = new AntlrProgram("input.txt", 100);
             programVisitor.visit(tree);
             System.out.println("PROGRAM FAILED?:"+AntlrProgram.didProgramFail);
 //            System.out.println(ContextTable.variables);
