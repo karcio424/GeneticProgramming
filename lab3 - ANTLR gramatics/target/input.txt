@@ -1,7 +1,6 @@
 var64=1;
-var6=12;
+var6=6;
 loop(var6) {
 var2=input;
 output(var2);
 }
-output(var6);

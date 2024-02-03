@@ -39,7 +39,7 @@ public class Main {
         System.out.println("Program result: " + result);
     }
 
-    private static Set<String> generateRandomVariableArray(int min, int max) {
+    public static Set<String> generateRandomVariableArray(int min, int max) {
         Set<String> variableSet = new HashSet<>();
         int arraySize = generateRandomNumber(min, max);
         for (int i = 0; i < arraySize; i++) {
@@ -72,7 +72,7 @@ public class Main {
         }
     }
 
-    private static String generateRandomProgram(int length, List<String> list) {
+    public static String generateRandomProgram(int length, List<String> list) {
         GPprojectParser parser = new GPprojectParser(null);
 
         return generateRandomStatement(parser, length, list);
