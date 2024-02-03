@@ -1,8 +1,4 @@
-var86=2;
-var67=1;
-var22=22+22<2;
-loop(var86) {var86=53+var86;}
-loop(var67) {var67=62;}
-{var67=92;}
-output(var67);
-output(var86, var22);
+var64=51;
+if (var64) {var64=46;} else {var64=11;}
+var64=2;
+loop(var64) {var64=5;}

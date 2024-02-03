@@ -77,6 +77,7 @@ public class GPUtils {
     private static ParseTree parseText(GPprojectParser parser, String text) {
         GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(text));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
+        System.out.println(parser + " " + text);
         return parser.program();
     }
 

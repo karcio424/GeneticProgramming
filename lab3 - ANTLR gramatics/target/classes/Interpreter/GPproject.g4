@@ -28,6 +28,8 @@ inputStatement: 'input' '(' program ')' ';';
 outputStatement: 'output' '(' ID (',' ID)* ')' ';';
 
 expression: logicTerm (('&&' | '||') logicTerm)*;
+//input na ten moment jako zamiana na expression
+
 
 logicTerm:	arithmeticExpression (('<' | '>' | '==' | '!=' | '<=' | '>=') arithmeticExpression )?;
 
