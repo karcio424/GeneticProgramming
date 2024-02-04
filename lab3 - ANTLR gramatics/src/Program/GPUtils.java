@@ -44,6 +44,20 @@ public class GPUtils {
     }
 
 
+    private static String generateRandomConditionalStatement(int length, String var) {
+        String condition = var;
+        String thenStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
+        String elseStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
+
+        return "if (" + condition + ") " + thenStatement + "else {" + elseStatement + "}\n";
+        //TODO: zamiana na 'if' '(' generateRandomExpression ')' generateRandomBlockStatement
+        // 'else' generateRandomBlockStatement;
+        // MOŻE ALE NIE MUSI BYĆ ELSE
+        // dodatkowo!!!: jesli jest samo ID to wybor sposrod zmiennych ktore maja wartosci przypisane
+        // .
+        // MOŻNA PRZEMYSLEC CZY NA POCZATKU PROGRAMU OD RAZU KAZDEJ ZMIENNEJ NIE PRZYPISAC wartosci (np. 0)
+    }
+
     private static String generateRandomLoopStatement(int length, String var) {
         return "loop(" + var + ") {" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
         //TODO: zamiana na 'loop' '(' generateRandomExpression ')' generateRandomBlockStatement
@@ -52,20 +66,6 @@ public class GPUtils {
         // MOŻNA PRZEMYSLEC CZY NA POCZATKU PROGRAMU OD RAZU KAZDEJ ZMIENNEJ NIE PRZYPISAC wartosci (np. 0)
     }
 
-    private static String generateRandomConditionalStatement(int length, String var) {
-        String condition = var;
-        String thenStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
-        String elseStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
-
-        return "if (" + condition + ") " + thenStatement + "else " + elseStatement + "\n";
-        //TODO: zamiana na 'if' '(' generateRandomExpression ')' generateRandomBlockStatement
-        // 'else' generateRandomBlockStatement;
-        // MOŻE ALE NIE MUSI BYĆ ELSE
-        // dodatkowo!!!: jesli jest samo ID to wybor sposrod zmiennych ktore maja wartosci przypisane
-        // .
-        // MOŻNA PRZEMYSLEC CZY NA POCZATKU PROGRAMU OD RAZU KAZDEJ ZMIENNEJ NIE PRZYPISAC wartosci (np. 0)
-
-    }
 
     private static String generateRandomBlockStatement(int length, String var) {
         return "{" + var + "="+ generateRandomNumber(1,100) + ";}\n";
