@@ -36,12 +36,13 @@ public class GPUtils {
             case 4 -> statement = generateRandomAssignmentStatement(variableList.get(randomVar));
         }
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //TODO: generacja outputu jako kolejny rodzaj statementu => instrukcja output(TUTAJ DOWOLNE DOSTEPNE ZMIENNE)
         // dodatkowo -> zastosowanie koncepcji full i grow (albo którejś z nich)
 
         return statement + generateRandomStatement(length - 1, variableList);
     }
+
 
     private static String generateRandomLoopStatement(int length, String var) {
         return "loop(" + var + ") {" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
@@ -53,11 +54,10 @@ public class GPUtils {
 
     private static String generateRandomConditionalStatement(int length, String var) {
         String condition = var;
-        String ifStatement = "if (" + condition + ") ";
         String thenStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
-        String elseStatement = "else {" + var + "=" + generateRandomNumber(1, 100) + ";}";
+        String elseStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
 
-        return ifStatement + thenStatement + elseStatement + "\n";
+        return "if (" + condition + ") " + thenStatement + "else " + elseStatement + "\n";
         //TODO: zamiana na 'if' '(' generateRandomExpression ')' generateRandomBlockStatement
         // 'else' generateRandomBlockStatement;
         // MOŻE ALE NIE MUSI BYĆ ELSE
@@ -105,47 +105,59 @@ public class GPUtils {
         String programText1 = program1.getText();
         String programText2 = program2.getText();
 
-        int splitIndex1 = generateRandomNumber(1, programText1.length() - 1);
-        int splitIndex2 = generateRandomNumber(1, programText2.length() - 1);
+        int splitIndex1 = findSplitIndex(programText1);
+        int splitIndex2 = findSplitIndex(programText2);
 
-        //TODO: WGL INNE DZIELENIE TEGO -> możesz spróbować różnego dzielenia kiedy jest if/loop
-        // patrz zdjęcie które CI WYSŁAŁEM
-        // Ensure split indices are not equal
-        while (splitIndex1 == splitIndex2) {
-            splitIndex2 = generateRandomNumber(1, programText2.length() - 1);
-        }
-
-        // Adjusting the substring boundaries
         String newProgramText = programText1.substring(0, splitIndex1) + programText2.substring(splitIndex2);
 
-        // Using the parser from program1, assuming they share the same grammar
         return parseText(newProgramText);
-//        return parseText(new GPprojectParser(new CommonTokenStream(new GPprojectLexer(CharStreams.fromString(programText1)))), newProgramText);
+    }
+
+    private static int findSplitIndex(String programText) {
+        int index = generateRandomNumber(1, programText.length() - 1);
+
+        while (index < programText.length() - 1) {
+            if (isStatementBoundary(programText, index)) {
+                break;
+            }
+            index++;
+        }
+
+        return index;
+    }
+
+    private static boolean isStatementBoundary(String programText, int index) {
+        return (programText.charAt(index) == ';' && programText.charAt(index+1) != '}') || (programText.charAt(index) == '}' && programText.charAt(index+1) != 'e');
     }
 
     public static ParseTree mutate(ParseTree program) {
         String programText = program.getText();
 
-        //TODO: !!!!!!!!!?????????????
-        // tak samo jak przy crossover, może się generować w losowym miejscu index (np. w środku elsa!!!)
-        // TRZEBA TO POPRAWIC!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        int mutationIndex = generateRandomNumber(0, programText.length() - 1);
+        int mutationIndex = findMutationIndex(programText);
 
-        // Remove the entire statement at the mutation index
         //TODO: TUTAJ TAK NIE POWINNO BYĆ
         // generujesz dodatkowo ileś statementów (od 1 do 10) do tego co już jest.......
         String mutatedProgramText = programText.substring(0, mutationIndex);
-        int statementLength = generateRandomNumber(1, 10); // Set a reasonable length for the new statement
+        int statementLength = generateRandomNumber(1, 10);
         mutatedProgramText += generateRandomStatement(statementLength, Arrays.asList("var1", "var2", "var3"));
-        mutatedProgramText += programText.substring(mutationIndex + 1);
+        mutatedProgramText += programText.substring(mutationIndex);
 
         return parseText(mutatedProgramText);
-
-        // Use a valid parser with CommonTokenStream
-//        GPprojectParser parser = new GPprojectParser(new CommonTokenStream(new GPprojectLexer(CharStreams.fromString(mutatedProgramText))));
-//
-//        return parseText(parser, mutatedProgramText);
     }
+
+    private static int findMutationIndex(String programText) {
+        int index = generateRandomNumber(1, programText.length() - 1);
+
+        while (index < programText.length() - 1) {
+            if (isStatementBoundary(programText, index)) {
+                break;
+            }
+            index++;
+        }
+
+        return index;
+    }
+
 
     public static void testProgram(ParseTree program, List<Integer> input, List<Integer> output) {
         AntlrProgram programVisitor = new AntlrProgram(100);
@@ -153,8 +165,7 @@ public class GPUtils {
         System.out.println("Testing program: " + program.getText());
         System.out.println("Input program: " + input);
         System.out.println("Output program: " + output);
-        //TODO/TOFINISH
-        // TA FUNKCJA BEDZIE W KLASIE INTERPRETER INTERFACE, więc nie ma co tutaj robić
+        //TODO: TA FUNKCJA BEDZIE W KLASIE INTERPRETER INTERFACE, więc nie ma co tutaj robić
     }
 
     public static ParseTree tournamentSelection(List<ParseTree> programs, int tournamentSize) {
