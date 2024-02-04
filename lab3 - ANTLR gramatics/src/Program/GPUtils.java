@@ -51,7 +51,7 @@ public class GPUtils {
         String thenStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
         String elseStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
 
-        return "if (" + condition + ") " + thenStatement + "else {" + elseStatement + "}\n";
+        return "if (" + condition + ") " + thenStatement + "else" + elseStatement + "\n";
         //TODO: zamiana na 'if' '(' generateRandomExpression ')' generateRandomBlockStatement
         // 'else' generateRandomBlockStatement;
         // MOŻE ALE NIE MUSI BYĆ ELSE
@@ -164,7 +164,7 @@ public class GPUtils {
 
 
     public static void testProgram(ParseTree program, List<Integer> input, List<Integer> output) {
-        AntlrProgram programVisitor = new AntlrProgram(100);
+        AntlrProgram programVisitor = new AntlrProgram(1000);
         programVisitor.visit(program);
         System.out.println("Testing program: " + program.getText());
         System.out.println("Input program: " + input);
@@ -191,7 +191,7 @@ public class GPUtils {
     }
 
     private static double calculateFitness(ParseTree program) {
-        AntlrProgram programVisitor = new AntlrProgram(100);
+        AntlrProgram programVisitor = new AntlrProgram(1000);
         programVisitor.visit(program);
         // TODO: TO BEDZIE GDZIE INDZIEJ (plik INTERPRETER_INTERFACE)
         return 0.0;

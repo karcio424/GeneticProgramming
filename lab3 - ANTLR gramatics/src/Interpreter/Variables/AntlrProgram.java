@@ -28,6 +28,7 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
 //        VariablesTable.reset();
         didProgramFail = false;
         inputList.clear();
+        ContextTable.variables.clear();
 
         File inFile = new File("target/input.txt");
 //        File inFile = new File(inputFileName);
@@ -60,6 +61,7 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
 //                System.out.println();
             } catch (RuntimeException exception) {
                 System.out.println("Program couldn't evaluate");
+                System.out.println("CURRENT OUTPUT: " + programOutput);
                 didProgramFail = true;
                 break;
             }
