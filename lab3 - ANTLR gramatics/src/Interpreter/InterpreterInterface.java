@@ -35,7 +35,7 @@ public class InterpreterInterface {
         System.out.println("------------- Program: -------------");
         System.out.println(program);
         System.out.println("------------------------------------");
-        AntlrProgram programVisitor = new AntlrProgram(inputFileName, maxOperationCount);
+        AntlrProgram programVisitor = new AntlrProgram(maxOperationCount);
         programVisitor.visit(antlrAST);
         this.didProgramFail = AntlrProgram.didProgramFail;
 

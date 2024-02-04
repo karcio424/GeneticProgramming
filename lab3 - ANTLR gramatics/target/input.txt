@@ -1,6 +1,5 @@
-var64=1;
-var6=6;
-loop(var6) {
-var2=input;
-output(var2);
-}
+loop(var51) {var51=59;}
+var23=96;
+var21=48;
+{var23=64;}
+{var12=16;}

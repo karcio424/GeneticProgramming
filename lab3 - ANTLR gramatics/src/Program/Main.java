@@ -62,7 +62,7 @@ public class Main {
                 e.printStackTrace();
                 System.err.println("Failed to save program to file.");
             }
-            AntlrProgram programVisitor = new AntlrProgram("input.txt", 100);
+            AntlrProgram programVisitor = new AntlrProgram(100);
             programVisitor.visit(tree);
             System.out.println("PROGRAM FAILED?:"+AntlrProgram.didProgramFail);
             System.out.println(ContextTable.variables);

@@ -21,14 +21,15 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
     static int currentIndex;
     public static List<Integer> inputList = new ArrayList<>();
 
-    public AntlrProgram(String inputFileName, int maxCount){
+    public AntlrProgram(int maxCount){
         maxOperationCount = maxCount;
         programOutput = new ArrayList<>();
         currentIndex = 0;
 //        VariablesTable.reset();
         didProgramFail = false;
+        inputList.clear();
 
-        File inFile = new File("target/" + inputFileName);
+        File inFile = new File("target/input.txt");
 //        File inFile = new File(inputFileName);
         try {
             inputFile = new Scanner(inFile);
