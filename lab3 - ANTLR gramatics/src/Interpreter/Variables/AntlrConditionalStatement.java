@@ -26,9 +26,9 @@ public class AntlrConditionalStatement extends GPprojectBaseVisitor<Statement> {
             else if (ctx.blockStatement(1) != null)
                 blockStatementVisitor.visit(ctx.blockStatement(1));
         }
-//        else {
-//            System.out.println("IF SIĘ NIE WYKONAŁ!!!");
-//        }
+        else {
+            System.out.println("IF SIĘ NIE WYKONAŁ!!!");
+        }
         return null;
     }
 }

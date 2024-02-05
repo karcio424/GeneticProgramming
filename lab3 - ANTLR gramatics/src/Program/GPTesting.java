@@ -48,6 +48,9 @@ public class GPTesting {
         ArrayList<Integer> currentInput = new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {
             program = population.get(i);
+            System.out.println("------------- Program: -------------");
+            System.out.println(program);
+            System.out.println("------------------------------------");
             fitness=0;
 //            List<List<Object>> outputyDanegoProgramu = outputList.get(i);
             for (int j = 0; j < input.size(); j++) {
@@ -88,31 +91,6 @@ public class GPTesting {
         }
 //        System.out.println(JUST_TEST + " " + poprawne);
         return bestProgram;
-    }
-
-//    public void testGeneticProgramming() {
-//        // Definicja funkcji przystosowania
-////        FitnessFunction fitnessFunction = (output) -> output == 1 ? 10 : 5;
-//        int maxVariables = 3;
-//        int populationSize = 100;
-//        int generations = 10;
-//        int maxOperations = 100;
-//
-//        ArrayList<Integer> inputVector = new ArrayList<>();
-//        inputVector.add(5);
-//
-//        ArrayList<Object> expectedOutputVector = new ArrayList<>();
-//        expectedOutputVector.add(1);
-//
-//        GPTesting test = new GPTesting(inputVector, expectedOutputVector, maxVariables, populationSize, generations, maxOperations);
-//        test.runTest();
-//
-//        assertNotNull(getBestProgram());
-//        assertEquals(bestFitness, 0);
-//    }
-//    @Test
-    public void test1() {
-        System.out.println("AAAAA");
     }
 
     public static void main(int[][] inputMatrix) {

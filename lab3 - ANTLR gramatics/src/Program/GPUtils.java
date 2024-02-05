@@ -13,7 +13,8 @@ import java.util.Arrays;
 public class GPUtils {
     public static int max = 10;
     public static int min = 1;
-    public static String generateRandomProgram(int length, List < String > list, int min_r, int max_r) {
+
+    public static String generateRandomProgram(int length, List<String> list, int min_r, int max_r) {
         //        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(generateRandomStatement(length, list)));
         //        GPprojectParser parser = new GPprojectParser(new CommonTokenStream(lexer));
         max = max_r;
@@ -22,7 +23,7 @@ public class GPUtils {
         //        return generateRandomStatement(length, list);
     }
 
-    private static String generateRandomStatement(int length, List < String > variableList) {
+    private static String generateRandomStatement(int length, List<String> variableList) {
         if (length <= 0) {
             return "";
         }
@@ -43,19 +44,19 @@ public class GPUtils {
         //TODO: zastosowanie koncepcji full i grow (albo którejś z nich)
     }
 
-    private static String generateRandomOutputStatement(List < String > variableList) {
+    private static String generateRandomOutputStatement(List<String> variableList) {
         int randomVar = generateRandomNumber(0, variableList.size() - 1);
         return "output(" + variableList.get(randomVar) + ");\n";
     }
 
     private static String generateRandomConditionalStatement(int length, String
-            var, List < String > variableList) {
+            var, List<String> variableList) {
         String condition =
                 var;
         String thenStatement = "{" +
-                var +"=" + generateRandomNumber() + ";}";
+                var + "=" + generateRandomNumber() + ";}";
         String elseStatement = "{" +
-                var +"=" + generateRandomNumber() + ";}";
+                var + "=" + generateRandomNumber() + ";}";
 
         //        return "if (" + condition + ") " + thenStatement + "else" + elseStatement + "\n";
         return "if (" + generateRandomExpression(variableList) + ") " + generateRandomBlockStatement(length,
@@ -65,7 +66,7 @@ public class GPUtils {
     }
 
     private static String generateRandomLoopStatement(int length, String
-            var, List < String > variableList) {
+            var, List<String> variableList) {
         //        return "loop(" + var + ") {" + var + "=" + generateRandomNumber() + ";}\n";
         return "loop(" + generateRandomExpression(variableList) + ")" + generateRandomBlockStatement(length,
                 var);
@@ -77,7 +78,7 @@ public class GPUtils {
     private static String generateRandomBlockStatement(int length, String
             var) {
         return "{" +
-                var +"=" + generateRandomNumber() + ";}\n";
+                var + "=" + generateRandomNumber() + ";}\n";
         //TODO: generateRandomStatement (i tutaj w szczególności pamiętać o tym,
         // żeby nie mogło generować w nieskończoność zagęszczonych instrukcji
         // .
@@ -85,13 +86,13 @@ public class GPUtils {
     }
 
     private static String generateRandomAssignmentStatement(int length, String
-            var, List < String > variableList) {
+            var, List<String> variableList) {
         //        return var + "="+ generateRandomNumber() + ";\n";
-        return var +"=" + generateRandomExpression(variableList) + ";\n";
+        return var + "=" + generateRandomExpression(variableList) + ";\n";
         //TODO: var = generateRandomExpression
     }
 
-    private static String generateRandomExpression(List < String > variableList) {
+    private static String generateRandomExpression(List<String> variableList) {
         int randomRule = generateRandomNumber(1, 4);
         switch (randomRule) {
             case 1 -> {
@@ -116,7 +117,7 @@ public class GPUtils {
         return "";
     }
 
-    private static String generateRandomExpressionTail(List < String > variableList, int limit) {
+    private static String generateRandomExpressionTail(List<String> variableList, int limit) {
         int randomRule = generateRandomNumber(0, 1);
         switch (randomRule) {
             case 0 -> {
@@ -139,11 +140,11 @@ public class GPUtils {
         return randomOperator == 0 ? "&&" : "||";
     }
 
-    private static String generateRandomLogicTerm(List < String > variableList) {
+    private static String generateRandomLogicTerm(List<String> variableList) {
         return generateRandomArithmeticExpression(variableList) + generateRandomLogicTermTail(variableList, 1);
     }
 
-    private static String generateRandomLogicTermTail(List < String > variableList, int limit) {
+    private static String generateRandomLogicTermTail(List<String> variableList, int limit) {
         int randomRule = generateRandomNumber(0, 1);
         switch (randomRule) {
             case 0 -> {
@@ -186,11 +187,11 @@ public class GPUtils {
         return "";
     }
 
-    private static String generateRandomArithmeticExpression(List < String > variableList) {
+    private static String generateRandomArithmeticExpression(List<String> variableList) {
         return generateRandomTerm(variableList) + generateRandomArithmeticExpressionTail(variableList, 1);
     }
 
-    private static String generateRandomArithmeticExpressionTail(List < String > variableList, int limit) {
+    private static String generateRandomArithmeticExpressionTail(List<String> variableList, int limit) {
         int randomRule = generateRandomNumber(0, 1);
         switch (randomRule) {
             case 0 -> {
@@ -213,11 +214,11 @@ public class GPUtils {
         return randomOperator == 0 ? "+" : "-";
     }
 
-    private static String generateRandomTerm(List < String > variableList) {
+    private static String generateRandomTerm(List<String> variableList) {
         return generateRandomFactor(variableList) + generateRandomTermTail(variableList, 1);
     }
 
-    private static String generateRandomTermTail(List < String > variableList, int limit) {
+    private static String generateRandomTermTail(List<String> variableList, int limit) {
         int randomRule = generateRandomNumber(0, 1);
         switch (randomRule) {
             case 0 -> {
@@ -251,7 +252,7 @@ public class GPUtils {
         return "";
     }
 
-    private static String generateRandomFactor(List < String > variableList) {
+    private static String generateRandomFactor(List<String> variableList) {
         int randomRule = generateRandomNumber(0, 4);
         switch (randomRule) {
             case 0 -> {
@@ -290,10 +291,11 @@ public class GPUtils {
     }
 
     private static int generateRandomNumber() {
-        return min + (int)(Math.random() * ((max - min) + 1));
+        return min + (int) (Math.random() * ((max - min) + 1));
     }
+
     private static int generateRandomNumber(int min_r, int max_r) {
-        return min_r + (int)(Math.random() * ((max_r - min_r) + 1));
+        return min_r + (int) (Math.random() * ((max_r - min_r) + 1));
     }
 
     private static String generateRandomVariableName() {
@@ -357,7 +359,7 @@ public class GPUtils {
         return index;
     }
 
-    public static void testProgram(ParseTree program, List < Integer > input, List < Integer > output) {
+    public static void testProgram(ParseTree program, List<Integer> input, List<Integer> output) {
         AntlrProgram programVisitor = new AntlrProgram(1000);
         programVisitor.visit(program);
         System.out.println("Testing program: " + program.getText());
@@ -366,7 +368,7 @@ public class GPUtils {
         //TODO: TA FUNKCJA BEDZIE W KLASIE INTERPRETER INTERFACE, więc nie ma co tutaj robić
     }
 
-    public static ParseTree tournamentSelection(List < ParseTree > programs, int tournamentSize) {
+    public static ParseTree tournamentSelection(List<ParseTree> programs, int tournamentSize) {
         int winnerIndex = -1;
         double bestFitness = Double.MAX_VALUE;
 
@@ -411,10 +413,10 @@ public class GPUtils {
                 6
         };
 
-        List < Integer > inputList = Arrays.asList(inputData);
-        List < Integer > outputList = Arrays.asList(outputData);
-        List < String > first = Arrays.asList("var1", "var2", "var3");
-        List < String > second = Arrays.asList("var4", "var5", "var6");
+        List<Integer> inputList = Arrays.asList(inputData);
+        List<Integer> outputList = Arrays.asList(outputData);
+        List<String> first = Arrays.asList("var1", "var2", "var3");
+        List<String> second = Arrays.asList("var4", "var5", "var6");
 
         //        System.out.println("Random Program: ");
         ParseTree randomProgram = parseText(generateRandomProgram(10, first, 1, 100));
@@ -448,7 +450,7 @@ public class GPUtils {
 
         testProgram(mutatedProgram, inputList, outputList);
 
-        List < ParseTree > programList = Arrays.asList(randomProgram, anotherRandomProgram, crossedProgram, mutatedProgram);
+        List<ParseTree> programList = Arrays.asList(randomProgram, anotherRandomProgram, crossedProgram, mutatedProgram);
         ParseTree selectedProgram = tournamentSelection(programList, 2);
         System.out.println("Selected Program: " + selectedProgram.getText());
 
