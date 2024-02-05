@@ -76,11 +76,12 @@ public class AntlrStatement extends GPprojectBaseVisitor<Statement> {
                         AntlrProgram.programOutput.add((Boolean) variableValue);
                     } else if (variableValue instanceof Integer) {
                         AntlrProgram.programOutput.add((Integer) variableValue);
-                    } else {
-                        // Handle other types as needed
-                        System.out.println("Unsupported variable type for ID: " + idNode.getText());
-                        //                    System.out.print(ContextTable.getVariableValue(idNodes.get(i).getText()));
                     }
+//                    else {
+//                        // Handle other types as needed
+//                        System.out.println("Unsupported variable type for ID: " + idNode.getText());
+//                        //                    System.out.print(ContextTable.getVariableValue(idNodes.get(i).getText()));
+//                    }
 //                    System.out.println();
                 }
             }
