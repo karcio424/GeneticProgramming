@@ -13,6 +13,7 @@ public class InterpreterInterface {
 
     private static int maxOperationCount = 0;
     private static boolean didProgramFail;
+    public static int testsCasesCount;
 
     public InterpreterInterface(int maxOperationCount) {
         InterpreterInterface.maxOperationCount = maxOperationCount;
@@ -34,6 +35,21 @@ public class InterpreterInterface {
         return AntlrProgram.programOutput;
     }
 
+    public static ArrayList<Object> evaluateProgram(String program, ArrayList<Integer> inputArray, int maxOperations) {
+//        ANTLRErrorListener errorListener = new BaseErrorListener();
+        GPprojectParser parser = getParser(program);
+//        parser.addErrorListener(errorListener);
+        ParseTree antlrAST = parser.program();
+//        System.out.println("------------- Program: -------------");
+//        System.out.println(program);
+//        System.out.println("------------------------------------");
+        AntlrProgram programVisitor = new AntlrProgram(maxOperations, inputArray);
+        programVisitor.visit(antlrAST);
+        InterpreterInterface.didProgramFail = AntlrProgram.didProgramFail;
+
+        return AntlrProgram.programOutput;
+    }
+
 
     private static GPprojectParser getParser(String program) {
         GPprojectParser parser;
@@ -46,31 +62,61 @@ public class InterpreterInterface {
         return parser;
     }
 
-    public static double evaluateFitness(ArrayList<Object> actualOutput, ArrayList<Object> expectedOutput, ArrayList<Integer> paramaters) {
+    public static double evaluateFitness(ArrayList<Object> actualOutput, ArrayList<Object[]> expectedOutput, int testCases) {
+        testsCasesCount = testCases;
         int actualLength = actualOutput.size();
-        int expectedLength = expectedOutput.size();
-
-        //TODO: jak okreslic parametry dlugosci
-        int lengthDifference = expectedLength - actualLength;
-        if (lengthDifference > 0) {
-            return lengthDifference*100;// paramaters.get(0);
-        } else {
-            return calculateDistance(actualOutput, expectedOutput) - lengthDifference*10;//*paramaters.get(1);
+        int expectedLength;
+        int difference=0;
+        for(int i=0;i<testsCasesCount;i++){
+            expectedLength = expectedOutput.get(i).length;
+            //TODO: jak okreslic parametry dlugosci
+            int lengthDifference = expectedLength - actualLength;
+            if (lengthDifference > 0) {
+                difference += lengthDifference*100;
+            } else {
+                difference += calculateDistance(actualOutput, expectedOutput.get(i)) - lengthDifference*100;//*paramaters.get(1);
+            }
         }
-
-//        return distance + lengthDifference;
+        return difference;
     }
 
-    private static int calculateDistance(ArrayList<Object> actualOutput, ArrayList<Object> expectedOutput) {
+    public static double evaluateFitness(ArrayList<Object> actualOutput, Object[] expectedOutput) {
+        int actualLength = actualOutput.size();
+        int expectedLength = expectedOutput.length;
+        int lengthDifference = expectedLength - actualLength;
+        if (lengthDifference > 0) {
+            return lengthDifference*100;
+        } else {
+            return calculateDistance(actualOutput, expectedOutput) - lengthDifference*100;//*paramaters.get(1);
+        }
+
+    }
+//
+//    private static int calculateDistance(ArrayList<Object> actualOutput, ArrayList<Object> expectedOutput) {
+//        int distance = 0;
+//        for (int i = 0; i < expectedOutput.size(); i++) {
+//            Object expected = expectedOutput.get(i);
+//            Object actual = actualOutput.get(i);
+//            if (expected instanceof Integer && actual instanceof Integer) {
+//                distance += Math.abs((Integer) expected - (Integer) actual);
+//            } else {
+//                System.out.println("NIE INTEGER");
+//                distance+=100000;
+//            }
+//        }
+//        return distance;
+//    }
+
+    private static int calculateDistance(ArrayList<Object> actualOutput, Object[] expectedOutput) {
         int distance = 0;
-        for (int i = 0; i < expectedOutput.size(); i++) {
-            Object expected = expectedOutput.get(i);
+        for (int i = 0; i < expectedOutput.length; i++) {
+            Object expected = expectedOutput[i];
             Object actual = actualOutput.get(i);
-            //TODO: wartosci inne niz int
             if (expected instanceof Integer && actual instanceof Integer) {
                 distance += Math.abs((Integer) expected - (Integer) actual);
             } else {
                 System.out.println("NIE INTEGER");
+                distance+=100000;
             }
         }
         return distance;

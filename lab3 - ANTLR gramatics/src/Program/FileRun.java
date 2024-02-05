@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FileRun {
     public static void main(String[] args) {
@@ -23,9 +22,11 @@ public class FileRun {
         ArrayList<Object> test = InterpreterInterface.evaluateProgram(program, "input.txt", maxOperations);
         System.out.println(test);
 
-        ArrayList<Object> expected = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-        ArrayList<Integer> parameters = new ArrayList<>(Arrays.asList(100,10));
-        double fitness = InterpreterInterface.evaluateFitness(test, expected,parameters);
+        ArrayList<Object[]> expected = new ArrayList<>();
+//        ArrayList<Object[]> expected = new ArrayList<>(Array.asList(1,2,3,4,5);
+        ArrayList<int[]> parameters = new ArrayList<>();
+        int ilosc=1;
+        double fitness = InterpreterInterface.evaluateFitness(test, expected,ilosc);
         System.out.println(fitness);
 
 //        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(program));

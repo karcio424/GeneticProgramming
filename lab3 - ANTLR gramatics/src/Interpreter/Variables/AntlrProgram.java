@@ -47,6 +47,18 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        inputFile.close();
+    }
+
+    public AntlrProgram(int maxCount, ArrayList<Integer> inputVector){
+        maxOperationCount = maxCount;
+        programOutput = new ArrayList<>();
+        currentIndex = 0;
+//        VariablesTable.reset();
+        didProgramFail = false;
+        inputList.clear();
+        ContextTable.variables.clear();
+        inputList = inputVector;
     }
 
     @Override
@@ -67,7 +79,7 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
             }
         }
 //        System.out.println(ContextTable.variables);
-        inputFile.close();
+
         return null;
     }
 }
