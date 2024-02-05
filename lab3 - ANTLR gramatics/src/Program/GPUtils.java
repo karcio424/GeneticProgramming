@@ -126,7 +126,7 @@ public class GPUtils {
             case 1 -> {
                 // ('&&' | '||') logicTerm
                 if (limit > 0) {
-                    return " " + generateRandomLogicalOperator() + " " + generateRandomLogicTerm(variableList) + generateRandomExpressionTail(variableList, limit--);
+                    return " " + generateRandomLogicalOperator() + " " + generateRandomLogicTerm(variableList) + generateRandomExpressionTail(variableList, limit - 1);
                 } else
                     return "";
             }
@@ -153,7 +153,7 @@ public class GPUtils {
             case 1 -> {
                 if (limit > 0) {
                     // ('<' | '>' | '==' | '!=' | '<=' | '>=') arithmeticExpression
-                    return " " + generateRandomComparisonOperator() + " " + generateRandomArithmeticExpression(variableList) + generateRandomLogicTermTail(variableList, limit--);
+                    return " " + generateRandomComparisonOperator() + " " + generateRandomArithmeticExpression(variableList) + generateRandomLogicTermTail(variableList, limit - 1);
                 } else
                     return "";
             }
@@ -200,7 +200,7 @@ public class GPUtils {
             case 1 -> {
                 // ('+' | '-') term
                 if (limit > 0) {
-                    return " " + generateRandomArithmeticOperator() + " " + generateRandomTerm(variableList) + generateRandomArithmeticExpressionTail(variableList, limit--);
+                    return " " + generateRandomArithmeticOperator() + " " + generateRandomTerm(variableList) + generateRandomArithmeticExpressionTail(variableList, limit - 1);
                 } else
                     return "";
             }
@@ -227,7 +227,7 @@ public class GPUtils {
             case 1 -> {
                 if (limit > 0) {
                     // ('*' | '/' | '%') factor
-                    return " " + generateRandomMultiplicativeOperator() + " " + generateRandomFactor(variableList) + generateRandomTermTail(variableList, limit--);
+                    return " " + generateRandomMultiplicativeOperator() + " " + generateRandomFactor(variableList) + generateRandomTermTail(variableList, limit - 1);
                 } else
                     return "";
             }
@@ -334,15 +334,20 @@ public class GPUtils {
 
         int mutationIndex = findMutationIndex(programText);
 
-        //TODO: TUTAJ TAK NIE POWINNO BYĆ
-        // generujesz dodatkowo ileś statementów (od 1 do 10) do tego co już jest.......
         String mutatedProgramText = programText.substring(0, mutationIndex);
         int statementLength = generateRandomNumber(1, 10);
-        mutatedProgramText += generateRandomStatement(statementLength, Arrays.asList("var1", "var2", "var3"));
-        mutatedProgramText += programText.substring(mutationIndex);
+        String randomStatement = generateRandomStatement(statementLength, Arrays.asList("var1", "var2", "var3"));
+
+        if (!randomStatement.trim().endsWith(";")) {
+            randomStatement += ";";
+        }
+
+        mutatedProgramText += randomStatement + programText.substring(mutationIndex);
 
         return parseText(mutatedProgramText);
     }
+
+
 
     private static int findMutationIndex(String programText) {
         int index = generateRandomNumber(1, programText.length() - 1);
