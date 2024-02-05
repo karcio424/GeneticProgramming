@@ -12,11 +12,14 @@ import java.util.Arrays;
 
 
 public class GPUtils {
-
-    private static ParseTree generateRandomProgram(int length, List<String> list) {
+    public static int max=10;
+    public static int min=1;
+    public static String generateRandomProgram(int length, List<String> list, int min_r, int max_r) {
 //        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(generateRandomStatement(length, list)));
 //        GPprojectParser parser = new GPprojectParser(new CommonTokenStream(lexer));
-        return parseText(generateRandomStatement(length, list));
+        max=max_r;
+        min=min_r;
+        return generateRandomStatement(length, list);
 //        return generateRandomStatement(length, list);
     }
 
@@ -48,8 +51,8 @@ public class GPUtils {
 
     private static String generateRandomConditionalStatement(int length, String var) {
         String condition = var;
-        String thenStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
-        String elseStatement = "{" + var + "=" + generateRandomNumber(1, 100) + ";}";
+        String thenStatement = "{" + var + "=" + generateRandomNumber() + ";}";
+        String elseStatement = "{" + var + "=" + generateRandomNumber() + ";}";
 
         return "if (" + condition + ") " + thenStatement + "else" + elseStatement + "\n";
         //TODO: zamiana na 'if' '(' generateRandomExpression ')' generateRandomBlockStatement
@@ -61,7 +64,7 @@ public class GPUtils {
     }
 
     private static String generateRandomLoopStatement(int length, String var) {
-        return "loop(" + var + ") {" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
+        return "loop(" + var + ") {" + var + "=" + generateRandomNumber() + ";}\n";
         //TODO: zamiana na 'loop' '(' generateRandomExpression ')' generateRandomBlockStatement
         // dodatkowo!!!: jesli jest samo ID to wybor sposrod zmiennych ktore maja wartosci przypisane
         // .
@@ -70,13 +73,13 @@ public class GPUtils {
 
 
     private static String generateRandomBlockStatement(int length, String var) {
-        return "{" + var + "="+ generateRandomNumber(1,100) + ";}\n";
+        return "{" + var + "="+ generateRandomNumber() + ";}\n";
         //TODO: generateRandomStatement (i tutaj w szczególności pamiętać o tym,
         // żeby nie mogło generować w nieskończoność zagęszczonych instrukcji
     }
 
     private static String generateRandomAssignmentStatement(String var) {
-        return var + "="+ generateRandomNumber(1,100) + ";\n";
+        return var + "="+ generateRandomNumber() + ";\n";
         //TODO: var = generateRandomExpression
     }
 
@@ -97,12 +100,15 @@ public class GPUtils {
         return parser.program();
     }
 
-    private static int generateRandomNumber(int min, int max) {
+    private static int generateRandomNumber() {
         return min + (int) (Math.random() * ((max - min) + 1));
+    }
+    private static int generateRandomNumber(int min_r, int max_r) {
+        return min_r + (int) (Math.random() * ((max_r - min_r) + 1));
     }
 
     private static String generateRandomVariableName() {
-        return "var" + generateRandomNumber(1, 100);
+        return "var" + generateRandomNumber();
     }
 
     public static ParseTree crossover(ParseTree program1, ParseTree program2) {
@@ -215,7 +221,7 @@ public class GPUtils {
         List<String> second = Arrays.asList("var4", "var5", "var6");
 
 //        System.out.println("Random Program: ");
-        ParseTree randomProgram = generateRandomProgram(10, first);
+        ParseTree randomProgram = parseText(generateRandomProgram(10, first, 1, 100));
 //        System.out.println("Random Program: ");
 
         if (randomProgram != null) {
@@ -225,7 +231,7 @@ public class GPUtils {
             System.out.println("Failed to generate a random program.");
         }
 
-        ParseTree anotherRandomProgram = generateRandomProgram(10, second);
+        ParseTree anotherRandomProgram = parseText(generateRandomProgram(10, second, 1, 100));
 
         if (anotherRandomProgram != null) {
 //            System.out.println("Random Program: " + anotherRandomProgram.getText());

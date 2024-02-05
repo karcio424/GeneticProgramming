@@ -1,16 +1,16 @@
 package Interpreter.Variables;
 
 //import EvolutionUtils.Program;
-import Program.Main;
+
 import Interpreter.GPprojectBaseVisitor;
 import Interpreter.GPprojectParser;
+import Program.Main;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.io.File;
 
 public class AntlrProgram extends GPprojectBaseVisitor<Main> {
 
@@ -57,7 +57,7 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
                 //odwiedzamy kazdy statement po kolei
 //                System.out.println("ITERACJA:"+i);
                 statementVisitor.visit(ctx.getChild(i));
-                System.out.println("NEW-CONTEXT:"+ContextTable.variables);
+//                System.out.println("NEW-CONTEXT:"+ContextTable.variables);
 //                System.out.println();
             } catch (RuntimeException exception) {
                 System.out.println("Program couldn't evaluate");

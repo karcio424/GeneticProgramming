@@ -1,16 +1,7 @@
 package Program;
 
-import Interpreter.GPprojectLexer;
-import Interpreter.GPprojectParser;
-import Interpreter.Variables.AntlrProgram;
 import Interpreter.InterpreterInterface;
-import Interpreter.Variables.ContextTable;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,8 +18,9 @@ public class FileRun {
             System.err.println("Failed to read program from file.");
             System.exit(1);
         }
-        InterpreterInterface interpreterInterface = new InterpreterInterface(100);
-        ArrayList<Object> test = interpreterInterface.evaluateProgram(program, "input.txt");
+        int maxOperations = 100;
+        InterpreterInterface interpreterInterface = new InterpreterInterface(maxOperations);
+        ArrayList<Object> test = InterpreterInterface.evaluateProgram(program, "input.txt", maxOperations);
         System.out.println(test);
 
         ArrayList<Object> expected = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));

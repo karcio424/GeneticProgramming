@@ -31,6 +31,9 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
             // ID case
 //            System.out.println("ID-CASE");
             Object value = ContextTable.getVariableValue(varName);
+            if (value == null){
+                return null;
+            }
             if (value instanceof Boolean) {
                 return new BoolFactor((Boolean) value);
             }
