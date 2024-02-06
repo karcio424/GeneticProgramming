@@ -123,7 +123,7 @@ public class FunctionalityTest {
                 {7, 3, 10},
                 {-5, 8, 3},
                 {0, 1, 1}};
-        GPTesting.main(testCase, 100);
+        assertEquals(0, GPTesting.main(testCase, 100));
     }
 
     @Test
@@ -142,7 +142,7 @@ public class FunctionalityTest {
                 {792, 33, 825},
                 {-5535, 8121, 2586},
                 {1990, 1, 1991}};
-        GPTesting.main(testCase, 100);
+        assertEquals(0, GPTesting.main(testCase, 100));
     }
 
 

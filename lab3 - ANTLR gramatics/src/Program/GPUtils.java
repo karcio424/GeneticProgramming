@@ -100,14 +100,14 @@ public class GPUtils {
     }
 
     private static String generateRandomExpression(List<String> variableList) {
-        int randomRule = generateRandomNumber(1, 5);
+        int randomRule = generateRandomNumber(1, 10);
         switch (randomRule) {
             case 1 -> {
                 // ID
                 int randomVar = generateRandomNumber(0, variableList.size() - 1);
                 return variableList.get(randomVar);
             }
-            case 2 -> {
+            case 2,8,9 -> {
                 // INT
                 return String.valueOf(generateRandomNumber(0, 100));
             }
@@ -115,11 +115,11 @@ public class GPUtils {
                 // BOOL
                 return generateRandomNumber(0, 1) == 0 ? "true" : "false";
             }
-            case 4 -> {
+            case 4,10 -> {
                 //input
                 return "input";
             }
-            case 5 -> {
+            case 5,6,7 -> {
                 // expression
                 expressionNumOfOperators = generateRandomNumber(1, 1);
 //                System.out.println("ILE: " + expressionNumOfOperators);

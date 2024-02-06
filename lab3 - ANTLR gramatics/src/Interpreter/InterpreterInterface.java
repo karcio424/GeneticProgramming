@@ -74,9 +74,9 @@ public class InterpreterInterface {
             //TODO: jak okreslic parametry dlugosci
             int lengthDifference = expectedLength - actualLength;
             if (lengthDifference > 0) {
-                difference += lengthDifference*100;
+                difference += lengthDifference*1000;
             } else {
-                difference += calculateDistance(actualOutput, expectedOutput.get(i)) - lengthDifference*100;//*paramaters.get(1);
+                difference += calculateDistance(actualOutput, expectedOutput.get(i)) - lengthDifference*1000;//*paramaters.get(1);
             }
         }
         return difference;
@@ -87,9 +87,9 @@ public class InterpreterInterface {
         int expectedLength = expectedOutput.length;
         int lengthDifference = expectedLength - actualLength;
         if (lengthDifference > 0) {
-            return lengthDifference*100;
+            return lengthDifference*1000;
         } else {
-            return calculateDistance(actualOutput, expectedOutput) - lengthDifference*100;//*paramaters.get(1);
+            return calculateDistance(actualOutput, expectedOutput) - lengthDifference*1000;//*paramaters.get(1);
         }
 
     }
