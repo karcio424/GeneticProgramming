@@ -2,14 +2,14 @@ package Program;
 
 import Interpreter.GPprojectLexer;
 import Interpreter.GPprojectParser;
+import Interpreter.Variables.AntlrProgram;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import Interpreter.Variables.AntlrProgram;
 
-import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GPUtils {
     public static int max = 10;
@@ -17,7 +17,7 @@ public class GPUtils {
     public static int expressionNumOfOperators = 0;
     public static int numberOfStatements = 10;
 
-    public static String generateRandomProgram(int length, List < String > list, int min_r, int max_r) {
+    public static String generateRandomProgram(int length, List<String> list, int min_r, int max_r) {
         //        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(generateRandomStatement(length, list)));
         //        GPprojectParser parser = new GPprojectParser(new CommonTokenStream(lexer));
         max = max_r;
@@ -27,8 +27,8 @@ public class GPUtils {
         //        return generateRandomStatement(length, list);
     }
 
-    private static String generateRandomStatement(int length, List < String > variableList, int from, int to) {
-        if (numberOfStatements<=0 || length<=0) {
+    private static String generateRandomStatement(int length, List<String> variableList, int from, int to) {
+        if (numberOfStatements <= 0 || length <= 0) {
             return "";
         }
 
@@ -48,25 +48,25 @@ public class GPUtils {
         //TODO: zastosowanie koncepcji full i grow (albo którejś z nich)
     }
 
-    private static String generateRandomOutputStatement(List < String > variableList) {
+    private static String generateRandomOutputStatement(List<String> variableList) {
         int randomVar = generateRandomNumber(0, variableList.size() - 1);
         return "output(" + variableList.get(randomVar) + ");\n";
     }
 
-    private static String generateRandomConditionalStatement(int length, List < String > variableList) {
+    private static String generateRandomConditionalStatement(int length, List<String> variableList) {
         return "if (" + generateRandomExpression(variableList) + ") " +
-                generateRandomBlockStatement(length,variableList, 5) +
+                generateRandomBlockStatement(length, variableList, 5) +
                 " else" + generateRandomBlockStatement(length, variableList, 5);
         //TODO: tutaj jak się odwołuję do generateRandomBlockStatement to powinno być length czy length-1????????????????????
     }
 
-    private static String generateRandomLoopStatement(int length, List < String > variableList) {
+    private static String generateRandomLoopStatement(int length, List<String> variableList) {
         return "loop(" + generateRandomExpression(variableList) + ")" +
-                generateRandomBlockStatement(length,variableList, 1);
+                generateRandomBlockStatement(length, variableList, 1);
         //TODO: dodatkowo!!!: jesli jest samo ID to wybor sposrod zmiennych ktore maja wartosci przypisane
     }
 
-    private static String generateRandomBlockStatement(int length, List < String > variableList, int instruction) {
+    private static String generateRandomBlockStatement(int length, List<String> variableList, int instruction) {
 //        if (length <= 0 || numberOfStatements <= 0) {
 //            return "";
 //        }
@@ -75,9 +75,9 @@ public class GPUtils {
 //        return "{\n" + generateRandomStatement(numberStatementsInside, variableList, 2, 4) + "}\n" +
 //                generateRandomBlockStatement(length - 1, variableList, instruction);
 
-        int numberStatementsInside = generateRandomNumber(1,1);
-        if(numberOfStatements<=0){
-            numberOfStatements-=numberOfStatements-1;
+        int numberStatementsInside = generateRandomNumber(1, 1);
+        if (numberOfStatements <= 0) {
+            numberOfStatements -= numberOfStatements - 1;
             return "{\n" + generateRandomStatement(numberStatementsInside, variableList, 2, 4) + "}\n";
 //            System.out.println("NIE MAAAAAA");
 //            return generateRandomAssignmentStatement(length,variableList.get(randomVar), variableList);
@@ -86,7 +86,7 @@ public class GPUtils {
 //            numberOfStatements+=1;
 //        }
 //        numberOfStatements-=numberStatementsInside;
-        if(instruction==1){
+        if (instruction == 1) {
             return "{\n" + generateRandomStatement(numberStatementsInside, variableList, 2, 4) + "}\n";
         }
         return "{\n" + generateRandomStatement(numberStatementsInside, variableList, 2, 4) + "}\n";
@@ -94,9 +94,9 @@ public class GPUtils {
         // żeby nie mogło generować w nieskończoność zagęszczonych instrukcji
     }
 
-    private static String generateRandomAssignmentStatement(int length, String var, List < String > variableList) {
+    private static String generateRandomAssignmentStatement(int length, String var, List<String> variableList) {
         //        return var + "="+ generateRandomNumber() + ";\n";
-        return var +"=" + generateRandomExpression(variableList) + ";\n";
+        return var + "=" + generateRandomExpression(variableList) + ";\n";
     }
 
     private static String generateRandomExpression(List<String> variableList) {
@@ -107,7 +107,7 @@ public class GPUtils {
                 int randomVar = generateRandomNumber(0, variableList.size() - 1);
                 return variableList.get(randomVar);
             }
-            case 2,8,9 -> {
+            case 2, 8, 9 -> {
                 // INT
                 return String.valueOf(generateRandomNumber(0, 100));
             }
@@ -115,11 +115,11 @@ public class GPUtils {
                 // BOOL
                 return generateRandomNumber(0, 1) == 0 ? "true" : "false";
             }
-            case 4,10 -> {
+            case 4, 10 -> {
                 //input
                 return "input";
             }
-            case 5,6,7 -> {
+            case 5, 6, 7 -> {
                 // expression
                 expressionNumOfOperators = generateRandomNumber(1, 1);
 //                System.out.println("ILE: " + expressionNumOfOperators);
@@ -318,11 +318,11 @@ public class GPUtils {
     }
 
     private static int generateRandomNumber() {
-        return min + (int)(Math.random() * ((max - min) + 1));
+        return min + (int) (Math.random() * ((max - min) + 1));
     }
 
     private static int generateRandomNumber(int min_r, int max_r) {
-        return min_r + (int)(Math.random() * ((max_r - min_r) + 1));
+        return min_r + (int) (Math.random() * ((max_r - min_r) + 1));
     }
 
     private static String generateRandomVariableName() {
@@ -331,9 +331,11 @@ public class GPUtils {
 
     private static double mutationProbability = 0.1; // Prawdopodobieństwo mutacji
 
-    public static ParseTree crossover(ParseTree parent1, ParseTree parent2) {
-        String parent1Text = serialize(parent1);
-        String parent2Text = serialize(parent2);
+    public static String crossover(String parent1, String parent2) {
+//        String parent1Text = serialize(parent1);
+//        String parent2Text = serialize(parent2);
+        String parent1Text = parent1;
+        String parent2Text = parent2;
 
         // Wybierz losowy punkt krzyżowania
         int crossoverPoint1 = findCrossoverPoint(parent1Text);
@@ -344,7 +346,8 @@ public class GPUtils {
                 parent2Text.substring(crossoverPoint2);
 
         // Zwróć potomka
-        return parseText(crossedText);
+        //parseText()
+        return crossedText;
     }
 
     private static int findCrossoverPoint(String programText) {
@@ -363,8 +366,9 @@ public class GPUtils {
     }
 
 
-    public static ParseTree mutate(ParseTree program) {
-        String programText = serialize(program);
+    public static String mutate(String program) {
+//        String programText = serialize(program);
+        String programText = program;
 
         // Wybierz losowy punkt mutacji
         int mutationPoint = findMutationPoint(programText);
@@ -378,7 +382,7 @@ public class GPUtils {
                 programText.substring(mutationPoint);
 
         // Zwróć zmutowany program
-        return parseText(mutatedProgramText);
+        return mutatedProgramText;
     }
 
     private static int findMutationPoint(String programText) {
@@ -400,9 +404,7 @@ public class GPUtils {
     }
 
 
-
-
-    public static void testProgram(ParseTree program, List < Integer > input, List < Integer > output) {
+    public static void testProgram(ParseTree program, List<Integer> input, List<Integer> output) {
         AntlrProgram programVisitor = new AntlrProgram(1000);
         programVisitor.visit(program);
         System.out.println("Testing program: " + program.getText());
@@ -411,7 +413,35 @@ public class GPUtils {
         //TODO: TA FUNKCJA BEDZIE W KLASIE INTERPRETER INTERFACE, więc nie ma co tutaj robić
     }
 
-    public static ParseTree tournamentSelection(List < ParseTree > programs, int tournamentSize) {
+    public static List<String> generateNextGeneration(List<String> currentGeneration) {
+        List<String> newGeneration = new ArrayList<>();
+
+        // Krzyżowanie i mutacja
+        for (int i = 0; i < currentGeneration.size(); i++) {
+            int whichOperation = generateRandomNumber(1, 1);
+            System.out.println(i + " " + whichOperation);
+            if (whichOperation == 1) { // Mutacja
+                String program1 = currentGeneration.get(i);
+
+                String mutatedProgram = mutate(program1);
+                newGeneration.add(mutatedProgram);
+            } else { // Krzyżowanie
+                if (i + 1 < currentGeneration.size()-1) {
+                    String program1 = currentGeneration.get(i);
+                    String program2 = currentGeneration.get(i + 1);
+
+                    String crossedProgram = crossover(program1, program2);
+                    newGeneration.add(crossedProgram);
+                    i++;
+                } else {
+                    newGeneration.add(currentGeneration.get(i));
+                }
+            }
+        }
+        return newGeneration;
+    }
+
+    public static ParseTree tournamentSelection(List<ParseTree> programs, int tournamentSize) {
         int winnerIndex = -1;
         double bestFitness = Double.MAX_VALUE;
 
@@ -456,45 +486,45 @@ public class GPUtils {
                 6
         };
 
-        List < Integer > inputList = Arrays.asList(inputData);
-        List < Integer > outputList = Arrays.asList(outputData);
-        List < String > first = Arrays.asList("var1", "var2", "var3");
-        List < String > second = Arrays.asList("var4", "var5", "var6");
+        List<Integer> inputList = Arrays.asList(inputData);
+        List<Integer> outputList = Arrays.asList(outputData);
+        List<String> first = Arrays.asList("var1", "var2", "var3");
+        List<String> second = Arrays.asList("var4", "var5", "var6");
 
         ParseTree randomProgram = parseText(generateRandomProgram(10, first, 1, 100));
         ParseTree anotherRandomProgram = parseText(generateRandomProgram(10, second, 1, 100));
 
-        if (randomProgram != null && anotherRandomProgram != null) {
-            System.out.println("_______________________________________-");
-            System.out.println("Random Program 1: " + randomProgram.getText());
-            testProgram(randomProgram, inputList, outputList);
-
-            System.out.println("_______________________________________-");
-            System.out.println("Random Program 2: " + anotherRandomProgram.getText());
-            testProgram(anotherRandomProgram, inputList, outputList);
-
-            ParseTree crossedProgram = crossover(randomProgram, anotherRandomProgram);
-            System.out.println("_______________________________________-");
-            System.out.println("Crossed Program: " + crossedProgram.getText());
-            testProgram(crossedProgram, inputList, outputList);
-
-            ParseTree mutatedProgram = mutate(randomProgram);
-            System.out.println("_______________________________________-");
-            System.out.println("Mutated Program: " + mutatedProgram.getText());
-            testProgram(mutatedProgram, inputList, outputList);
-
-            System.out.println("_______________________________________-");
-            List < ParseTree > programList = Arrays.asList(randomProgram, anotherRandomProgram, crossedProgram, mutatedProgram);
-
+//        if (randomProgram != null && anotherRandomProgram != null) {
 //            System.out.println("_______________________________________-");
-//            // List < ParseTree > nextGeneration = generateNextGeneration(programList);
+//            System.out.println("Random Program 1: " + randomProgram.getText());
+//            testProgram(randomProgram, inputList, outputList);
 //
-//           // ParseTree selectedProgram = tournamentSelection(nextGeneration, 2);
 //            System.out.println("_______________________________________-");
-//            System.out.println("Selected Program: " + selectedProgram.getText());
-//            testProgram(selectedProgram, inputList, outputList);
-        } else {
-            System.out.println("Failed to generate initial random programs.");
-        }
+//            System.out.println("Random Program 2: " + anotherRandomProgram.getText());
+//            testProgram(anotherRandomProgram, inputList, outputList);
+//
+//            ParseTree crossedProgram = crossover(randomProgram, anotherRandomProgram);
+//            System.out.println("_______________________________________-");
+//            System.out.println("Crossed Program: " + crossedProgram.getText());
+//            testProgram(crossedProgram, inputList, outputList);
+//
+//            ParseTree mutatedProgram = mutate(randomProgram);
+//            System.out.println("_______________________________________-");
+//            System.out.println("Mutated Program: " + mutatedProgram.getText());
+//            testProgram(mutatedProgram, inputList, outputList);
+//
+//            System.out.println("_______________________________________-");
+//            List < ParseTree > programList = Arrays.asList(randomProgram, anotherRandomProgram, crossedProgram, mutatedProgram);
+//
+////            System.out.println("_______________________________________-");
+////            // List < ParseTree > nextGeneration = generateNextGeneration(programList);
+////
+////           // ParseTree selectedProgram = tournamentSelection(nextGeneration, 2);
+////            System.out.println("_______________________________________-");
+////            System.out.println("Selected Program: " + selectedProgram.getText());
+////            testProgram(selectedProgram, inputList, outputList);
+//        } else {
+//            System.out.println("Failed to generate initial random programs.");
+//        }
     }
 }

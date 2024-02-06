@@ -145,20 +145,122 @@ public class FunctionalityTest {
         assertEquals(0, GPTesting.main(testCase, 100));
     }
 
+    @Test
+    //1.2.D Program powinien odczytać dwie pierwsze liczy z wejścia i zwrócić na wyjściu
+    // (jedynie) ich różnicę. Na wejściu mogą być tylko całkowite liczby dodatnie w zakresie [-9999,9999]
+    public void function_1_2_D() {
+        int[][] testCase = {
+                {10, 2, 1},
+                {-900, 8000, 7100},
+                {1, -5000, -4999},
+                {3, 4, 7},
+                {900, 0, 900},
+                {0, 0, 0},
+                {1000, -1000, 0},
+                {500, -350, 150},
+                {792, 33, 825},
+                {-5535, 8121, 2586},
+                {1990, 1, 1991}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
 
+    @Test
+    //1.2.E Program powinien odczytać dwie pierwsze liczy z wejścia i zwrócić na wyjściu
+    // (jedynie) ich iloczyn. Na wejściu mogą być tylko całkowite liczby dodatnie w zakresie [-9999,9999]
+    public void function_1_2_E() {
+        int[][] testCase = {
+                {10, 2, 1},
+                {-900, 8000, 7100},
+                {1, -5000, -4999},
+                {3, 4, 7},
+                {900, 0, 900},
+                {0, 0, 0},
+                {1000, -1000, 0},
+                {500, -350, 150},
+                {792, 33, 825},
+                {-5535, 8121, 2586},
+                {1990, 1, 1991}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
 
-    /*
+    @Test
+    //1.3.A Program powinien odczytać dwie pierwsze liczy z wejścia i zwrócić na wyjściu (jedynie) większą z nich.
+    // Na wejściu mogą być tylko całkowite liczby dodatnie w zakresie [0,9]
+    public void function_1_3_A() {
+        int[][] testCase = {
+                {10, 2, 1},
+                {-900, 8000, 7100},
+                {1, -5000, -4999},
+                {3, 4, 7},
+                {900, 0, 900},
+                {0, 0, 0},
+                {1000, -1000, 0},
+                {500, -350, 150},
+                {792, 33, 825},
+                {-5535, 8121, 2586},
+                {1990, 1, 1991}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
 
-1.2.D Program powinien odczytać dwie pierwsze liczy z wejścia i zwrócić na wyjściu (jedynie) ich różnicę. Na wejściu mogą być tylko całkowite liczby dodatnie w zakresie [-9999,9999]
+    @Test
+    //1.3.B Program powinien odczytać dwie pierwsze liczy z wejścia i zwrócić na wyjściu (jedynie)
+    // większą z nich. Na wejściu mogą być tylko całkowite liczby w zakresie [-9999,9999]
+    public void function_1_3_B() {
+        int[][] testCase = {
+                {10, 2, 1},
+                {-900, 8000, 7100},
+                {1, -5000, -4999},
+                {3, 4, 7},
+                {900, 0, 900},
+                {0, 0, 0},
+                {1000, -1000, 0},
+                {500, -350, 150},
+                {792, 33, 825},
+                {-5535, 8121, 2586},
+                {1990, 1, 1991}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
 
-1.2.E Program powinien odczytać dwie pierwsze liczy z wejścia i zwrócić na wyjściu (jedynie) ich iloczyn. Na wejściu mogą być tylko całkowite liczby dodatnie w zakresie [-9999,9999]
+    @Test
+    //1.4.A Program powinien odczytać dziesięć pierwszych liczy z wejścia i zwrócić na wyjściu
+    // (jedynie) ich średnią arytmetyczną (zaokrągloną do pełnej liczby całkowitej).
+    // Na wejściu mogą być tylko całkowite liczby w zakresie [-99,99]
+    public void function_1_4_A() {
+        int[][] testCase = {
+                {10, 2, 1},
+                {-900, 8000, 7100},
+                {1, -5000, -4999},
+                {3, 4, 7},
+                {900, 0, 900},
+                {0, 0, 0},
+                {1000, -1000, 0},
+                {500, -350, 150},
+                {792, 33, 825},
+                {-5535, 8121, 2586},
+                {1990, 1, 1991}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
 
-1.3.A Program powinien odczytać dwie pierwsze liczy z wejścia i zwrócić na wyjściu (jedynie) większą z nich. Na wejściu mogą być tylko całkowite liczby dodatnie w zakresie [0,9]
-
-1.3.B Program powinien odczytać dwie pierwsze liczy z wejścia i zwrócić na wyjściu (jedynie) większą z nich. Na wejściu mogą być tylko całkowite liczby w zakresie [-9999,9999]
-
-1.4.A Program powinien odczytać dziesięć pierwszych liczy z wejścia i zwrócić na wyjściu (jedynie) ich średnią arytmetyczną (zaokrągloną do pełnej liczby całkowitej). Na wejściu mogą być tylko całkowite liczby w zakresie [-99,99]
-
-1.4.B Program powinien odczytać na początek z wejścia pierwszą liczbę (ma być to wartość nieujemna) a następnie tyle liczb (całkowitych) jaka jest wartość pierwszej odczytanej liczby i zwrócić na wyjściu (jedynie) ich średnią arytmetyczną zaokrągloną do pełnej liczby całkowitej (do średniej nie jest wliczana pierwsza odczytana liczba, która mówi z ilu liczb chcemy obliczyć średnią). Na wejściu mogą być tylko całkowite liczby w zakresie [-99,99], pierwsza liczba może być tylko w zakresie [0,99].
-     */
+    @Test
+    //1.4.B Program powinien odczytać na początek z wejścia pierwszą liczbę (ma być to wartość nieujemna)
+    // a następnie tyle liczb (całkowitych) jaka jest wartość pierwszej odczytanej liczby i zwrócić
+    // na wyjściu (jedynie) ich średnią arytmetyczną zaokrągloną do pełnej liczby całkowitej
+    // (do średniej nie jest wliczana pierwsza odczytana liczba, która mówi z ilu liczb chcemy obliczyć średnią).
+    // Na wejściu mogą być tylko całkowite liczby w zakresie [-99,99],
+    // pierwsza liczba może być tylko w zakresie [0,99].
+    public void function_1_4_B() {
+        int[][] testCase = {
+                {10, 2, 1},
+                {-900, 8000, 7100},
+                {1, -5000, -4999},
+                {3, 4, 7},
+                {900, 0, 900},
+                {0, 0, 0},
+                {1000, -1000, 0},
+                {500, -350, 150},
+                {792, 33, 825},
+                {-5535, 8121, 2586},
+                {1990, 1, 1991}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
 }
