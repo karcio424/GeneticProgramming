@@ -331,106 +331,75 @@ public class GPUtils {
 
     private static double mutationProbability = 0.1; // Prawdopodobieństwo mutacji
 
-    public static List < ParseTree > generateNextGeneration(List < ParseTree > currentGeneration) {
-        List < ParseTree > newGeneration = new ArrayList < > ();
+    public static ParseTree crossover(ParseTree parent1, ParseTree parent2) {
+        String parent1Text = serialize(parent1);
+        String parent2Text = serialize(parent2);
 
-        // Krzyżowanie
-        for (int i = 0; i < currentGeneration.size(); i += 2) {
-            if (i + 1 < currentGeneration.size()) {
-                ParseTree program1 = currentGeneration.get(i);
-                ParseTree program2 = currentGeneration.get(i + 1);
+        // Wybierz losowy punkt krzyżowania
+        int crossoverPoint1 = findCrossoverPoint(parent1Text);
+        int crossoverPoint2 = findCrossoverPoint(parent2Text);
 
-                ParseTree crossedProgram = crossover(program1, program2);
-                newGeneration.add(crossedProgram);
-            } else {
-                // Dodaj ostatni program, jeśli nie ma pary do krzyżowania
-                newGeneration.add(currentGeneration.get(i));
+        // Wymień fragmenty programów
+        String crossedText = parent1Text.substring(0, crossoverPoint1) +
+                parent2Text.substring(crossoverPoint2);
+
+        // Zwróć potomka
+        return parseText(crossedText);
+    }
+
+    private static int findCrossoverPoint(String programText) {
+        int lastSemicolonIndex = -1;
+        for (int i = 0; i < programText.length(); i++) {
+            if (programText.charAt(i) == ';') {
+                lastSemicolonIndex = i;
             }
         }
-
-        // Mutacja
-//        List<ParseTree> mutatedPrograms = new ArrayList<>();
-//
-//        for (ParseTree program: newGeneration) {
-//            if (Math.random() < mutationProbability) {
-//                ParseTree mutatedProgram = mutate(program);
-//                mutatedPrograms.add(mutatedProgram);
-//            }
-//        }
-//
-//        currentGeneration.addAll(mutatedPrograms);
-        for (ParseTree program: newGeneration) {
-            if (Math.random() < mutationProbability) {
-                ParseTree mutatedProgram = mutate(program);
-                currentGeneration.add(mutatedProgram);
-            }
+        // Jeśli nie znaleziono średnika, zwróć losowy punkt
+        if (lastSemicolonIndex == -1) {
+            return generateRandomNumber(0, programText.length() - 1);
         }
-
-
-
-        return newGeneration;
+        // W przeciwnym razie, zwróć punkt po ostatnim średniku
+        return lastSemicolonIndex + 1;
     }
 
-    private static ParseTree crossover(ParseTree program1, ParseTree program2) {
-        String programText1 = program1.getText();
-        String programText2 = program2.getText();
 
-        int splitIndex1 = findSplitIndex(programText1);
-        int splitIndex2 = findSplitIndex(programText2);
+    public static ParseTree mutate(ParseTree program) {
+        String programText = serialize(program);
 
-        String newProgramText = programText1.substring(0, splitIndex1) + programText2.substring(splitIndex2);
+        // Wybierz losowy punkt mutacji
+        int mutationPoint = findMutationPoint(programText);
 
-        return parseText(newProgramText);
-    }
+        // Wygeneruj nowy losowy fragment kodu
+        String mutatedText = generateRandomProgram(10, Arrays.asList("var1", "var2", "var3"), 1, 100);
 
-    private static int findSplitIndex(String programText) {
-        int index = generateRandomNumber(1, programText.length() - 1);
+        // Zastąp fragment w programie mutowanym
+        String mutatedProgramText = programText.substring(0, mutationPoint) +
+                mutatedText +
+                programText.substring(mutationPoint);
 
-        while (index < programText.length() - 1) {
-            if (isStatementBoundary(programText, index) && isStatementBoundary(programText, index + 1)) {
-                break;
-            }
-            index++;
-        }
-
-        return index;
-    }
-
-    private static boolean isStatementBoundary(String programText, int index) {
-        return (programText.charAt(index) == ';' && programText.charAt(index + 1) != '}') || (programText.charAt(index) == '}' && programText.charAt(index + 1) != 'e');
-    }
-
-    private static ParseTree mutate(ParseTree program) {
-        String programText = program.getText();
-
-        int mutationIndex = findMutationIndex(programText);
-
-        String mutatedProgramText = programText.substring(0, mutationIndex);
-        int statementLength = generateRandomNumber(1, 10);
-        String randomStatement = generateRandomStatement(statementLength, Arrays.asList("var1", "var2", "var3"),1, 5);
-
-        if (!randomStatement.trim().endsWith(";")) {
-            randomStatement += ";";
-        }
-
-        mutatedProgramText += randomStatement + programText.substring(mutationIndex);
-
+        // Zwróć zmutowany program
         return parseText(mutatedProgramText);
     }
 
-    private static int findMutationIndex(String programText) {
-        int index = generateRandomNumber(1, programText.length() - 1);
-
-        // Sprawdź, czy indeks mieści się pomiędzy dwoma instrukcjami
-        while (index < programText.length() - 1) {
-            if (isStatementBoundary(programText, index) && isStatementBoundary(programText, index + 1)) {
+    private static int findMutationPoint(String programText) {
+        // Znajdź ostatni średnik przed losowym punktem mutacji
+        int lastSemicolonIndex = -1;
+        int mutationPoint = generateRandomNumber(0, programText.length() - 1);
+        for (int i = mutationPoint; i >= 0; i--) {
+            if (programText.charAt(i) == ';') {
+                lastSemicolonIndex = i;
                 break;
             }
-            index++;
         }
-
-        return index;
+        // Jeśli nie znaleziono średnika, zwróć losowy punkt
+        if (lastSemicolonIndex == -1) {
+            return mutationPoint;
+        }
+        // W przeciwnym razie, zwróć punkt po ostatnim średniku
+        return lastSemicolonIndex + 1;
     }
+
+
 
 
     public static void testProgram(ParseTree program, List < Integer > input, List < Integer > output) {
@@ -517,13 +486,13 @@ public class GPUtils {
             System.out.println("_______________________________________-");
             List < ParseTree > programList = Arrays.asList(randomProgram, anotherRandomProgram, crossedProgram, mutatedProgram);
 
-            System.out.println("_______________________________________-");
-            List < ParseTree > nextGeneration = generateNextGeneration(programList);
-
-            ParseTree selectedProgram = tournamentSelection(nextGeneration, 2);
-            System.out.println("_______________________________________-");
-            System.out.println("Selected Program: " + selectedProgram.getText());
-            testProgram(selectedProgram, inputList, outputList);
+//            System.out.println("_______________________________________-");
+//            // List < ParseTree > nextGeneration = generateNextGeneration(programList);
+//
+//           // ParseTree selectedProgram = tournamentSelection(nextGeneration, 2);
+//            System.out.println("_______________________________________-");
+//            System.out.println("Selected Program: " + selectedProgram.getText());
+//            testProgram(selectedProgram, inputList, outputList);
         } else {
             System.out.println("Failed to generate initial random programs.");
         }
