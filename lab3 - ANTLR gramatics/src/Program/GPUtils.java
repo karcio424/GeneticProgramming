@@ -265,15 +265,15 @@ public class GPUtils {
         int randomOperator = generateRandomNumber(0, 2);
         expressionNumOfOperators--;
         switch (randomOperator) {
-            case 0 -> {
+            case 0, 2 -> {
                 return "*";
             }
             case 1 -> {
                 return "/";
             }
-            case 2 -> {
-                return "%";
-            }
+//            case 2 -> {
+//                return "%";
+//            }
         }
         return "";
     }
@@ -332,7 +332,7 @@ public class GPUtils {
     private static double mutationProbability = 0.1; // Prawdopodobieństwo mutacji
 
     public static String crossover(String parent1, String parent2) {
-//        String parent1Text = serialize(parent1);
+//        String parent1Text = serialize(parent1);x
 //        String parent2Text = serialize(parent2);
         String parent1Text = parent1;
         String parent2Text = parent2;
@@ -366,39 +366,34 @@ public class GPUtils {
     }
 
 
-    public static String mutate(String program) {
+    public static String mutate(String program, List<String> variableList) {
 //        String programText = serialize(program);
         String programText = program;
 
-        // Wybierz losowy punkt mutacji
         int mutationPoint = findMutationPoint(programText);
 
-        // Wygeneruj nowy losowy fragment kodu
-        String mutatedText = generateRandomProgram(10, Arrays.asList("var1", "var2", "var3"), 1, 100);
+        String mutatedText = generateRandomProgram(1, variableList, 1, 100);
 
-        // Zastąp fragment w programie mutowanym
         String mutatedProgramText = programText.substring(0, mutationPoint) +
                 mutatedText +
                 programText.substring(mutationPoint);
 
-        // Zwróć zmutowany program
         return mutatedProgramText;
     }
 
     private static int findMutationPoint(String programText) {
         // Znajdź ostatni średnik przed losowym punktem mutacji
         int lastSemicolonIndex = -1;
-        int mutationPoint = generateRandomNumber(0, programText.length() - 1);
-        for (int i = mutationPoint; i >= 0; i--) {
-            if (programText.charAt(i) == ';') {
-                lastSemicolonIndex = i;
-                break;
+        while(lastSemicolonIndex==-1) {
+            int mutationPoint = generateRandomNumber(0, programText.length() - 1);
+            for (int i = mutationPoint; i >= 0; i--) {
+                if (programText.charAt(i) == ';' || programText.charAt(i) == '}') {
+                    lastSemicolonIndex = i;
+                    break;
+                }
             }
         }
-        // Jeśli nie znaleziono średnika, zwróć losowy punkt
-        if (lastSemicolonIndex == -1) {
-            return mutationPoint;
-        }
+
         // W przeciwnym razie, zwróć punkt po ostatnim średniku
         return lastSemicolonIndex + 1;
     }
@@ -413,17 +408,17 @@ public class GPUtils {
         //TODO: TA FUNKCJA BEDZIE W KLASIE INTERPRETER INTERFACE, więc nie ma co tutaj robić
     }
 
-    public static List<String> generateNextGeneration(List<String> currentGeneration) {
+    public static List<String> generateNextGeneration(List<String> currentGeneration, List<String> variableList) {
         List<String> newGeneration = new ArrayList<>();
 
         // Krzyżowanie i mutacja
         for (int i = 0; i < currentGeneration.size(); i++) {
             int whichOperation = generateRandomNumber(1, 1);
-            System.out.println(i + " " + whichOperation);
+//            System.out.println(i + " " + whichOperation);
             if (whichOperation == 1) { // Mutacja
                 String program1 = currentGeneration.get(i);
 
-                String mutatedProgram = mutate(program1);
+                String mutatedProgram = mutate(program1, variableList);
                 newGeneration.add(mutatedProgram);
             } else { // Krzyżowanie
                 if (i + 1 < currentGeneration.size()-1) {

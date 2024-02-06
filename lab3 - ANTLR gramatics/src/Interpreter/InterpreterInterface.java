@@ -48,7 +48,9 @@ public class InterpreterInterface {
         programVisitor.visit(antlrAST);
 //        System.out.println("--------");
         InterpreterInterface.didProgramFail = AntlrProgram.didProgramFail;
-
+        if(InterpreterInterface.didProgramFail){
+            System.out.println(program);
+        }
         return AntlrProgram.programOutput;
     }
 
@@ -117,7 +119,7 @@ public class InterpreterInterface {
             if (expected instanceof Integer && actual instanceof Integer) {
                 distance += Math.abs((Integer) expected - (Integer) actual);
             } else {
-                System.out.println("NIE INTEGER");
+//                System.out.println("NIE INTEGER");
                 distance+=100000;
             }
         }
