@@ -55,18 +55,26 @@ public class GPUtils {
 
     private static String generateRandomConditionalStatement(int length, List < String > variableList) {
         return "if (" + generateRandomExpression(variableList) + ") " +
-                generateRandomBlockStatement(length-1,variableList, 5) +
-                " else" + generateRandomBlockStatement(length-1, variableList, 5);
+                generateRandomBlockStatement(length,variableList, 5) +
+                " else" + generateRandomBlockStatement(length, variableList, 5);
         //TODO: tutaj jak się odwołuję do generateRandomBlockStatement to powinno być length czy length-1????????????????????
     }
 
     private static String generateRandomLoopStatement(int length, List < String > variableList) {
         return "loop(" + generateRandomExpression(variableList) + ")" +
-                generateRandomBlockStatement(length-1,variableList, 1);
+                generateRandomBlockStatement(length,variableList, 1);
         //TODO: dodatkowo!!!: jesli jest samo ID to wybor sposrod zmiennych ktore maja wartosci przypisane
     }
 
     private static String generateRandomBlockStatement(int length, List < String > variableList, int instruction) {
+//        if (length <= 0 || numberOfStatements <= 0) {
+//            return "";
+//        }
+//        int numberStatementsInside = generateRandomNumber(1,1);
+//        numberOfStatements--; // Decrement the number of remaining statements
+//        return "{\n" + generateRandomStatement(numberStatementsInside, variableList, 2, 4) + "}\n" +
+//                generateRandomBlockStatement(length - 1, variableList, instruction);
+
         int numberStatementsInside = generateRandomNumber(1,1);
         if(numberOfStatements<=0){
             numberOfStatements-=numberOfStatements-1;
@@ -341,12 +349,24 @@ public class GPUtils {
         }
 
         // Mutacja
+//        List<ParseTree> mutatedPrograms = new ArrayList<>();
+//
+//        for (ParseTree program: newGeneration) {
+//            if (Math.random() < mutationProbability) {
+//                ParseTree mutatedProgram = mutate(program);
+//                mutatedPrograms.add(mutatedProgram);
+//            }
+//        }
+//
+//        currentGeneration.addAll(mutatedPrograms);
         for (ParseTree program: newGeneration) {
             if (Math.random() < mutationProbability) {
                 ParseTree mutatedProgram = mutate(program);
                 currentGeneration.add(mutatedProgram);
             }
         }
+
+
 
         return newGeneration;
     }
@@ -367,7 +387,7 @@ public class GPUtils {
         int index = generateRandomNumber(1, programText.length() - 1);
 
         while (index < programText.length() - 1) {
-            if (isStatementBoundary(programText, index)) {
+            if (isStatementBoundary(programText, index) && isStatementBoundary(programText, index + 1)) {
                 break;
             }
             index++;
@@ -401,8 +421,9 @@ public class GPUtils {
     private static int findMutationIndex(String programText) {
         int index = generateRandomNumber(1, programText.length() - 1);
 
+        // Sprawdź, czy indeks mieści się pomiędzy dwoma instrukcjami
         while (index < programText.length() - 1) {
-            if (isStatementBoundary(programText, index)) {
+            if (isStatementBoundary(programText, index) && isStatementBoundary(programText, index + 1)) {
                 break;
             }
             index++;
@@ -410,6 +431,7 @@ public class GPUtils {
 
         return index;
     }
+
 
     public static void testProgram(ParseTree program, List < Integer > input, List < Integer > output) {
         AntlrProgram programVisitor = new AntlrProgram(1000);

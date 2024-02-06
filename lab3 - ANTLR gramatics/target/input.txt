@@ -1,5 +1,5 @@
-loop(var51) {var51=59;}
-var23=96;
-var21=48;
-{var23=64;}
-{var12=16;}
+loop(var32) {var32=79;}
+if (var32) {var32=79;} else {var32=6;}
+if (var72) {var72=89;} else {var72=65;}
+var72=58;
+if (var14) {var14=13;} else {var14=47;}
