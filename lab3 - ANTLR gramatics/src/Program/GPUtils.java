@@ -15,34 +15,36 @@ public class GPUtils {
     public static int max = 10;
     public static int min = 1;
     public static int expressionNumOfOperators = 0;
+    public static int numberOfStatements = 10;
 
     public static String generateRandomProgram(int length, List < String > list, int min_r, int max_r) {
         //        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(generateRandomStatement(length, list)));
         //        GPprojectParser parser = new GPprojectParser(new CommonTokenStream(lexer));
         max = max_r;
         min = min_r;
-        return generateRandomStatement(length, list);
+        numberOfStatements = length;
+        return generateRandomStatement(length, list, 1, 5);
         //        return generateRandomStatement(length, list);
     }
 
-    private static String generateRandomStatement(int length, List < String > variableList) {
-        if (length <= 0) {
+    private static String generateRandomStatement(int length, List < String > variableList, int from, int to) {
+        if (numberOfStatements<=0 || length<=0) {
             return "";
         }
 
         String statement = "";
-        int randomRule = generateRandomNumber(1, 5);
+        int randomRule = generateRandomNumber(from, to);
         int randomVar = generateRandomNumber(0, variableList.size() - 1);
 
         switch (randomRule) {
-            case 1 -> statement = generateRandomLoopStatement(length - 1, variableList.get(randomVar), variableList);
-            case 2 -> statement = generateRandomConditionalStatement(length - 1, variableList.get(randomVar), variableList);
-            case 3 -> statement = generateRandomBlockStatement(length - 1, variableList.get(randomVar));
-            case 4 -> statement = generateRandomAssignmentStatement(length - 1, variableList.get(randomVar), variableList);
-            case 5 -> statement = generateRandomOutputStatement(variableList);
+            case 1 -> statement = generateRandomLoopStatement(length - 1, variableList);
+            case 2 -> statement = generateRandomOutputStatement(variableList);
+//            case 3 -> statement = generateRandomBlockStatement(length - 1, variableList);
+            case 3, 4 -> statement = generateRandomAssignmentStatement(length - 1, variableList.get(randomVar), variableList);
+            case 5 -> statement = generateRandomConditionalStatement(length - 1, variableList);
         }
-
-        return statement + generateRandomStatement(length - 1, variableList);
+        numberOfStatements--;
+        return statement + generateRandomStatement(length - 1, variableList, 1, 5);
         //TODO: zastosowanie koncepcji full i grow (albo którejś z nich)
     }
 
@@ -51,51 +53,46 @@ public class GPUtils {
         return "output(" + variableList.get(randomVar) + ");\n";
     }
 
-    private static String generateRandomConditionalStatement(int length, String
-            var, List < String > variableList) {
-        String condition =
-                var;
-        String thenStatement = "{" +
-                var +"=" + generateRandomNumber() + ";}";
-        String elseStatement = "{" +
-                var +"=" + generateRandomNumber() + ";}";
-
-        //        return "if (" + condition + ") " + thenStatement + "else" + elseStatement + "\n";
-        return "if (" + generateRandomExpression(variableList) + ") " + generateRandomBlockStatement(length,
-                var) + "\telse" + generateRandomBlockStatement(length,
-                var);
+    private static String generateRandomConditionalStatement(int length, List < String > variableList) {
+        return "if (" + generateRandomExpression(variableList) + ") " +
+                generateRandomBlockStatement(length-1,variableList, 5) +
+                " else" + generateRandomBlockStatement(length-1, variableList, 5);
         //TODO: tutaj jak się odwołuję do generateRandomBlockStatement to powinno być length czy length-1????????????????????
     }
 
-    private static String generateRandomLoopStatement(int length, String
-            var, List < String > variableList) {
-        //        return "loop(" + var + ") {" + var + "=" + generateRandomNumber() + ";}\n";
-        return "loop(" + generateRandomExpression(variableList) + ")" + generateRandomBlockStatement(length,
-                var);
+    private static String generateRandomLoopStatement(int length, List < String > variableList) {
+        return "loop(" + generateRandomExpression(variableList) + ")" +
+                generateRandomBlockStatement(length-1,variableList, 1);
         //TODO: dodatkowo!!!: jesli jest samo ID to wybor sposrod zmiennych ktore maja wartosci przypisane
-        // .
-        // MOŻNA PRZEMYSLEC CZY NA POCZATKU PROGRAMU OD RAZU KAZDEJ ZMIENNEJ NIE PRZYPISAC wartosci (np. 0)
     }
 
-    private static String generateRandomBlockStatement(int length, String
-            var) {
-        return "{" +
-                var +"=" + generateRandomNumber() + ";}\n";
+    private static String generateRandomBlockStatement(int length, List < String > variableList, int instruction) {
+        int numberStatementsInside = generateRandomNumber(1,1);
+        if(numberOfStatements<=0){
+            numberOfStatements-=numberOfStatements-1;
+            return "{\n" + generateRandomStatement(numberStatementsInside, variableList, 2, 4) + "}\n";
+//            System.out.println("NIE MAAAAAA");
+//            return generateRandomAssignmentStatement(length,variableList.get(randomVar), variableList);
+        }
+//        if (numberStatementsInside>numberOfStatements){
+//            numberOfStatements+=1;
+//        }
+//        numberOfStatements-=numberStatementsInside;
+        if(instruction==1){
+            return "{\n" + generateRandomStatement(numberStatementsInside, variableList, 2, 4) + "}\n";
+        }
+        return "{\n" + generateRandomStatement(numberStatementsInside, variableList, 2, 4) + "}\n";
         //TODO: generateRandomStatement (i tutaj w szczególności pamiętać o tym,
         // żeby nie mogło generować w nieskończoność zagęszczonych instrukcji
-        // .
-        // nie rozumiem obu części tego punktu!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
 
-    private static String generateRandomAssignmentStatement(int length, String
-            var, List < String > variableList) {
+    private static String generateRandomAssignmentStatement(int length, String var, List < String > variableList) {
         //        return var + "="+ generateRandomNumber() + ";\n";
         return var +"=" + generateRandomExpression(variableList) + ";\n";
-        //TODO: var = generateRandomExpression
     }
 
     private static String generateRandomExpression(List<String> variableList) {
-        int randomRule = generateRandomNumber(1, 6);
+        int randomRule = generateRandomNumber(1, 5);
         switch (randomRule) {
             case 1 -> {
                 // ID
@@ -110,11 +107,11 @@ public class GPUtils {
                 // BOOL
                 return generateRandomNumber(0, 1) == 0 ? "true" : "false";
             }
-            case 4,5 -> {
+            case 4 -> {
                 //input
                 return "input";
             }
-            case 6 -> {
+            case 5 -> {
                 // expression
                 expressionNumOfOperators = generateRandomNumber(1, 1);
 //                System.out.println("ILE: " + expressionNumOfOperators);
@@ -390,7 +387,7 @@ public class GPUtils {
 
         String mutatedProgramText = programText.substring(0, mutationIndex);
         int statementLength = generateRandomNumber(1, 10);
-        String randomStatement = generateRandomStatement(statementLength, Arrays.asList("var1", "var2", "var3"));
+        String randomStatement = generateRandomStatement(statementLength, Arrays.asList("var1", "var2", "var3"),1, 5);
 
         if (!randomStatement.trim().endsWith(";")) {
             randomStatement += ";";
