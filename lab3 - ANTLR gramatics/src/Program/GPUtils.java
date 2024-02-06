@@ -20,8 +20,8 @@ public class GPUtils {
     public static String generateRandomProgram(int length, List<String> list, int min_r, int max_r) {
         //        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(generateRandomStatement(length, list)));
         //        GPprojectParser parser = new GPprojectParser(new CommonTokenStream(lexer));
-        max = max_r;
         min = min_r;
+        max = max_r;
         numberOfStatements = length;
         return generateRandomStatement(length, list, 1, 5);
         //        return generateRandomStatement(length, list);
@@ -109,7 +109,7 @@ public class GPUtils {
             }
             case 2, 8, 9 -> {
                 // INT
-                return String.valueOf(generateRandomNumber(0, 100));
+                return String.valueOf(generateRandomNumber(0, max));
             }
             case 3 -> {
                 // BOOL
@@ -288,7 +288,7 @@ public class GPUtils {
             }
             case 1, 2 -> {
                 // INT
-                return String.valueOf(generateRandomNumber(0, 100));
+                return String.valueOf(generateRandomNumber(0, max));
             }
 //            case 2 -> {
 //                // BOOL -> na razie nie uzywamy
@@ -372,7 +372,7 @@ public class GPUtils {
 
         int mutationPoint = findMutationPoint(programText);
 
-        String mutatedText = generateRandomProgram(1, variableList, 1, 100);
+        String mutatedText = generateRandomProgram(1, variableList, 1, max);
 
         String mutatedProgramText = programText.substring(0, mutationPoint) +
                 mutatedText +
@@ -387,7 +387,7 @@ public class GPUtils {
         while(lastSemicolonIndex==-1) {
             int mutationPoint = generateRandomNumber(0, programText.length() - 1);
             for (int i = mutationPoint; i >= 0; i--) {
-                if (programText.charAt(i) == ';' || programText.charAt(i) == '}') {
+                if (programText.charAt(i) == ';'){// || programText.charAt(i) == '}') {
                     lastSemicolonIndex = i;
                     break;
                 }

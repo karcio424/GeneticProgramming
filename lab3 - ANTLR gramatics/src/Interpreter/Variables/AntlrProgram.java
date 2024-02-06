@@ -76,8 +76,8 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
 //                System.out.println("NEW-CONTEXT:"+ContextTable.variables);
 //                System.out.println();
             } catch (RuntimeException exception) {
-                System.out.println("Program couldn't evaluate");
-                System.out.println("CURRENT OUTPUT: " + programOutput);
+//                System.out.println("Program couldn't evaluate");
+//                System.out.println("CURRENT OUTPUT: " + programOutput);
                 didProgramFail = true;
                 break;
             }

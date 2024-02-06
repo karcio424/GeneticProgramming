@@ -48,9 +48,9 @@ public class InterpreterInterface {
         programVisitor.visit(antlrAST);
 //        System.out.println("--------");
         InterpreterInterface.didProgramFail = AntlrProgram.didProgramFail;
-        if(InterpreterInterface.didProgramFail){
-            System.out.println(program);
-        }
+//        if(InterpreterInterface.didProgramFail){
+//            System.out.println(program);
+//        }
         return AntlrProgram.programOutput;
     }
 

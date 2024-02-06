@@ -23,6 +23,9 @@ public class GPTesting {
     //    Vector<List<List<Object>>> outputList = new Vector<>(populationSize);
     double bestFitness;
     int numberOfFails = 0;
+    double bestGlobalFitness;
+    String bestProgram;
+    int bestGeneration;
 
     public GPTesting(ArrayList<int[]> t_input, ArrayList<Object[]> t_output,
                      int t_maxVariables, int t_populationSize, int t_generations,
@@ -40,6 +43,9 @@ public class GPTesting {
         input = t_input;
         expectedOutput = t_output;
         parameters = new ArrayList<>();
+        bestGlobalFitness = Double.MAX_VALUE;
+        bestProgram="";
+        bestGeneration=-1;
     }
 
     public List<Object> runTest() {
@@ -47,8 +53,8 @@ public class GPTesting {
         population = grupaZGeneracji.get(0);
         globalVariables = grupaZGeneracji.get(1);
         ArrayList<Object> actualOutput;
-        double fitness, bestGlobalFitness = 1000000;
-        String program, bestProgram = null;
+        double fitness;
+        String program;
         ArrayList<Integer> currentInput = new ArrayList<>();
         calculate_generation(currentInput);
         List<Object> resultList = new ArrayList<>();
@@ -60,14 +66,18 @@ public class GPTesting {
         System.out.println("NAJLEPSZY: " + bestIndex + " " + bestFitness);
         System.out.println(population.get(bestIndex));
         System.out.println("--------------------------------");
-        bestGlobalFitness = bestFitness;
         for (int gen = 1; gen < generations; gen++) {
             System.out.println(bestGlobalFitness);
-            if (bestGlobalFitness == 0) {
+            if (bestGlobalFitness > bestFitness) {
+                bestGlobalFitness = bestFitness;
                 bestProgram = population.get(bestIndex);
                 resultList.set(0, bestGlobalFitness);
                 resultList.set(1, bestProgram);
-                return resultList;
+                bestGeneration=gen-1;
+                System.out.println(bestGlobalFitness);
+                if(bestGlobalFitness==0){
+                    return resultList;
+                }
             }
             population = GPUtils.generateNextGeneration(population, globalVariables);
             calculate_generation(currentInput);
@@ -76,14 +86,18 @@ public class GPTesting {
             System.out.println("NAJLEPSZY: " + bestIndex + " " + bestFitness);
             System.out.println(population.get(bestIndex));
             System.out.println("--------------------------------");
-            if (bestGlobalFitness > bestFitness) {
+            if (gen==9 && bestGlobalFitness > bestFitness) {
                 bestGlobalFitness = bestFitness;
                 bestProgram = population.get(bestIndex);
                 resultList.set(0, bestGlobalFitness);
                 resultList.set(1, bestProgram);
+                bestGeneration=gen;
             }
         }
         System.out.println("NUMBER OF FAILS: " + numberOfFails);
+        System.out.println(bestGlobalFitness);
+        System.out.println(bestGeneration);
+        resultList.set(0, bestGlobalFitness);
         return resultList;
     }
 
@@ -144,7 +158,7 @@ public class GPTesting {
 
     public static double main(int[][] inputMatrix, int maxVal) {
         int maxVariables = 3;
-        int populationSize = 1000;
+        int populationSize = 10000;
         int generations = 10;
         int maxOperations = 1000;
         int minValue = 1;

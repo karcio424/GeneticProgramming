@@ -3,8 +3,6 @@ package Interpreter.Variables;
 import Interpreter.GPprojectBaseVisitor;
 import Interpreter.GPprojectParser;
 
-import java.util.Objects;
-
 public class AntlrTerm extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitTerm(GPprojectParser.TermContext ctx) {
@@ -20,8 +18,9 @@ public class AntlrTerm extends GPprojectBaseVisitor<Statement> {
                 case "*" -> new Factor(left * right);
                 case "/" -> {
                     if (right == 0) {
-                        throw new WrongProgramException("RuntimeException: Division by Zero\n" +
-                                "The program encountered an attempt to divide by zero.");
+                        yield new Factor(left);
+//                        throw new WrongProgramException("RuntimeException: Division by Zero\n" +
+//                                "The program encountered an attempt to divide by zero.");
                     }
                     yield new Factor(left / right);
                 }
