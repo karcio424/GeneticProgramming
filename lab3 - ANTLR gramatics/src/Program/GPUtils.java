@@ -331,7 +331,7 @@ public class GPUtils {
 
     private static double mutationProbability = 0.1; // Prawdopodobieństwo mutacji
 
-    public static String crossover(String parent1, String parent2) {
+    public static List crossover(String parent1, String parent2) {
 //        String parent1Text = serialize(parent1);x
 //        String parent2Text = serialize(parent2);
         String parent1Text = parent1;
@@ -342,12 +342,16 @@ public class GPUtils {
         int crossoverPoint2 = findCrossoverPoint(parent2Text);
 
         // Wymień fragmenty programów
-        String crossedText = parent1Text.substring(0, crossoverPoint1) +
-                parent2Text.substring(crossoverPoint2);
-
+//        String crossedText = parent1Text.substring(0, crossoverPoint1) +
+//                parent2Text.substring(crossoverPoint2);
+        String crossedText1 = parent1Text.substring(0, crossoverPoint1) + parent2Text.substring(0, crossoverPoint2);
+        String crossedText2 = parent1Text.substring(crossoverPoint1) + parent2Text.substring(crossoverPoint2);
+        List crossedList = new ArrayList(2);
+        crossedList.add(crossedText1);
+        crossedList.add(crossedText2);
         // Zwróć potomka
         //parseText()
-        return crossedText;
+        return crossedList;
     }
 
     private static int findCrossoverPoint(String programText) {
@@ -413,7 +417,7 @@ public class GPUtils {
 
         // Krzyżowanie i mutacja
         for (int i = 0; i < currentGeneration.size(); i++) {
-            int whichOperation = generateRandomNumber(1, 1);
+            int whichOperation = generateRandomNumber(1, 2);
 //            System.out.println(i + " " + whichOperation);
             if (whichOperation == 1) { // Mutacja
                 String program1 = currentGeneration.get(i);
@@ -425,8 +429,13 @@ public class GPUtils {
                     String program1 = currentGeneration.get(i);
                     String program2 = currentGeneration.get(i + 1);
 
-                    String crossedProgram = crossover(program1, program2);
-                    newGeneration.add(crossedProgram);
+                    List crossedProgram = crossover(program1, program2);
+                    String crossedProgram1 = (String) crossedProgram.get(0);
+                    crossedProgram.remove(0);
+                    String crossedProgram2 = (String) crossedProgram.get(0);
+                    crossedProgram.remove(0);
+                    newGeneration.add(crossedProgram1);
+                    newGeneration.add(crossedProgram2);
                     i++;
                 } else {
                     newGeneration.add(currentGeneration.get(i));
