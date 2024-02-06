@@ -120,7 +120,7 @@ public class InterpreterInterface {
                 distance += Math.abs((Integer) expected - (Integer) actual);
             } else {
 //                System.out.println("NIE INTEGER");
-                distance+=100000;
+                distance+=1000;
             }
         }
         return distance;

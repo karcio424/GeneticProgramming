@@ -31,7 +31,7 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
 //            System.out.println("ID-CASE");
             Object value = ContextTable.getVariableValue(varName);
             if (value == null){
-                return new Factor(0);
+                return new Factor(1);
 //                return null; //ZMIANY NA RAZIE
             }
             if (value instanceof Boolean) {

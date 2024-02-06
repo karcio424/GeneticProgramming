@@ -119,7 +119,7 @@ public class GPTesting {
 
     public int getBestProgram() {
         double fitness;
-        bestFitness = 1000000;
+        bestFitness = Double.MAX_VALUE;
         String program = null;
         int bestProgram = -1;
         int JUST_TEST = 0, poprawne = 0;
@@ -144,7 +144,7 @@ public class GPTesting {
 
     public static double main(int[][] inputMatrix, int maxVal) {
         int maxVariables = 3;
-        int populationSize = 100;
+        int populationSize = 1000;
         int generations = 10;
         int maxOperations = 1000;
         int minValue = 1;
