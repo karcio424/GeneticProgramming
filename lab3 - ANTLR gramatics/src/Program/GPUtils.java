@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class GPUtils {
     public static int max = 10;
     public static int min = 1;
+    public static int expressionNumOfOperators = 0;
 
     public static String generateRandomProgram(int length, List < String > list, int min_r, int max_r) {
         //        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(generateRandomStatement(length, list)));
@@ -61,8 +62,8 @@ public class GPUtils {
 
         //        return "if (" + condition + ") " + thenStatement + "else" + elseStatement + "\n";
         return "if (" + generateRandomExpression(variableList) + ") " + generateRandomBlockStatement(length,
-                var) + "else" + generateRandomBlockStatement(length,
-                var) + "\n";
+                var) + "\telse" + generateRandomBlockStatement(length,
+                var);
         //TODO: tutaj jak się odwołuję do generateRandomBlockStatement to powinno być length czy length-1????????????????????
     }
 
@@ -93,8 +94,8 @@ public class GPUtils {
         //TODO: var = generateRandomExpression
     }
 
-    private static String generateRandomExpression(List < String > variableList) {
-        int randomRule = generateRandomNumber(1, 4);
+    private static String generateRandomExpression(List<String> variableList) {
+        int randomRule = generateRandomNumber(1, 6);
         switch (randomRule) {
             case 1 -> {
                 // ID
@@ -109,16 +110,23 @@ public class GPUtils {
                 // BOOL
                 return generateRandomNumber(0, 1) == 0 ? "true" : "false";
             }
-            case 4 -> {
+            case 4,5 -> {
+                //input
+                return "input";
+            }
+            case 6 -> {
                 // expression
-                return generateRandomLogicTerm(variableList) + generateRandomExpressionTail(variableList, 4);
-                //TODO: do poprawy ten limit
+                expressionNumOfOperators = generateRandomNumber(1, 1);
+//                System.out.println("ILE: " + expressionNumOfOperators);
+                return generateRandomLogicTerm(variableList);
+                //     + generateRandomExpressionTail(variableList);
+                //NA RAZIE NIE JEST TO POTRZEBNE
             }
         }
         return "";
     }
 
-    private static String generateRandomExpressionTail(List < String > variableList, int limit) {
+    private static String generateRandomExpressionTail(List<String> variableList) {
         int randomRule = generateRandomNumber(0, 1);
         switch (randomRule) {
             case 0 -> {
@@ -127,8 +135,10 @@ public class GPUtils {
             }
             case 1 -> {
                 // ('&&' | '||') logicTerm
-                if (limit > 0) {
-                    return " " + generateRandomLogicalOperator() + " " + generateRandomLogicTerm(variableList) + generateRandomExpressionTail(variableList, limit - 1);
+                if (expressionNumOfOperators > 0) {
+                    return " " + generateRandomLogicalOperator() + " " +
+                            generateRandomLogicTerm(variableList) +
+                            generateRandomExpressionTail(variableList);
                 } else
                     return "";
             }
@@ -138,14 +148,15 @@ public class GPUtils {
 
     private static String generateRandomLogicalOperator() {
         int randomOperator = generateRandomNumber(0, 1);
+        expressionNumOfOperators--;
         return randomOperator == 0 ? "&&" : "||";
     }
 
-    private static String generateRandomLogicTerm(List < String > variableList) {
-        return generateRandomArithmeticExpression(variableList) + generateRandomLogicTermTail(variableList, 1);
+    private static String generateRandomLogicTerm(List<String> variableList) {
+        return generateRandomArithmeticExpression(variableList) + generateRandomLogicTermTail(variableList);
     }
 
-    private static String generateRandomLogicTermTail(List < String > variableList, int limit) {
+    private static String generateRandomLogicTermTail(List<String> variableList) {
         int randomRule = generateRandomNumber(0, 1);
         switch (randomRule) {
             case 0 -> {
@@ -153,9 +164,11 @@ public class GPUtils {
                 return "";
             }
             case 1 -> {
-                if (limit > 0) {
+                if (expressionNumOfOperators > 0) {
                     // ('<' | '>' | '==' | '!=' | '<=' | '>=') arithmeticExpression
-                    return " " + generateRandomComparisonOperator() + " " + generateRandomArithmeticExpression(variableList) + generateRandomLogicTermTail(variableList, limit - 1);
+                    return " " + generateRandomComparisonOperator() + " " +
+                            generateRandomArithmeticExpression(variableList) +
+                            generateRandomLogicTermTail(variableList);
                 } else
                     return "";
             }
@@ -165,6 +178,7 @@ public class GPUtils {
 
     private static String generateRandomComparisonOperator() {
         int randomOperator = generateRandomNumber(0, 5);
+        expressionNumOfOperators--;
         switch (randomOperator) {
             case 0 -> {
                 return "<";
@@ -188,11 +202,11 @@ public class GPUtils {
         return "";
     }
 
-    private static String generateRandomArithmeticExpression(List < String > variableList) {
-        return generateRandomTerm(variableList) + generateRandomArithmeticExpressionTail(variableList, 1);
+    private static String generateRandomArithmeticExpression(List<String> variableList) {
+        return generateRandomTerm(variableList) + generateRandomArithmeticExpressionTail(variableList);
     }
 
-    private static String generateRandomArithmeticExpressionTail(List < String > variableList, int limit) {
+    private static String generateRandomArithmeticExpressionTail(List<String> variableList) {
         int randomRule = generateRandomNumber(0, 1);
         switch (randomRule) {
             case 0 -> {
@@ -201,8 +215,10 @@ public class GPUtils {
             }
             case 1 -> {
                 // ('+' | '-') term
-                if (limit > 0) {
-                    return " " + generateRandomArithmeticOperator() + " " + generateRandomTerm(variableList) + generateRandomArithmeticExpressionTail(variableList, limit - 1);
+                if (expressionNumOfOperators > 0) {
+                    return " " + generateRandomArithmeticOperator() + " " +
+                            generateRandomTerm(variableList) +
+                            generateRandomArithmeticExpressionTail(variableList);
                 } else
                     return "";
             }
@@ -212,14 +228,15 @@ public class GPUtils {
 
     private static String generateRandomArithmeticOperator() {
         int randomOperator = generateRandomNumber(0, 1);
+        expressionNumOfOperators--;
         return randomOperator == 0 ? "+" : "-";
     }
 
-    private static String generateRandomTerm(List < String > variableList) {
-        return generateRandomFactor(variableList) + generateRandomTermTail(variableList, 1);
+    private static String generateRandomTerm(List<String> variableList) {
+        return generateRandomFactor(variableList) + generateRandomTermTail(variableList);
     }
 
-    private static String generateRandomTermTail(List < String > variableList, int limit) {
+    private static String generateRandomTermTail(List<String> variableList) {
         int randomRule = generateRandomNumber(0, 1);
         switch (randomRule) {
             case 0 -> {
@@ -227,9 +244,11 @@ public class GPUtils {
                 return "";
             }
             case 1 -> {
-                if (limit > 0) {
+                if (expressionNumOfOperators > 0) {
                     // ('*' | '/' | '%') factor
-                    return " " + generateRandomMultiplicativeOperator() + " " + generateRandomFactor(variableList) + generateRandomTermTail(variableList, limit - 1);
+                    return " " + generateRandomMultiplicativeOperator() + " " +
+                            generateRandomFactor(variableList) +
+                            generateRandomTermTail(variableList);
                 } else
                     return "";
             }
@@ -239,6 +258,7 @@ public class GPUtils {
 
     private static String generateRandomMultiplicativeOperator() {
         int randomOperator = generateRandomNumber(0, 2);
+        expressionNumOfOperators--;
         switch (randomOperator) {
             case 0 -> {
                 return "*";
@@ -253,28 +273,29 @@ public class GPUtils {
         return "";
     }
 
-    private static String generateRandomFactor(List < String > variableList) {
-        int randomRule = generateRandomNumber(0, 4);
+    private static String generateRandomFactor(List<String> variableList) {
+        int randomRule = generateRandomNumber(0, 2); //NA RAZIE ZMIENIONE DLA UPROSZCZENIA
         switch (randomRule) {
             case 0 -> {
                 // ID
                 int randomVar = generateRandomNumber(0, variableList.size() - 1);
                 return variableList.get(randomVar);
             }
-            case 1 -> {
+            case 1, 2 -> {
                 // INT
                 return String.valueOf(generateRandomNumber(0, 100));
             }
-            case 2 -> {
-                // BOOL
-                return generateRandomNumber(0, 1) == 0 ? "true" : "false";
-            }
+//            case 2 -> {
+//                // BOOL -> na razie nie uzywamy
+//                return generateRandomNumber(0, 1) == 0 ? "true" : "false";
+//            }
             case 3 -> {
                 // '(' expression ')'
                 return "(" + generateRandomExpression(variableList) + ")";
             }
             case 4 -> {
                 // '-' factor
+                expressionNumOfOperators--;
                 return "-" + generateRandomFactor(variableList);
             }
         }

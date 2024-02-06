@@ -7,7 +7,7 @@ public class AntlrLoopStatement extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitLoopStatement(GPprojectParser.LoopStatementContext ctx) {
         //TODO: ILE RÓWNY MAX RANGE?
-        int MAX_RANGE = 100;
+        int MAX_RANGE = 10;
         int range = 0;
         AntlrExpression expressionVisitor = new AntlrExpression();
         AntlrBlockStatement blockStatementVisitor = new AntlrBlockStatement();
@@ -21,6 +21,9 @@ public class AntlrLoopStatement extends GPprojectBaseVisitor<Statement> {
                     System.out.println("LOOP SIĘ NIE WYKONAŁ!!!");
                 }
             } else {
+                if (!((BoolFactor) rangeValue).value){
+                    return null;
+                }
                 range = MAX_RANGE;
             }
             //        System.out.println("ILOŚĆ WYKONANIA PĘTLI: " + range);

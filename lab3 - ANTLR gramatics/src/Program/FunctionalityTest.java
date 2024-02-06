@@ -1,6 +1,7 @@
 package Program;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FunctionalityTest {
     //TODO: ZROBIC MAX VALUE!!!
@@ -15,7 +16,7 @@ public class FunctionalityTest {
                 {9, 9, 9, 9, 9, 1},
                 {1, 2, 3, 4, 5, 1},
                 {1, 1, 1, 1, 1, 1}};
-        GPTesting.main(testCase);
+        assertEquals(0, GPTesting.main(testCase, 100));
     }
     @Test
     //1.1.B Program powinien wygenerować na wyjściu (na dowolnej pozycji w danych wyjściowych)
@@ -28,7 +29,7 @@ public class FunctionalityTest {
                 {9, 9, 9, 9, 9, 789},
                 {1, 2, 3, 4, 5, 789},
                 {1, 1, 1, 1, 1, 789}};
-        GPTesting.main(testCase);
+        assertEquals(0, GPTesting.main(testCase, 1000));
     }
 
     @Test
@@ -42,7 +43,7 @@ public class FunctionalityTest {
                 {9, 9, 9, 9, 9, 31415},
                 {1, 2, 3, 4, 5, 31415},
                 {1, 1, 1, 1, 1, 31415}};
-        GPTesting.main(testCase);
+        assertEquals(0, GPTesting.main(testCase, 100000));
     }
 
     @Test
@@ -56,7 +57,7 @@ public class FunctionalityTest {
                 {9, 9, 9, 9, 9, 1},
                 {1, 2, 3, 4, 5, 1},
                 {1, 1, 1, 1, 1, 1}};
-        GPTesting.main(testCase);
+        assertEquals(0, GPTesting.main(testCase, 100));
     }
 
     @Test
@@ -70,7 +71,7 @@ public class FunctionalityTest {
                 {9, 9, 9, 9, 9, 789},
                 {1, 2, 3, 4, 5, 789},
                 {1, 1, 1, 1, 1, 789}};
-        GPTesting.main(testCase);
+        assertEquals(0, GPTesting.main(testCase, 1000));
     }
 
     @Test
@@ -84,7 +85,7 @@ public class FunctionalityTest {
                 {9, 9, 9, 9, 9, 1},
                 {1, 2, 3, 4, 5, 1},
                 {1, 1, 1, 1, 1, 1}};
-        GPTesting.main(testCase);
+        assertEquals(0, GPTesting.main(testCase, 100));
     }
 
     @Test
@@ -103,7 +104,7 @@ public class FunctionalityTest {
                 {7, 3, 10},
                 {5, 8, 13},
                 {0, 1, 1}};
-        GPTesting.main(testCase);
+        assertEquals(0, GPTesting.main(testCase, 100));
     }
 
     @Test
@@ -122,7 +123,7 @@ public class FunctionalityTest {
                 {7, 3, 10},
                 {-5, 8, 3},
                 {0, 1, 1}};
-        GPTesting.main(testCase);
+        GPTesting.main(testCase, 100);
     }
 
     @Test
@@ -141,7 +142,7 @@ public class FunctionalityTest {
                 {792, 33, 825},
                 {-5535, 8121, 2586},
                 {1990, 1, 1991}};
-        GPTesting.main(testCase);
+        GPTesting.main(testCase, 100);
     }
 
 

@@ -43,8 +43,10 @@ public class InterpreterInterface {
 //        System.out.println("------------- Program: -------------");
 //        System.out.println(program);
 //        System.out.println("------------------------------------");
+//        System.out.println("--------");
         AntlrProgram programVisitor = new AntlrProgram(maxOperations, inputArray);
         programVisitor.visit(antlrAST);
+//        System.out.println("--------");
         InterpreterInterface.didProgramFail = AntlrProgram.didProgramFail;
 
         return AntlrProgram.programOutput;
@@ -120,6 +122,10 @@ public class InterpreterInterface {
             }
         }
         return distance;
+    }
+
+    public static boolean getDidProgramFail(){
+        return didProgramFail;
     }
 
 

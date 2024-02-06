@@ -54,11 +54,15 @@ public class AntlrProgram extends GPprojectBaseVisitor<Main> {
         maxOperationCount = maxCount;
         programOutput = new ArrayList<>();
         currentIndex = 0;
-//        VariablesTable.reset();
         didProgramFail = false;
-        inputList.clear();
-        ContextTable.variables.clear();
+        inputList= new ArrayList<>();
+//        System.out.println(ContextTable.variables);
+        ContextTable.reset();
+//        System.out.println(ContextTable.variables);
+
+//        System.out.println("INPUT-LIST: " + inputVector);
         inputList = inputVector;
+//        System.out.println("INPUT-LIST: " + inputList);
     }
 
     @Override

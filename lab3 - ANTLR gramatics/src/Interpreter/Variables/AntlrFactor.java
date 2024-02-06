@@ -18,7 +18,6 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
 //            System.out.println("FALSE-CASE");
             return new BoolFactor(false);
         } else if (Objects.equals(varName, "input")) {
-//            System.out.println("INPUT HANDLER");
             if (AntlrProgram.currentIndex >= AntlrProgram.inputList.size()) {
                 AntlrProgram.currentIndex = 0;
             }
@@ -32,7 +31,8 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
 //            System.out.println("ID-CASE");
             Object value = ContextTable.getVariableValue(varName);
             if (value == null){
-                return null;
+                return new Factor(0);
+//                return null; //ZMIANY NA RAZIE
             }
             if (value instanceof Boolean) {
                 return new BoolFactor((Boolean) value);
