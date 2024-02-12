@@ -11,12 +11,10 @@ import static org.antlr.v4.runtime.CharStreams.fromString;
 
 public class InterpreterInterface {
 
-    private static int maxOperationCount = 0;
     private static boolean didProgramFail;
     public static int testsCasesCount;
 
     public InterpreterInterface(int maxOperationCount) {
-        InterpreterInterface.maxOperationCount = maxOperationCount;
         InterpreterInterface.didProgramFail = false;
     }
 
@@ -70,15 +68,15 @@ public class InterpreterInterface {
         testsCasesCount = testCases;
         int actualLength = actualOutput.size();
         int expectedLength;
-        int difference=0;
-        for(int i=0;i<testsCasesCount;i++){
+        int difference = 0;
+        for (int i = 0; i < testsCasesCount; i++) {
             expectedLength = expectedOutput.get(i).length;
             //TODO: jak okreslic parametry dlugosci
             int lengthDifference = expectedLength - actualLength;
             if (lengthDifference > 0) {
-                difference += lengthDifference*1000;
+                difference += lengthDifference * 1000;
             } else {
-                difference += calculateDistance(actualOutput, expectedOutput.get(i)) - lengthDifference*1000;//*paramaters.get(1);
+                difference += calculateDistance(actualOutput, expectedOutput.get(i)) - lengthDifference * 1000;//*paramaters.get(1);
             }
         }
         return difference;
@@ -89,9 +87,9 @@ public class InterpreterInterface {
         int expectedLength = expectedOutput.length;
         int lengthDifference = expectedLength - actualLength;
         if (lengthDifference > 0) {
-            return lengthDifference*1000;
+            return lengthDifference * 1000;
         } else {
-            return calculateDistance(actualOutput, expectedOutput) - lengthDifference*1000;//*paramaters.get(1);
+            return calculateDistance(actualOutput, expectedOutput) - lengthDifference * 1000;//*paramaters.get(1);
         }
 
     }
@@ -120,13 +118,13 @@ public class InterpreterInterface {
                 distance += Math.abs((Integer) expected - (Integer) actual);
             } else {
 //                System.out.println("NIE INTEGER");
-                distance+=1000;
+                distance += 1000;
             }
         }
         return distance;
     }
 
-    public static boolean getDidProgramFail(){
+    public static boolean getDidProgramFail() {
         return didProgramFail;
     }
 

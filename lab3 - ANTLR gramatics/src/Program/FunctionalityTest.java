@@ -1,6 +1,7 @@
 package Program;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FunctionalityTest {
@@ -18,6 +19,7 @@ public class FunctionalityTest {
                 {1, 1, 1, 1, 1, 1}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
+
     @Test
     //1.1.B Program powinien wygenerować na wyjściu (na dowolnej pozycji w danych wyjściowych)
     // liczbę 789. Poza liczbą 789 może też zwrócić inne liczby.

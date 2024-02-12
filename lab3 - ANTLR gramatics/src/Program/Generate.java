@@ -18,7 +18,7 @@ public class Generate {
     public static List<List<String>> generatePopulation(int size, int min_r, int max_r, int numOfVars) {
         List<List<String>> krotkaDoZwrocenia = new ArrayList<>();
         List<String> population = new ArrayList<>();
-         variableList = new ArrayList<>(Main.generateRandomVariableArray(numOfVars, numOfVars));
+        variableList = new ArrayList<>(Main.generateRandomVariableArray(numOfVars, numOfVars));
 
         for (int i = 0; i < size; i++) {
             String randomProgram = GPUtils.generateRandomProgram(10, variableList, min_r, max_r);

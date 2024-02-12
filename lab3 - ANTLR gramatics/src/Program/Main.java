@@ -1,26 +1,19 @@
 package Program;
 
-import java.util.Arrays;
-import java.util.Random;
-
+import Interpreter.GPprojectLexer;
+import Interpreter.GPprojectParser;
 import Interpreter.Variables.AntlrProgram;
 import Interpreter.Variables.ContextTable;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ConsoleErrorListener;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.io.FileWriter;
 import java.io.IOException;
-
-import Interpreter.GPprojectParser;
-import Interpreter.GPprojectLexer;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -64,7 +57,7 @@ public class Main {
             }
             AntlrProgram programVisitor = new AntlrProgram(100);
             programVisitor.visit(tree);
-            System.out.println("PROGRAM FAILED?:"+AntlrProgram.didProgramFail);
+            System.out.println("PROGRAM FAILED?:" + AntlrProgram.didProgramFail);
             System.out.println(ContextTable.variables);
             return AntlrProgram.programOutput;
         } catch (RuntimeException e) {
@@ -86,7 +79,7 @@ public class Main {
 
         String statement = "";
         int randomRule = generateRandomNumber(1, 4);
-        int randomVar = generateRandomNumber(0, variableList.size()-1);
+        int randomVar = generateRandomNumber(0, variableList.size() - 1);
 
         switch (randomRule) {
             case 1 -> statement = generateRandomLoopStatement(parser, length - 1, variableList.get(randomVar));
@@ -100,26 +93,26 @@ public class Main {
     }
 
     private static String generateRandomLoopStatement(GPprojectParser parser, int length, String var) {
-        return "loop(" + var + ") {" + var + "="+ generateRandomNumber(1,100) +";}\n";
+        return "loop(" + var + ") {" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
     }
 
     private static String generateRandomConditionalStatement(GPprojectParser parser, int length, String var) {
-        return "if ("+ var + ") " +
-                "{" + var + "="+ generateRandomNumber(1,100) +";} " +
+        return "if (" + var + ") " +
+                "{" + var + "=" + generateRandomNumber(1, 100) + ";} " +
                 "else " +
-                "{" + var +"="+ generateRandomNumber(1,100) +";}\n";
+                "{" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
     }
 
     private static String generateRandomBlockStatement(GPprojectParser parser, int length, String var) {
-        return "{" + var + "="+ generateRandomNumber(1,100) + ";}\n";
+        return "{" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
     }
 
     private static String generateRandomAssignmentStatement(GPprojectParser parser, String var) {
-        return var + "="+ generateRandomNumber(1,100) + ";\n";
+        return var + "=" + generateRandomNumber(1, 100) + ";\n";
     }
 
     private static String generateRandomIOStatement(GPprojectParser parser, String var) {
-        return "output("+ var+ ");\n";
+        return "output(" + var + ");\n";
     }
 
     private static int generateRandomNumber(int min, int max) {
