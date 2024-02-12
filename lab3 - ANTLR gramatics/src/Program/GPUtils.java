@@ -13,6 +13,7 @@ public class GPUtils {
     public static int min = 1;
     public static int expressionNumOfOperators = 0;
     public static int numberOfStatements = 10;
+    private static final double mutationProbability = 0.3;
     public static Random rand = new Random();
 
     public static String generateRandomProgram(int length, List<String> list, int min_r, int max_r) {
@@ -309,12 +310,10 @@ public class GPUtils {
         return "var" + generateRandomNumber();
     }
 
-    private static final double mutationProbability = 0.3;
-
     public static List<String> crossover(String parent1, String parent2) {
         int crossoverPoint1 = findCrossoverPoint(parent1);
         int crossoverPoint2 = findCrossoverPoint(parent2);
-        System.out.println(crossoverPoint1 + " " + crossoverPoint2);
+//        System.out.println(crossoverPoint1 + " " + crossoverPoint2);
 
         String crossedText1 = parent1.substring(0, crossoverPoint1) + parent2.substring(crossoverPoint2);
         String crossedText2 = parent2.substring(0, crossoverPoint2) + parent1.substring(crossoverPoint1);
@@ -351,7 +350,9 @@ public class GPUtils {
 
         int populationSize = population.size() - 1;
         int tournamentSize = 100, selectedPopulationSize = 10, finalPopulationSize = 2;
+//        System.out.println(population.get(0) + " " + outputFitness.get(0));
         Collections.sort(population);
+//        System.out.println(population.get(0) + " " + outputFitness.get(0));
 
         for (int i = populationSize - tournamentSize; i < populationSize; i++)
             bestPopulation.add(new Population(population.get(i), outputFitness.get(i)));

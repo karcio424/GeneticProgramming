@@ -68,12 +68,12 @@ public class GPTesting {
                     return resultList;
                 }
             }
+            System.out.println("WIELKOSC POPULACJI: " + population.size());
             population = GPUtils.generateNextGeneration(population, globalVariables, outputFitness);
             calculate_generation(currentInput);
             bestIndex = getBestProgram();
             System.out.println("------    GENERACJA " + gen + "  -------");
             System.out.println("NAJLEPSZY: " + bestIndex + " " + bestFitness);
-            System.out.println(population.get(bestIndex));
             System.out.println("--------------------------------");
             if (gen == 9 && bestGlobalFitness > bestFitness) {
                 bestGlobalFitness = bestFitness;
