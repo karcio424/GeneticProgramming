@@ -314,6 +314,7 @@ public class GPUtils {
     public static List<String> crossover(String parent1, String parent2) {
         int crossoverPoint1 = findCrossoverPoint(parent1);
         int crossoverPoint2 = findCrossoverPoint(parent2);
+        System.out.println(crossoverPoint1 + " " + crossoverPoint2);
 
         String crossedText1 = parent1.substring(0, crossoverPoint1) + parent2.substring(crossoverPoint2);
         String crossedText2 = parent2.substring(0, crossoverPoint2) + parent1.substring(crossoverPoint1);
@@ -439,7 +440,21 @@ public class GPUtils {
         List<String> first = Arrays.asList("var1", "var2", "var3");
         List<String> second = Arrays.asList("var4", "var5", "var6");
 
-        ParseTree randomProgram = parseText(generateRandomProgram(10, first, 1, 100));
-        ParseTree anotherRandomProgram = parseText(generateRandomProgram(10, second, 1, 100));
+        String randomProgram = generateRandomProgram(10, first, 1, 100);
+        String anotherRandomProgram = generateRandomProgram(10, second, 1, 100);
+        String mutated = mutate(randomProgram, first);
+        List<String> crossed = crossover(randomProgram, anotherRandomProgram);
+
+//        ParseTree randomProgram = parseText(generateRandomProgram(10, first, 1, 100));
+//        ParseTree anotherRandomProgram = parseText(generateRandomProgram(10, second, 1, 100));
+
+        System.out.println(randomProgram);
+        System.out.println(anotherRandomProgram);
+        System.out.println("=========");
+        System.out.println(mutated);
+        System.out.println("=========");
+        System.out.println(crossed.get(0));
+        System.out.println("=========");
+        System.out.println(crossed.get(1));
     }
 }
