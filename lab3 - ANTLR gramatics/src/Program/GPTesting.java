@@ -47,6 +47,7 @@ public class GPTesting {
         ArrayList<Integer> currentInput = new ArrayList<>();
         calculate_generation(currentInput);
         List<Object> resultList = new ArrayList<>();
+        List<Double> fitnessFromEveryGeneration = new ArrayList<>();
         resultList.add(bestGlobalFitness);
         resultList.add("");
 
@@ -55,6 +56,7 @@ public class GPTesting {
         System.out.println("NAJLEPSZY: " + bestIndex + " " + bestFitness);
         System.out.println(population.get(bestIndex));
         System.out.println("--------------------------------");
+        fitnessFromEveryGeneration.add(bestFitness);
         for (int gen = 1; gen < generations; gen++) {
             System.out.println(bestGlobalFitness);
             if (bestGlobalFitness > bestFitness) {
@@ -76,6 +78,7 @@ public class GPTesting {
             System.out.println("NAJLEPSZY: " + bestIndex + " " + bestFitness);
             System.out.println(population.get(bestIndex));
             System.out.println("--------------------------------");
+            fitnessFromEveryGeneration.add(bestFitness);
             if (gen == 9 && bestGlobalFitness > bestFitness) {
                 bestGlobalFitness = bestFitness;
                 bestProgram = population.get(bestIndex);
@@ -87,6 +90,7 @@ public class GPTesting {
         System.out.println("NUMBER OF FAILS: " + numberOfFails);
         System.out.println(bestGlobalFitness);
         System.out.println(bestGeneration);
+        System.out.println("FITNESSY z GENERACJI: " + fitnessFromEveryGeneration.toString());
         resultList.set(0, bestGlobalFitness);
         return resultList;
     }
