@@ -133,10 +133,10 @@ public class GPTesting {
     }
 
     public static double main(int[][] inputMatrix, int maxVal) {
-        int maxVariables = 2;
-        int populationSize = 5000;
-        int generations = 8;
-        int maxOperations = 2000;
+        int maxVariables = 3;
+        int populationSize = 10000;
+        int generations = 5;
+        int maxOperations = 3000;
         int minValue = 1;
         int testCases;
         ArrayList<int[]> inputVector = new ArrayList<>();

@@ -342,12 +342,15 @@ public class GPUtils {
         return new GramaticsAnalyzer(programText).analyze().getRandomMutationPoint();
     }
 
-    public static List<String> tournamentSelection(List<String> population, Vector<Double> outputFitness) {
+    public static List<String> tournamentSelection(List<String> population, Vector<Double> outputFitness,
+                                                   int tournamentSize, int selectedPopulationSize, int finalPopulationSize) {
         List<Population> bestPopulation = new ArrayList<>();
         List<String> selectedPopulation = new ArrayList<>();
 
+        while(outputFitness.size() != population.size())
+            population.remove(population.size() - 1);
+
         int populationSize = population.size() - 1;
-        int tournamentSize = 100, selectedPopulationSize = 10, finalPopulationSize = 2;
 //        System.out.println(population.get(0) + " " + outputFitness.get(0));
         Collections.sort(population);
 //        System.out.println(population.get(0) + " " + outputFitness.get(0));
@@ -392,25 +395,27 @@ public class GPUtils {
 //    }
 
     public static List<String> generateNextGeneration(List<String> currentGeneration, List<String> variableList, Vector<Double> outputFitness) {
-        List<String> newGeneration = tournamentSelection(currentGeneration, outputFitness);
         Random rand = new Random();
         int populationSize = currentGeneration.size();
         int programIndex1, programIndex2;
 
+        while(outputFitness.size() != currentGeneration.size())
+            currentGeneration.remove(currentGeneration.size() - 1);
+        List<String> newGeneration = tournamentSelection(currentGeneration, outputFitness, 100, 10, 5);
+        int initialSizeOfNewGeneration = newGeneration.size();
+
         while (newGeneration.size() < populationSize) {
-            int currentSize = newGeneration.size();
-            programIndex1 = rand.nextInt(currentSize);
+            programIndex1 = rand.nextInt(initialSizeOfNewGeneration);
             String program1 = newGeneration.get(programIndex1);
 
-            int whichOperation = rand.nextInt(10);
-            if (whichOperation < 10 * mutationProbability) { // Mutacja
+            boolean whichOperation = rand.nextInt(10) < 10 * mutationProbability; // true - mutation, false - crossover
+            if (whichOperation) { // Mutacja
                 String mutatedProgram = mutate(program1, variableList);
                 newGeneration.add(mutatedProgram);
             } else { // Krzyżowanie
-                System.out.println(currentSize);
-                programIndex2 = rand.nextInt(currentSize);
+                programIndex2 = rand.nextInt(initialSizeOfNewGeneration);
                 while (programIndex2 == programIndex1)
-                    programIndex2 = rand.nextInt(currentSize);
+                    programIndex2 = rand.nextInt(initialSizeOfNewGeneration);
                 String program2 = newGeneration.get(programIndex2);
                 List<String> crossedProgram = crossover(program1, program2);
                 String crossedProgram1 = crossedProgram.get(0);
