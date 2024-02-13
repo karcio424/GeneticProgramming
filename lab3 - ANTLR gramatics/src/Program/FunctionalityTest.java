@@ -210,16 +210,16 @@ public class FunctionalityTest {
     public void function_1_3_B() {
         int[][] testCase = {
                 {10, 2, 1},
-                {-900, 8000, 7100},
-                {1, -5000, -4999},
-                {3, 4, 7},
+                {-900, 8000, 8000},
+                {1, -5000, 1},
+                {3, 4, 4},
                 {900, 0, 900},
                 {0, 0, 0},
-                {1000, -1000, 0},
-                {500, -350, 150},
-                {792, 33, 825},
-                {-5535, 8121, 2586},
-                {1990, 1, 1991}};
+                {1000, -1000, 1000},
+                {500, -350, 500},
+                {792, 33, 792},
+                {-5535, 8121, 8121},
+                {1990, 1, 1990}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
 
@@ -229,17 +229,17 @@ public class FunctionalityTest {
     // Na wejściu mogą być tylko całkowite liczby w zakresie [-99,99]
     public void function_1_4_A() {
         int[][] testCase = {
-                {10, 2, 1},
-                {-900, 8000, 7100},
-                {1, -5000, -4999},
-                {3, 4, 7},
-                {900, 0, 900},
-                {0, 0, 0},
-                {1000, -1000, 0},
-                {500, -350, 150},
-                {792, 33, 825},
-                {-5535, 8121, 2586},
-                {1990, 1, 1991}};
+                {10, 10, 1},
+                {-25, -30, -67, -24, 25, 30, 67, 24, -2, 2, 0},
+                {20, -23, 33, 19, 2, -70, 80, 56, -99, 17, 4},
+                {20, -23, 33, 19, 2, 70, 80, 56, 99, 17, 37},
+                {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5},
+                {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -5},
+                {85, -98, 18, 15, -60, -17, 65, -74, 16, 27, -2},
+                {31, -34, -48, 73, -29, -42, 75, -35, 49, 35, 8},
+                {61, -32, 72, 72, 30, -68, 8, -83, 4, -17, 5},
+                {66, 61, 4, 85, 43, 90, 92, -59, 25, -81, 33},
+                {81, -57, -21, 93, 15, 14, 48, -74, 45, -5, 11}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
 
@@ -252,17 +252,136 @@ public class FunctionalityTest {
     // pierwsza liczba może być tylko w zakresie [0,99].
     public void function_1_4_B() {
         int[][] testCase = {
-                {10, 2, 1},
-                {-900, 8000, 7100},
-                {1, -5000, -4999},
-                {3, 4, 7},
-                {900, 0, 900},
-                {0, 0, 0},
-                {1000, -1000, 0},
-                {500, -350, 150},
-                {792, 33, 825},
-                {-5535, 8121, 2586},
-                {1990, 1, 1991}};
+                {4, 5, 1}, //INFO: DAJEMY ZAWSZE ŚREDNIĄ Z 4 LICZB
+                {4, -73, -19, 25, 21, -12},
+                {4, -7, -58, 16, -94, -36},
+                {4, 98, 27, 58, -63, 30},
+                {4, 94, -86, 73, 47, 32}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
+
+    @Test
+    public void TestBenchmark_2() { //Small or Large: if n < 1000 return 0 if n >= 2000 return 1
+        int[][] testCase = {
+                {10, 1, 1},
+                {10, 0},
+                {330, 0},
+                {2340, 1},
+                {2000, 1},
+                {990, 0},
+                {82, 0},
+                {9, 0},
+                {2740, 1},
+                {2620, 1},
+                {2390, 1}};
+
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+
+    @Test
+    void TestBenchmark_21() { //Negative to zero: Given a vector of integers,
+                            // return the vector where all negative int have been replaced by 0
+        int[][] testCase = {
+                {10, 3, 3},
+                {1, 0, 3, 1, 0, 3},
+                {33, 13, 23, 33, 13, 23},
+                {0, 10, -2, 0, 10, 0},
+                {10, -33, 2, 10, 0, 2},
+                {0, 1, 2, 0, 1, 2},
+                {-80, 11, 0, 0, 11, 0},
+                {-90, -22, -3, 0, 0, 0},
+                {-274, -32, 2, 0, 0, 2},
+                {0, 0, 0, 0, 0, 0},
+                {-239, -1, -2, 0, 0, 0}};
+
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+
+    @Test
+    void TestBenchmark_27() { //Median of 3 integers
+        int[][] testCase = {
+                {10, 3, 1},
+                {1, 0, 3, 1},
+                {33, 13, 23, 23},
+                {0, 10, -2, 0},
+                {10, -33, 2, 2},
+                {0, 1, 2, 1},
+                {-80, -11, 0, -11},
+                {90, 22, -3, 22},
+                {-274, -32, 2, -32},
+                {0, 0, 0, 0},
+                {-239, -1, -200, -200}};
+
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+
+    @Test
+    void TestBool_AND() {
+        int[][] testCase = {
+                {4, 2, 1},
+                {0, 0, 0},
+                {0, 1, 0},
+                {1, 0, 0},
+                {1, 1, 1}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+    @Test
+    void TestBool_OR() {
+        int[][] testCase = {
+                {4, 2, 1},
+                {0, 0, 0},
+                {0, 1, 1},
+                {1, 0, 1},
+                {1, 1, 1}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+    @Test
+    void TestBool_XOR() {
+        int[][] testCase = {
+                {4, 2, 1},
+                {0, 0, 0},
+                {0, 1, 1},
+                {1, 0, 1},
+                {1, 1, 0}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+    @Test
+    void TestBool_NOT() {
+        int[][] testCase = {
+                {2, 1, 1},
+                {0, 1},
+                {1, 0}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+    @Test
+    void TestBool_NOR() {
+        int[][] testCase = {
+                {4, 2, 1},
+                {0, 0, 1},
+                {0, 1, 0},
+                {1, 0, 0},
+                {1, 1, 0}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+    @Test
+    void TestBool_NAND() {
+        int[][] testCase = {
+                {4, 2, 1},
+                {0, 0, 1},
+                {0, 1, 1},
+                {1, 0, 1},
+                {1, 1, 0}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+    @Test
+    void TestBool_XNOR() {
+        int[][] testCase = {
+                {4, 2, 1},
+                {0, 0, 1},
+                {0, 1, 0},
+                {1, 0, 0},
+                {1, 1, 1}};
+        assertEquals(0, GPTesting.main(testCase, 100));
+    }
+
 }

@@ -313,7 +313,6 @@ public class GPUtils {
     public static List<String> crossover(String parent1, String parent2) {
         int crossoverPoint1 = findCrossoverPoint(parent1);
         int crossoverPoint2 = findCrossoverPoint(parent2);
-//        System.out.println(crossoverPoint1 + " " + crossoverPoint2);
 
         String crossedText1 = parent1.substring(0, crossoverPoint1) + parent2.substring(crossoverPoint2);
         String crossedText2 = parent2.substring(0, crossoverPoint2) + parent1.substring(crossoverPoint1);
@@ -321,7 +320,6 @@ public class GPUtils {
         List<String> crossedList = new ArrayList<>(2);
         crossedList.add(crossedText1);
         crossedList.add(crossedText2);
-
         return crossedList;
     }
 
@@ -396,7 +394,7 @@ public class GPUtils {
     public static List<String> generateNextGeneration(List<String> currentGeneration, List<String> variableList, Vector<Double> outputFitness) {
         List<String> newGeneration = tournamentSelection(currentGeneration, outputFitness);
         Random rand = new Random();
-        int populationSize = 5000;
+        int populationSize = currentGeneration.size();
         int programIndex1, programIndex2;
 
         while (newGeneration.size() < populationSize) {
@@ -409,6 +407,7 @@ public class GPUtils {
                 String mutatedProgram = mutate(program1, variableList);
                 newGeneration.add(mutatedProgram);
             } else { // Krzyżowanie
+                System.out.println(currentSize);
                 programIndex2 = rand.nextInt(currentSize);
                 while (programIndex2 == programIndex1)
                     programIndex2 = rand.nextInt(currentSize);
@@ -443,7 +442,7 @@ public class GPUtils {
 
         String randomProgram = generateRandomProgram(10, first, 1, 100);
         String anotherRandomProgram = generateRandomProgram(10, second, 1, 100);
-        String mutated = mutate(randomProgram, first);
+//        String mutated = mutate(randomProgram, first);
         List<String> crossed = crossover(randomProgram, anotherRandomProgram);
 
 //        ParseTree randomProgram = parseText(generateRandomProgram(10, first, 1, 100));
@@ -452,8 +451,8 @@ public class GPUtils {
         System.out.println(randomProgram);
         System.out.println(anotherRandomProgram);
         System.out.println("=========");
-        System.out.println(mutated);
-        System.out.println("=========");
+//        System.out.println(mutated);
+//        System.out.println("=========");
         System.out.println(crossed.get(0));
         System.out.println("=========");
         System.out.println(crossed.get(1));

@@ -74,6 +74,7 @@ public class GPTesting {
             bestIndex = getBestProgram();
             System.out.println("------    GENERACJA " + gen + "  -------");
             System.out.println("NAJLEPSZY: " + bestIndex + " " + bestFitness);
+            System.out.println(population.get(bestIndex));
             System.out.println("--------------------------------");
             if (gen == 9 && bestGlobalFitness > bestFitness) {
                 bestGlobalFitness = bestFitness;
