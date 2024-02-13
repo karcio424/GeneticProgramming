@@ -19,7 +19,7 @@ public class GramaticsAnalyzer {
     }
 
     public PointsContainer analyze() {
-        System.out.println(program);
+//        System.out.println(program);
         GramAnalyzerMode recentlyFoundKeyword = NONE;
         for (int i = 0; i < program.length(); i++) {
             char c = program.charAt(i);

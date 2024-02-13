@@ -67,7 +67,7 @@ public class GPTesting {
                 bestGeneration = gen - 1;
                 System.out.println(bestGlobalFitness);
                 if (bestGlobalFitness == 0) {
-                    return resultList;
+                    break;
                 }
             }
             System.out.println("WIELKOSC POPULACJI: " + population.size());
@@ -139,7 +139,7 @@ public class GPTesting {
     public static double main(int[][] inputMatrix, int maxVal) {
         int maxVariables = 3;
         int populationSize = 10000;
-        int generations = 5;
+        int generations = 50;
         int maxOperations = 3000;
         int minValue = 1;
         int testCases;
