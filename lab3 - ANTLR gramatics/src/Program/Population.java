@@ -13,8 +13,12 @@ public class Population implements Comparable<Population> {
         return program;
     }
 
+    public double getFitness() {
+        return fitness;
+    }
+
     @Override
     public int compareTo(Population population) {
-        return Double.compare(fitness, population.fitness);
+        return Double.compare(this.fitness, population.fitness) * (-1);
     }
 }
