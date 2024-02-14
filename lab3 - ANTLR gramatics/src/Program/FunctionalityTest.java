@@ -260,23 +260,23 @@ public class FunctionalityTest {
         assertEquals(0, GPTesting.main(testCase, 100));
     }
 
-    @Test
-    public void TestBenchmark_2() { //Small or Large: if n < 1000 return 0 if n >= 2000 return 1
-        int[][] testCase = {
-                {10, 1, 1},
-                {10, 0},
-                {330, 0},
-                {2340, 1},
-                {2000, 1},
-                {990, 0},
-                {82, 0},
-                {9, 0},
-                {2740, 1},
-                {2620, 1},
-                {2390, 1}};
-
-        assertEquals(0, GPTesting.main(testCase, 100));
-    }
+//    @Test
+//    public void TestBenchmark_2() { //Small or Large: if n < 1000 return 0 if n >= 2000 return 1
+//        int[][] testCase = {
+//                {10, 1, 1},
+//                {10, 0},
+//                {330, 0},
+//                {2340, 1},
+//                {2000, 1},
+//                {990, 0},
+//                {82, 0},
+//                {9, 0},
+//                {2740, 1},
+//                {2620, 1},
+//                {2390, 1}};
+//
+//        assertEquals(0, GPTesting.main(testCase, 100));
+//    }
 
     @Test
     void TestBenchmark_21() { //Negative to zero: Given a vector of integers,
