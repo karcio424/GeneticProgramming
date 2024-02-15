@@ -1,0 +1,14 @@
+# Ignorowanie folderów
+/test/
+/out/
+
+# Ignorowanie plików InteliJ IDEA
+*.iml
+.idea/
+
+# Ignorowanie plików Visual Studio Code
+.vscode/
+
+# Ignorowanie plików w podkatalogach
+**/.idea/
+**/.vscode/
