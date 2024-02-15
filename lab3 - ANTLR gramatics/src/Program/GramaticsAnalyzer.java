@@ -96,12 +96,12 @@ public class GramaticsAnalyzer {
             // check for possible mutation points
             if (c == '-' || c == '+' || c == '*' || c == '/' || c == '%')
                 mutationPoints.add(i);
-            if ((c == '>' && program.charAt(i+1) != '=') ||((c == '<' && program.charAt(i+1) != '=')))
+            if ((c == '>' && program.charAt(i + 1) != '=') || ((c == '<' && program.charAt(i + 1) != '=')))
                 mutationPoints.add(i);
-            if ((c == '>' && program.charAt(i+1) == '=') || (c == '<' && program.charAt(i+1) == '=') ||
-            (c == '=' && program.charAt(i+1) == '=') || (c == '!' && program.charAt(i+1) == '=')){
+            if ((c == '>' && program.charAt(i + 1) == '=') || (c == '<' && program.charAt(i + 1) == '=') ||
+                    (c == '=' && program.charAt(i + 1) == '=') || (c == '!' && program.charAt(i + 1) == '=')) {
                 mutationPoints.add(i);
-                i+=1;
+                i += 1;
             }
             if (c == 'i' && program.length() - i >= 5)
                 if (program.charAt(i + 1) == 'n' && program.charAt(i + 2) == 'p'
@@ -116,14 +116,14 @@ public class GramaticsAnalyzer {
                     i += 2;
                 }
             }
-            if (c >= '0' && c <= '9'){
-                if((program.charAt(i-1) != 'r')){
+            if (c >= '0' && c <= '9') {
+                if ((program.charAt(i - 1) != 'r')) {
                     mutationPoints.add(i);
                 }
-                char next = program.charAt(i+1);
-                while (program.length() - i >= 1 && next >= '0' && next <= '9'){
-                    i+=1;
-                    next = program.charAt(i+1);
+                char next = program.charAt(i + 1);
+                while (program.length() - i >= 1 && next >= '0' && next <= '9') {
+                    i += 1;
+                    next = program.charAt(i + 1);
                 }
 
             }

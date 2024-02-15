@@ -2,14 +2,15 @@ package Interpreter.Variables;
 
 public class BoolStatement {
     public boolean satisfied;
-    public BoolStatement(Statement variable){
-        if (variable instanceof Factor){
+
+    public BoolStatement(Statement variable) {
+        if (variable instanceof Factor) {
             satisfied = (((Factor) variable).value != 0);
-        }
-        else
+        } else
             satisfied = false;
     }
-    public BoolStatement(){
+
+    public BoolStatement() {
         satisfied = false;
     }
 

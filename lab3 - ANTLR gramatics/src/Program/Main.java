@@ -66,53 +66,46 @@ public class Main {
     }
 
     public static String generateRandomProgram(int length, List<String> list) {
-        GPprojectParser parser = new GPprojectParser(null);
 
-        return generateRandomStatement(parser, length, list);
+        return generateRandomStatement(length, list);
     }
 
-    private static String generateRandomStatement(GPprojectParser parser, int length, List<String> variableList) {
+    private static String generateRandomStatement(int length, List<String> variableList) {
         if (length <= 0) {
             return "";
         }
-//        TODO: remember min, max
 
         String statement = "";
         int randomRule = generateRandomNumber(1, 4);
         int randomVar = generateRandomNumber(0, variableList.size() - 1);
 
         switch (randomRule) {
-            case 1 -> statement = generateRandomLoopStatement(parser, length - 1, variableList.get(randomVar));
-            case 2 -> statement = generateRandomConditionalStatement(parser, length - 1, variableList.get(randomVar));
-            case 3 -> statement = generateRandomBlockStatement(parser, length - 1, variableList.get(randomVar));
-            case 4 -> statement = generateRandomAssignmentStatement(parser, variableList.get(randomVar));
-//            case 5 -> statement = generateRandomIOStatement(parser, variableList.get(0));
+            case 1 -> statement = generateRandomLoopStatement(variableList.get(randomVar));
+            case 2 -> statement = generateRandomConditionalStatement(variableList.get(randomVar));
+            case 3 -> statement = generateRandomBlockStatement(variableList.get(randomVar));
+            case 4 -> statement = generateRandomAssignmentStatement(variableList.get(randomVar));
         }
 
-        return statement + generateRandomStatement(parser, length - 1, variableList);
+        return statement + generateRandomStatement(length - 1, variableList);
     }
 
-    private static String generateRandomLoopStatement(GPprojectParser parser, int length, String var) {
+    private static String generateRandomLoopStatement(String var) {
         return "loop(" + var + ") {" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
     }
 
-    private static String generateRandomConditionalStatement(GPprojectParser parser, int length, String var) {
+    private static String generateRandomConditionalStatement(String var) {
         return "if (" + var + ") " +
                 "{" + var + "=" + generateRandomNumber(1, 100) + ";} " +
                 "else " +
                 "{" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
     }
 
-    private static String generateRandomBlockStatement(GPprojectParser parser, int length, String var) {
+    private static String generateRandomBlockStatement(String var) {
         return "{" + var + "=" + generateRandomNumber(1, 100) + ";}\n";
     }
 
-    private static String generateRandomAssignmentStatement(GPprojectParser parser, String var) {
+    private static String generateRandomAssignmentStatement(String var) {
         return var + "=" + generateRandomNumber(1, 100) + ";\n";
-    }
-
-    private static String generateRandomIOStatement(GPprojectParser parser, String var) {
-        return "output(" + var + ");\n";
     }
 
     private static int generateRandomNumber(int min, int max) {

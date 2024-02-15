@@ -14,18 +14,13 @@ public class InterpreterInterface {
     private static boolean didProgramFail;
     public static int testsCasesCount;
 
-    public InterpreterInterface(int maxOperationCount) {
+    public InterpreterInterface() {
         InterpreterInterface.didProgramFail = false;
     }
 
-    public static ArrayList<Object> evaluateProgram(String program, String inputFileName, int maxOperations) {
-//        ANTLRErrorListener errorListener = new BaseErrorListener();
+    public static ArrayList<Object> evaluateProgram(String program, int maxOperations) {
         GPprojectParser parser = getParser(program);
-//        parser.addErrorListener(errorListener);
         ParseTree antlrAST = parser.program();
-//        System.out.println("------------- Program: -------------");
-//        System.out.println(program);
-//        System.out.println("------------------------------------");
         AntlrProgram programVisitor = new AntlrProgram(maxOperations);
         programVisitor.visit(antlrAST);
         InterpreterInterface.didProgramFail = AntlrProgram.didProgramFail;
@@ -34,21 +29,11 @@ public class InterpreterInterface {
     }
 
     public static ArrayList<Object> evaluateProgram(String program, ArrayList<Integer> inputArray, int maxOperations) {
-//        ANTLRErrorListener errorListener = new BaseErrorListener();
         GPprojectParser parser = getParser(program);
-//        parser.addErrorListener(errorListener);
         ParseTree antlrAST = parser.program();
-//        System.out.println("------------- Program: -------------");
-//        System.out.println(program);
-//        System.out.println("------------------------------------");
-//        System.out.println("--------");
         AntlrProgram programVisitor = new AntlrProgram(maxOperations, inputArray);
         programVisitor.visit(antlrAST);
-//        System.out.println("--------");
         InterpreterInterface.didProgramFail = AntlrProgram.didProgramFail;
-//        if(InterpreterInterface.didProgramFail){
-//            System.out.println(program);
-//        }
         return AntlrProgram.programOutput;
     }
 
@@ -60,7 +45,6 @@ public class InterpreterInterface {
         lexer.addErrorListener(lexer.getErrorListenerDispatch());
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         parser = new GPprojectParser(tokens);
-//        parser.addErrorListener();
         return parser;
     }
 
@@ -71,12 +55,11 @@ public class InterpreterInterface {
         int difference = 0;
         for (int i = 0; i < testsCasesCount; i++) {
             expectedLength = expectedOutput.get(i).length;
-            //TODO: jak okreslic parametry dlugosci
             int lengthDifference = expectedLength - actualLength;
             if (lengthDifference > 0) {
                 difference += lengthDifference * 1000;
             } else {
-                difference += calculateDistance(actualOutput, expectedOutput.get(i)) - lengthDifference * 1000;//*paramaters.get(1);
+                difference += calculateDistance(actualOutput, expectedOutput.get(i)) - lengthDifference * 1000;
             }
         }
         return difference;
@@ -89,25 +72,10 @@ public class InterpreterInterface {
         if (lengthDifference > 0) {
             return lengthDifference * 1000;
         } else {
-            return calculateDistance(actualOutput, expectedOutput) - lengthDifference * 1000;//*paramaters.get(1);
+            return calculateDistance(actualOutput, expectedOutput) - lengthDifference * 1000;
         }
 
     }
-//
-//    private static int calculateDistance(ArrayList<Object> actualOutput, ArrayList<Object> expectedOutput) {
-//        int distance = 0;
-//        for (int i = 0; i < expectedOutput.size(); i++) {
-//            Object expected = expectedOutput.get(i);
-//            Object actual = actualOutput.get(i);
-//            if (expected instanceof Integer && actual instanceof Integer) {
-//                distance += Math.abs((Integer) expected - (Integer) actual);
-//            } else {
-//                System.out.println("NIE INTEGER");
-//                distance+=100000;
-//            }
-//        }
-//        return distance;
-//    }
 
     private static int calculateDistance(ArrayList<Object> actualOutput, Object[] expectedOutput) {
         int distance = 0;
@@ -117,7 +85,6 @@ public class InterpreterInterface {
             if (expected instanceof Integer && actual instanceof Integer) {
                 distance += Math.abs((Integer) expected - (Integer) actual);
             } else {
-//                System.out.println("NIE INTEGER");
                 distance += 1000;
             }
         }
@@ -127,6 +94,4 @@ public class InterpreterInterface {
     public static boolean getDidProgramFail() {
         return didProgramFail;
     }
-
-
 }

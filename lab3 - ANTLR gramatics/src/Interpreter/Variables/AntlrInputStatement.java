@@ -13,8 +13,7 @@ public class AntlrInputStatement extends GPprojectBaseVisitor<Factor> {
             String data = inputFile.nextLine();
             int value = Integer.parseInt(data);
             return new Factor(value);
-        }
-        else throw new WrongProgramException("RuntimeException: Insufficient data in input file\n" +
+        } else throw new WrongProgramException("RuntimeException: Insufficient data in input file\n" +
                 "The program attempted to read more numbers from the input file than are available.\n");
     }
 

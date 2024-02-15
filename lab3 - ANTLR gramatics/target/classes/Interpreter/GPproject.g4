@@ -11,8 +11,6 @@ statement:
 	| inputStatement
 	| outputStatement;
 
-//TUTAJ ZASTANOWIC SIE NAD expression? => blockStatement
-
 loopStatement: 'loop' '(' expression ')' blockStatement;
 
 conditionalStatement:	'if' '(' expression ')' blockStatement ('else' blockStatement)?;
@@ -28,8 +26,6 @@ inputStatement: 'input';
 outputStatement: 'output' '(' ID (',' ID)* ')' ';';
 
 expression: logicTerm (('&&' | '||') logicTerm)*;
-//input na ten moment jako zamiana na expression
-
 
 logicTerm:	arithmeticExpression (('<' | '>' | '==' | '!=' | '<=' | '>=') arithmeticExpression )?;
 

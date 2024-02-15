@@ -2,7 +2,9 @@ package Program;
 
 import Interpreter.InterpreterInterface;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 public class GPTesting {
     int maxVariables;
@@ -70,7 +72,6 @@ public class GPTesting {
                     break;
                 }
             }
-//            System.out.println("WIELKOSC POPULACJI: " + population.size());
             population = GPUtils.generateNextGeneration(population, globalVariables, outputFitness);
             calculate_generation(currentInput);
             bestIndex = getBestProgram();
@@ -90,7 +91,7 @@ public class GPTesting {
         System.out.println("NUMBER OF FAILS: " + numberOfFails);
         System.out.println(bestGlobalFitness);
         System.out.println(bestGeneration);
-        System.out.println("FITNESSY z GENERACJI: " + fitnessFromEveryGeneration.toString());
+        System.out.println("FITNESSY z GENERACJI: " + fitnessFromEveryGeneration);
         resultList.set(0, bestGlobalFitness);
         return resultList;
     }

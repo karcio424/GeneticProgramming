@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FunctionalityTest {
-    //TODO: ZROBIC MAX VALUE!!!
     @Test
     //1.1.A Program powinien wygenerować na wyjściu (na dowolnej pozycji w danych wyjściowych)
     // liczbę 1. Poza liczbą 1 może też zwrócić inne liczby.
@@ -280,7 +279,7 @@ public class FunctionalityTest {
 
     @Test
     void TestBenchmark_21() { //Negative to zero: Given a vector of integers,
-                            // return the vector where all negative int have been replaced by 0
+        // return the vector where all negative int have been replaced by 0
         int[][] testCase = {
                 {10, 3, 3},
                 {1, 0, 3, 1, 0, 3},
@@ -325,6 +324,7 @@ public class FunctionalityTest {
                 {1, 1, 1}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
+
     @Test
     void TestBool_OR() {
         int[][] testCase = {
@@ -335,6 +335,7 @@ public class FunctionalityTest {
                 {1, 1, 1}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
+
     @Test
     void TestBool_XOR() {
         int[][] testCase = {
@@ -345,6 +346,7 @@ public class FunctionalityTest {
                 {1, 1, 0}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
+
     @Test
     void TestBool_NOT() {
         int[][] testCase = {
@@ -353,6 +355,7 @@ public class FunctionalityTest {
                 {1, 0}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
+
     @Test
     void TestBool_NOR() {
         int[][] testCase = {
@@ -363,6 +366,7 @@ public class FunctionalityTest {
                 {1, 1, 0}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
+
     @Test
     void TestBool_NAND() {
         int[][] testCase = {
@@ -373,6 +377,7 @@ public class FunctionalityTest {
                 {1, 1, 0}};
         assertEquals(0, GPTesting.main(testCase, 100));
     }
+
     @Test
     void TestBool_XNOR() {
         int[][] testCase = {

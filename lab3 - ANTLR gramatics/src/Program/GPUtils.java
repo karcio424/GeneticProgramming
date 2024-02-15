@@ -1,11 +1,5 @@
 package Program;
 
-import Interpreter.GPprojectLexer;
-import Interpreter.GPprojectParser;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -38,7 +32,6 @@ public class GPUtils {
         switch (randomRule) {
             case 1 -> statement = generateRandomLoopStatement(variableList);
             case 2 -> statement = generateRandomOutputStatement(variableList);
-            //            case 3 -> statement = generateRandomBlockStatement(length - 1, variableList);
             case 3, 4 -> statement = generateRandomAssignmentStatement(variableList.get(randomVar), variableList);
             case 5 -> statement = generateRandomConditionalStatement(variableList);
         }
@@ -98,42 +91,11 @@ public class GPUtils {
             case 5, 6, 7 -> {
                 // expression
                 expressionNumOfOperators = generateRandomNumber(1, 1);
-                //                System.out.println("ILE: " + expressionNumOfOperators);
                 return generateRandomLogicTerm(variableList);
-                //     + generateRandomExpressionTail(variableList);
-                //NA RAZIE NIE JEST TO POTRZEBNE
             }
         }
 
         return "";
-    }
-
-    private static String generateRandomExpressionTail(List<String> variableList) {
-        int randomRule = generateRandomNumber(0, 1);
-        switch (randomRule) {
-            case 0 -> {
-                // Nothing
-                return "";
-            }
-            case 1 -> {
-                // ('&&' | '||') logicTerm
-                if (expressionNumOfOperators > 0) {
-                    return " " + generateRandomLogicalOperator() + " " +
-                            generateRandomLogicTerm(variableList) +
-                            generateRandomExpressionTail(variableList);
-                } else {
-                    return "";
-                }
-            }
-        }
-
-        return "";
-    }
-
-    private static String generateRandomLogicalOperator() {
-        int randomOperator = generateRandomNumber(0, 1);
-        expressionNumOfOperators--;
-        return randomOperator == 0 ? "&&" : "||";
     }
 
     private static String generateRandomLogicTerm(List<String> variableList) {
@@ -264,7 +226,7 @@ public class GPUtils {
     }
 
     private static String generateRandomFactor(List<String> variableList) {
-        int randomRule = generateRandomNumber(0, 2); //NA RAZIE ZMIENIONE DLA UPROSZCZENIA
+        int randomRule = generateRandomNumber(0, 2);
         switch (randomRule) {
             case 0 -> {
                 // ID
@@ -292,25 +254,8 @@ public class GPUtils {
         return "";
     }
 
-    private static ParseTree parseText(String text) {
-        GPprojectLexer lexer = new GPprojectLexer(CharStreams.fromString(text));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        GPprojectParser parser = new GPprojectParser(tokens);
-        System.out.println(text);
-
-        return parser.program();
-    }
-
-    private static int generateRandomNumber() {
-        return min + (int) (Math.random() * ((max - min) + 1));
-    }
-
     private static int generateRandomNumber(int min_r, int max_r) {
         return min_r + (int) (Math.random() * ((max_r - min_r) + 1));
-    }
-
-    private static String generateRandomVariableName() {
-        return "var" + generateRandomNumber();
     }
 
     public static List<String> crossover(String parent1, String parent2) {
@@ -346,7 +291,7 @@ public class GPUtils {
                 return program;
 
             char c = mutatedProgram.charAt(mutationPoint), temp;
-            int var_length = 3;
+            int var_length;
             switch (c) {
                 case '+', '-', '/', '*', '%' -> {
                     temp = c;
@@ -358,9 +303,9 @@ public class GPUtils {
                 case '>', '<', '=', '!' -> {
                     int length = 1;
                     String operator = String.valueOf(c);
-                    if (mutatedProgram.charAt(mutationPoint+1) == '='){
+                    if (mutatedProgram.charAt(mutationPoint + 1) == '=') {
                         length = 2;
-                        operator+='=';
+                        operator += '=';
                     }
                     String newTemp = operator;
                     while (Objects.equals(newTemp, operator))
@@ -397,18 +342,16 @@ public class GPUtils {
                     int whichOperation = rand.nextInt(4); // liczba, input czy var
                     int oldLength = 1;
                     int j = mutationPoint;
-                    while(mutatedProgram.charAt(j+1) >= '0' && mutatedProgram.charAt(j+1) <= '9'){
-                        j+=1;
-                        oldLength+=1;
+                    while (mutatedProgram.charAt(j + 1) >= '0' && mutatedProgram.charAt(j + 1) <= '9') {
+                        j += 1;
+                        oldLength += 1;
                     }
                     String newString;
-                    if(whichOperation == 0){
+                    if (whichOperation == 0) {
                         newString = "input";
-                    }
-                    else if(whichOperation == 1){
+                    } else if (whichOperation == 1) {
                         newString = variableList.get(rand.nextInt(variableList.size()));
-                    }
-                    else{
+                    } else {
                         newString = String.valueOf(rand.nextInt(max));
                     }
                     mutatedProgram = mutatedProgram.substring(0, mutationPoint) + newString
@@ -432,7 +375,6 @@ public class GPUtils {
 
         // tworze turniej indeksow
         while (tournamentParticipantsIndexes.size() < tournamentSize) {
-//            int randNum = rand.nextInt(sortedPopulation.size());
             int randNum = rand.nextInt(100);
             if (!tournamentParticipantsIndexes.contains(randNum)) {
                 tournamentParticipantsIndexes.add(randNum);
@@ -458,26 +400,14 @@ public class GPUtils {
             sortedPopulation.add(new Population(currentGeneration.get(i), outputFitness.get(i)));
 
         List<Population> bestPopulation = new ArrayList<>();
-        List<String> selectedPrograms = new ArrayList<>();
         List<String> newGeneration = new ArrayList<>();
-//        System.out.println("________");
-//        System.out.println(preparedPopulation.get(0).getProgram() + " " + preparedPopulation.get(0).getFitness());
         Collections.sort(sortedPopulation);
-//        System.out.println("!!!!");
-//        System.out.println(preparedPopulation.get(0).getProgram() + " " + preparedPopulation.get(0).getFitness());
-//        System.out.println("________");
         for (int i = 0; i < elitePrograms; i++) {
             bestPopulation.add(sortedPopulation.get(i));
             newGeneration.add(sortedPopulation.get(i).getProgram());
         }
 
-//        List<String> newGeneration = tournamentSelection(currentGeneration, outputFitness, 100, 10, 5);
-        int initialSizeOfNewGeneration = newGeneration.size();
-
         while (newGeneration.size() < populationSize) {
-//            programIndex1 = rand.nextInt(initialSizeOfNewGeneration);
-//            String program1 = newGeneration.get(programIndex1);
-//            System.out.println(newGeneration.size());
             boolean whichOperation = rand.nextInt(10) < 10 * mutationProbability; // true - mutation, false - crossover
             if (whichOperation) { // Mutacja
                 int mutatedProgramIndex = tournamentSelection(tournamentSize, 1).get(0);
@@ -505,37 +435,14 @@ public class GPUtils {
     }
 
     public static void main(String[] args) {
-        Integer[] inputData = {
-                1,
-                2,
-                3
-        };
-        Integer[] outputData = {
-                2,
-                4,
-                6
-        };
 
-        List<Integer> inputList = Arrays.asList(inputData);
-        List<Integer> outputList = Arrays.asList(outputData);
         List<String> first = Arrays.asList("var1", "var2", "var3");
-        List<String> second = Arrays.asList("var4", "var5", "var6");
 
         String randomProgram = generateRandomProgram(10, first, 1, 100);
-        String anotherRandomProgram = generateRandomProgram(10, second, 1, 100);
         String mutated = mutate(randomProgram, first);
-//        List<String> crossed = crossover(randomProgram, anotherRandomProgram);
-
-//        ParseTree randomProgram = parseText(generateRandomProgram(10, first, 1, 100));
-//        ParseTree anotherRandomProgram = parseText(generateRandomProgram(10, second, 1, 100));
 
         System.out.println(randomProgram);
-//        System.out.println(anotherRandomProgram);
         System.out.println("=========");
         System.out.println(mutated);
-//        System.out.println("=========");
-//        System.out.println(crossed.get(0));
-//        System.out.println("=========");
-//        System.out.println(crossed.get(1));
     }
 }

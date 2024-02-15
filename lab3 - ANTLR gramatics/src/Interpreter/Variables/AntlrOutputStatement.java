@@ -1,7 +1,6 @@
 package Interpreter.Variables;
 
 import Interpreter.GPprojectBaseVisitor;
-import Interpreter.GPprojectParser;
 
 public class AntlrOutputStatement extends GPprojectBaseVisitor<Statement> {
 //    @Override

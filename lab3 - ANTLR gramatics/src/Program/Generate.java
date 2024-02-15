@@ -27,6 +27,5 @@ public class Generate {
         krotkaDoZwrocenia.add(population);
         krotkaDoZwrocenia.add(variableList);
         return krotkaDoZwrocenia;
-//        return population;
     }
 }

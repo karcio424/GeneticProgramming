@@ -9,13 +9,10 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
     @Override
     public Statement visitFactor(GPprojectParser.FactorContext ctx) {
         String varName = ctx.getChild(0).getText();
-//        System.out.println(varName);
 
         if (Objects.equals(varName, "true")) {
-//            System.out.println("TRUE-CASE");
             return new BoolFactor(true);
         } else if (Objects.equals(varName, "false")) {
-//            System.out.println("FALSE-CASE");
             return new BoolFactor(false);
         } else if (Objects.equals(varName, "input")) {
             if (AntlrProgram.currentIndex >= AntlrProgram.inputList.size()) {
@@ -23,16 +20,13 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
             }
             int value = AntlrProgram.inputList.get(AntlrProgram.currentIndex++);
             return new Factor(value);
-        }else if (varName.matches("[0-9]+")) {
-//            System.out.println("INT-CASE " + varName);
+        } else if (varName.matches("[0-9]+")) {
             return new Factor(Integer.parseInt(varName));
         } else if (varName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
             // ID case
-//            System.out.println("ID-CASE");
             Object value = ContextTable.getVariableValue(varName);
-            if (value == null){
+            if (value == null) {
                 return new Factor(0);
-//                return null; //ZMIANY NA RAZIE
             }
             if (value instanceof Boolean) {
                 return new BoolFactor((Boolean) value);
@@ -46,20 +40,12 @@ public class AntlrFactor extends GPprojectBaseVisitor<Statement> {
             return new BoolFactor(!Boolean.parseBoolean(varValue));
         } else if (varName.startsWith("(")) {
             AntlrExpression expressionVisitor = new AntlrExpression();
-//            System.out.println("( ) CASE" + ctx.expression().getText());
             Statement value = expressionVisitor.visit(ctx.expression());
 
-            // ( expression ) case
-//            String expression = varName.substring(1, varName.length() - 1).trim();
-//            // Recursively evaluate the expression inside parentheses
-//            Factor result = evaluateExpression(expression);
-//            return result;
-            if(value instanceof  BoolFactor) {
-//                System.out.println("WYNIK NAWIASOW " + ((BoolFactor) value).value);
+            if (value instanceof BoolFactor) {
                 return new BoolFactor(((BoolFactor) value).value);
             }
-//            System.out.println("WYNIK NAWIASOW " + ((Factor) value).value);
-            return new Factor(((Factor)value).value);
+            return new Factor(((Factor) value).value);
         } else {
             return null;
         }

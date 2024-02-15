@@ -11,7 +11,6 @@ public class PointsContainer {
     public PointsContainer(List<Integer> mutationPoints, List<Integer> crossoverPoints) {
         this.mutationPoints = mutationPoints;
         this.crossoverPoints = crossoverPoints;
-//        System.out.println(getAllMutationPoints().toString());
     }
 
     public int getRandomMutationPoint() {
