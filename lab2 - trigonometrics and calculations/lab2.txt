@@ -1,0 +1,7 @@
+Zadania na kolejne ćwiczenia
+
+1. Przygotować wersję TinyGP z rozszerzonym zbiorem funkcji o sinus i kosinus. Wykonać ponownie zadanie 2 i porównać rezultaty.
+2. Dodatkowo wykonać regresję symboliczną dla funkcji sin(x + 3.141592/2) w dziedzinie sinusa
+3. Dodatkowo wykonać regresję symboliczną dla funkcji tan(2x +1) w dziedzinie tangensa
+4. Zaimplementować (technika dowolna) optymalizator rozwiązań z TinyGP - chodzi o maksymalne upraszczanie rozwiązań. Np. jeśli w rozwiązaniu występuje działanie na stałych (np. "1.07 + 2.1/1") to można go uprościć (w tym wypadku do "3.17")
+5. [Nadobowiązkowe] Pobrać kurs dowolnej waluty (np. BTC) np. z ostatnich 180 dni i wykonać regresję symboliczną. Sprawdzić jakość dopasowania.
