@@ -1,1 +1,0 @@
-(cos(X1) + sin(((X1 + cos(X1)) - cos(X1))))
