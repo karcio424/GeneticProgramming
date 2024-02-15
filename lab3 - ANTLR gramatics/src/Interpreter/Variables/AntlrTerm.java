@@ -24,7 +24,14 @@ public class AntlrTerm extends GPprojectBaseVisitor<Statement> {
                     }
                     yield new Factor(left / right);
                 }
-                case "%" -> new Factor(left % right);
+                case "%" -> {
+                    if (right <= 0) {
+                        yield new Factor(left);
+//                        throw new WrongProgramException("RuntimeException: Division by Zero\n" +
+//                                "The program encountered an attempt to divide by zero.");
+                    }
+                    yield new Factor(left % right);
+                }
                 default -> null;
             };
         }

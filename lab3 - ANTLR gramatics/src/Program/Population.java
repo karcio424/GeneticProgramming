@@ -19,6 +19,6 @@ public class Population implements Comparable<Population> {
 
     @Override
     public int compareTo(Population population) {
-        return Double.compare(this.fitness, population.fitness) * (-1);
+        return Double.compare(this.fitness, population.fitness);
     }
 }
