@@ -9,10 +9,6 @@
 # Ignorowanie plików Visual Studio Code
 .vscode/
 
-# Ignorowanie plików .class
-*.class
-
 # Ignorowanie plików w podkatalogach
-**/*.class
 **/.idea/
 **/.vscode/
